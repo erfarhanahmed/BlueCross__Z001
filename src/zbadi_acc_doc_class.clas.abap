@@ -1,0 +1,48 @@
+class ZBADI_ACC_DOC_CLASS definition
+  public
+  final
+  create public .
+
+public section.
+
+  interfaces IF_BADI_INTERFACE .
+  interfaces IF_EX_ACC_DOCUMENT .
+protected section.
+private section.
+ENDCLASS.
+
+
+
+CLASS ZBADI_ACC_DOC_CLASS IMPLEMENTATION.
+
+
+  METHOD IF_EX_ACC_DOCUMENT~CHANGE.
+
+    IF SY-TCODE = 'ZFB60' .
+      IF C_EXTENSION2 IS NOT INITIAL.
+        DATA: POSNR TYPE ACCIT-POSNR.
+        READ TABLE C_EXTENSION2 INTO DATA(WA_EXT) INDEX 1.
+        IF SY-SUBRC = 0.
+          CLEAR: POSNR.
+          POSNR = WA_EXT-VALUEPART2.
+          READ TABLE C_ACCIT INTO DATA(WA_ACCIT) WITH KEY POSNR = POSNR.
+          WA_ACCIT-HSN_SAC = WA_EXT-VALUEPART1.
+          MODIFY C_ACCIT FROM WA_ACCIT INDEX SY-TABIX .
+
+        ENDIF.
+        CLEAR: WA_ACCIT.
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.
+
+
+  method IF_EX_ACC_DOCUMENT~FILL_ACCIT.
+
+
+
+
+
+
+
+  endmethod.
+ENDCLASS.

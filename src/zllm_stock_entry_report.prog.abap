@@ -1,0 +1,1737 @@
+*&---------------------------------------------------------------------*
+*& Report  ZLLM_STOCK_ENTRY_REPORT1
+*& developed by Jyotsna
+*&---------------------------------------------------------------------*
+*&
+*&
+*&---------------------------------------------------------------------*
+REPORT ZLLM_STOCK_ENTRY_REPORT2.
+TABLES : ZLLM,
+         ZLLM_DSP,
+         LFA1,
+*         ZTP_PRD_PREFIX,
+         MAKT,
+         MCHA,
+         MARA,
+         MVKE,
+         TVM5T,
+         ZTP_QLT_BATCH.
+
+TYPE-POOLS:  SLIS.
+
+DATA: G_REPID     LIKE SY-REPID,
+      FIELDCAT    TYPE SLIS_T_FIELDCAT_ALV,
+      WA_FIELDCAT LIKE LINE OF FIELDCAT,
+      SORT        TYPE SLIS_T_SORTINFO_ALV,
+      WA_SORT     LIKE LINE OF SORT,
+      LAYOUT      TYPE SLIS_LAYOUT_ALV.
+
+DATA: IT_ZLLM          TYPE TABLE OF ZLLM,
+      WA_ZLLM          TYPE ZLLM,
+      IT_ZLLM_DSP      TYPE TABLE OF ZLLM_DSP,
+      WA_ZLLM_DSP      TYPE  ZLLM_DSP,
+      IT_ZPRODBATCHES  TYPE TABLE OF ZPRODBATCHES,
+      WA_ZPRODBATCHES  TYPE ZPRODBATCHES,
+      IT_ZPRODBATCHES1 TYPE TABLE OF ZPRODBATCHES,  "FOR SAMPLE
+      WA_ZPRODBATCHES1 TYPE ZPRODBATCHES.
+*      IT_ZTP_PRD_PREFIX TYPE TABLE OF ZTP_PRD_PREFIX,
+*      WA_ZTP_PRD_PREFIX TYPE ZTP_PRD_PREFIX.
+
+TYPES: BEGIN OF DISP1,
+         STYPE       TYPE ZLLM-STYPE,
+         LIFNR       TYPE LFA1-LIFNR,
+         NAME1       TYPE LFA1-NAME1,
+         STATUS(15)  TYPE C,
+*         buzei        type zdist_sale-buzei,
+         MATNR       TYPE ZDIST_SALE-MATNR,
+         CHARG       TYPE ZDIST_SALE-CHARG,
+         EBELN       TYPE EKPO-EBELN,
+         FKIMG(15)   TYPE C,
+*         disp_qty(15) type c,
+*         qty(15)      type c,
+*         qty1         type vbrp-fkimg,
+*         budat        type zdist_sale-budat,
+*         uzeit        type zdist_sale-uzeit,
+*         uname        type zdist_sale-uname,
+         MAKTX       TYPE MAKT-MAKTX,
+*         customer     type   kna1-name1,
+         FKDAT       TYPE SY-DATUM,
+*         rate         type p decimals 2,
+*         val          type p decimals 2,
+*         matnr1       type mara-matnr,
+*         fkimg1       type vbrp-fkimg,
+*         disp_qty1    type vbrp-fkimg,
+*         werks        type mcha-werks,
+*         ersda        type mcha-ersda,
+*         mblnr        type mseg-mblnr,
+*         remark       type zllm-remark,
+*         qaremark     type zllm-remark,
+         CPUDT       TYPE SY-DATUM,
+         CPUTM       TYPE SY-UZEIT,
+         UNAME       TYPE SY-UNAME,
+         GJAHR       TYPE ZLLM_DSP-GJAHR,
+         XBLNR       TYPE ZLLM_DSP-XBLNR,
+         BLDAT       TYPE ZLLM_DSP-BLDAT,
+         BEZEI       TYPE TVM5T-BEZEI,
+         QSTATUS(20) TYPE C,
+*         doc(30)      type c,
+*         chgdt        type zllm-chgdt,
+*         chgtm        type zllm-chgtm,
+       END OF DISP1.
+
+TYPES: BEGIN OF STK1,
+         STYPE TYPE ZLLM-STYPE,
+         CHARG TYPE ZLLM-CHARG,
+         FKIMG TYPE ZLLM-FKIMG,
+         LIFNR TYPE ZLLM-LIFNR,
+*         STATUS(1) TYPE C,
+       END OF STK1.
+
+TYPES: BEGIN OF STK3,
+         STYPE       TYPE ZLLM-STYPE,
+         CHARG       TYPE ZLLM-CHARG,
+         FKIMG       TYPE ZLLM-FKIMG,
+         LIFNR       TYPE ZLLM-LIFNR,
+         MATNR       TYPE ZLLM-MATNR,
+         MAKTX       TYPE MAKT-MAKTX,
+         NAME1       TYPE LFA1-NAME1,
+         UNAME       TYPE ZLLM-UNAME,
+         CPUDT       TYPE SY-DATUM,
+         CPUTM       TYPE SY-UZEIT,
+         EBELN       TYPE ZLLM-EBELN,
+         BEZEI       TYPE TVM5T-BEZEI,
+         QSTATUS(20) TYPE C,
+*         STATUS(1) TYPE C,
+       END OF STK3.
+
+TYPES: BEGIN OF BAT1,
+         PREFIX   TYPE ZTP_PRD_PREFIX-PREFIX,
+         MATNR    TYPE MARA-MATNR,
+         LIFNR    TYPE LFA1-LIFNR,
+         STYPE    TYPE ZTP_PRD_PREFIX-STYPE,
+         COUNT(2) TYPE C,
+       END OF BAT1.
+
+TYPES: BEGIN OF IPRE1,
+         PREFIX TYPE ZTP_PRD_PREFIX-PREFIX,
+         MATNR  TYPE ZTP_PRD_PREFIX-MATNR,
+         MAKTX  TYPE MAKT-MAKTX,
+         LIFNR  TYPE ZTP_PRD_PREFIX-LIFNR,
+         NAME1  TYPE LFA1-NAME1,
+         ORT01  TYPE LFA1-NAME1,
+         STYPE  TYPE ZTP_PRD_PREFIX-STYPE,
+         BEZEI  TYPE TVM5T-BEZEI,
+       END OF IPRE1.
+
+DATA: IT_DISP1 TYPE TABLE OF DISP1,
+      WA_DISP1 TYPE DISP1,
+      IT_STK1  TYPE TABLE OF STK1,
+      WA_STK1  TYPE STK1,
+      IT_STK2  TYPE TABLE OF STK1,
+      WA_STK2  TYPE STK1,
+      IT_STK3  TYPE TABLE OF STK3,
+      WA_STK3  TYPE STK3,
+      IT_BAT1  TYPE TABLE OF BAT1,
+      WA_BAT1  TYPE BAT1,
+      IT_PRE1  TYPE TABLE OF IPRE1,
+      WA_PRE1  TYPE IPRE1.
+DATA: STOCK1 TYPE P.
+
+DATA: LDATE1 TYPE SY-DATUM.
+
+DATA: IT_MCHA1 TYPE TABLE OF MCHA,
+      WA_MCHA1 TYPE MCHA.
+
+TYPES: BEGIN OF TAS1,
+         ALP(10) TYPE C,
+         CHARG   TYPE MCHA-CHARG,
+       END OF TAS1.
+
+TYPES: BEGIN OF TAS2,
+         ALP(10) TYPE C,
+         CHARG   TYPE MCHA-CHARG,
+         COUNT   TYPE I,
+       END OF TAS2.
+
+
+DATA: IT_TAS1 TYPE TABLE OF TAS1,
+      WA_TAS1 TYPE TAS1,
+      IT_TAS2 TYPE TABLE OF TAS2,
+      WA_TAS2 TYPE TAS2.
+DATA: COUNT2 TYPE I.
+DATA: STK1 TYPE P.
+DATA: E1 TYPE I.
+DATA: COUNT TYPE I.
+DATA: FKIMG TYPE P.
+DATA:VAR(20) TYPE C,
+*       var TYPE char25 VALUE 'ght5678',
+     MOFF    TYPE I,
+     MLEN    TYPE I,
+     ALP     TYPE CHAR10,
+     NUM     TYPE CHAR10,
+     LEN     TYPE I,
+     OFF     TYPE I.
+
+DATA: GSTRING TYPE C.
+DATA LV_FLDCAT TYPE LVC_S_FCAT.
+*Data declarations for ALV
+DATA: VARIANT TYPE DISVARIANT.
+DATA : GR_ALVGRID    TYPE REF TO CL_GUI_ALV_GRID,
+       GR_CCONTAINER TYPE REF TO CL_GUI_CUSTOM_CONTAINER,
+       GT_FCAT       TYPE LVC_T_FCAT,
+       GS_LAYO       TYPE LVC_S_LAYO.
+DATA: C_ALVGD   TYPE REF TO CL_GUI_ALV_GRID.         "ALV grid object
+DATA: IT_DROPDOWN TYPE LVC_T_DROP,
+      TY_DROPDOWN TYPE LVC_S_DROP,
+*data declaration for refreshing of alv
+      STABLE      TYPE LVC_S_STBL.
+DATA: C_CCONT   TYPE REF TO CL_GUI_CUSTOM_CONTAINER,         "Custom container object
+*      C_ALVGD   TYPE REF TO CL_GUI_ALV_GRID,         "ALV grid object
+      IT_FCAT   TYPE LVC_T_FCAT,                  "Field catalogue
+      IT_LAYOUT TYPE LVC_S_LAYO.                  "Layout
+*ok code declaration
+DATA: OK_CODE  TYPE UI_FUNC,
+      OK_CODE1 TYPE UI_FUNC,
+      OK_CODE2 TYPE UI_FUNC,
+      OK_CODE4 TYPE UI_FUNC.
+
+SELECT-OPTIONS : SDATE FOR SY-DATUM,
+LIFNR FOR LFA1-LIFNR.
+
+DATA: ZTP_PRD_PREFIX_WA TYPE ZTP_PRD_PREFIX.
+
+SELECTION-SCREEN BEGIN OF BLOCK MERKMALE1 WITH FRAME TITLE TEXT-001.
+PARAMETERS : R1 RADIOBUTTON GROUP R1 USER-COMMAND R2 DEFAULT 'X',
+             R2 RADIOBUTTON GROUP R1,
+             R3 RADIOBUTTON GROUP R1,
+*             R4 RADIOBUTTON GROUP R1, "REFER APRODBATCHES
+             R5 RADIOBUTTON GROUP R1.
+SELECTION-SCREEN END OF BLOCK MERKMALE1.
+
+AT SELECTION-SCREEN OUTPUT.
+
+  IF R3 EQ 'X'.
+    LOOP AT SCREEN.
+      IF SCREEN-NAME CP '*SDATE*'.
+        SCREEN-ACTIVE = 0.
+        MODIFY SCREEN.
+      ENDIF.
+    ENDLOOP.
+    LOOP AT SCREEN.
+      IF SCREEN-NAME CP '*LIFNR*'.
+        SCREEN-ACTIVE = 1.
+        MODIFY SCREEN.
+      ENDIF.
+    ENDLOOP.
+  ELSEIF R1 EQ 'X' OR R2 EQ 'X'.
+    LOOP AT SCREEN.
+      IF SCREEN-NAME CP '*SDATE*'.
+        SCREEN-ACTIVE = 1.
+        MODIFY SCREEN.
+      ENDIF.
+    ENDLOOP.
+    LOOP AT SCREEN.
+      IF SCREEN-NAME CP '*LIFNR*'.
+        SCREEN-ACTIVE = 1.
+        MODIFY SCREEN.
+      ENDIF.
+    ENDLOOP.
+*  ELSEIF R4 EQ 'X' OR R5 EQ 'X'.
+  ELSEIF R5 EQ 'X'.
+    LOOP AT SCREEN.
+      IF SCREEN-NAME CP '*SDATE*'.
+        SCREEN-ACTIVE = 0.
+        MODIFY SCREEN.
+      ENDIF.
+    ENDLOOP.
+    LOOP AT SCREEN.
+      IF SCREEN-NAME CP '*LIFNR*'.
+        SCREEN-ACTIVE = 0.
+        MODIFY SCREEN.
+      ENDIF.
+    ENDLOOP.
+  ENDIF.
+
+INITIALIZATION.
+  G_REPID = SY-REPID.
+
+START-OF-SELECTION.
+
+  IF R1 EQ 'X'.
+    IF SDATE IS INITIAL.
+      MESSAGE 'ENTER DATE' TYPE 'E'.
+    ENDIF.
+    PERFORM STOCK.
+  ELSEIF R2 EQ 'X'.
+    IF SDATE IS INITIAL.
+      MESSAGE 'ENTER DATE' TYPE 'E'.
+    ENDIF.
+    PERFORM DISPATCH.
+  ELSEIF R3 EQ 'X'.
+    PERFORM REMSTOCK.
+*  ELSEIF R4 EQ 'X'.
+*    PERFORM BATCHPREFIX.
+  ELSEIF R5 EQ 'X'.
+    PERFORM DISPBATCHPR.
+  ENDIF.
+*&---------------------------------------------------------------------*
+*&      Form  STOCK
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM STOCK.
+  SELECT * FROM ZPRODBATCHES INTO TABLE IT_ZPRODBATCHES WHERE KUNNR IN LIFNR AND ENDDA GE SY-DATUM.
+  SELECT * FROM ZPRODBATCHES INTO TABLE IT_ZPRODBATCHES1 WHERE KUNNR IN LIFNR AND ENDDA GE SY-DATUM AND COMB_MATNR1 GT 0.
+  SORT IT_ZPRODBATCHES DESCENDING BY MATNR.
+  SORT IT_ZPRODBATCHES1 DESCENDING BY COMB_MATNR1.
+
+  SELECT * FROM ZLLM INTO TABLE IT_ZLLM WHERE LIFNR IN LIFNR AND CPUDT IN SDATE.
+  PERFORM NEWBATCH.
+  LOOP AT IT_ZLLM INTO WA_ZLLM.
+    CLEAR : VAR,LEN,ALP,NUM.
+    VAR = WA_ZLLM-CHARG.
+    FIND REGEX '([[:alpha:]]*)' IN VAR IGNORING CASE MATCH OFFSET MOFF MATCH LENGTH MLEN.
+    IF MLEN GT 0.
+      LEN = STRLEN( VAR ).
+      ALP = VAR+0(MLEN).
+*num = var+mlen(len).
+*WRITE:/ alp, num.
+      CONDENSE ALP.
+    ENDIF.
+
+    WA_DISP1-STYPE = WA_ZLLM-STYPE.
+    WA_DISP1-CHARG = WA_ZLLM-CHARG.
+    WA_DISP1-MATNR = WA_ZLLM-MATNR.
+    IF WA_ZLLM-MATNR EQ SPACE.
+*      SELECT SINGLE * FROM ZTP_PRD_PREFIX WHERE PREFIX EQ ALP AND LIFNR EQ WA_ZLLM-LIFNR AND STYPE EQ WA_ZLLM-STYPE.
+*      IF SY-SUBRC EQ 0.
+*        WA_DISP1-MATNR = ZTP_PRD_PREFIX-MATNR.
+*      ENDIF.
+      IF WA_ZLLM-STYPE EQ 'SAMPLE'.
+        READ TABLE IT_ZPRODBATCHES1 INTO WA_ZPRODBATCHES1 WITH KEY BATCH_PREFIX = ALP KUNNR = WA_ZLLM-LIFNR.
+        IF SY-SUBRC EQ 0.
+          WA_DISP1-MATNR = WA_ZPRODBATCHES1-COMB_MATNR1.
+        ENDIF.
+      ELSE.
+        READ TABLE IT_ZPRODBATCHES INTO WA_ZPRODBATCHES WITH KEY BATCH_PREFIX = ALP KUNNR = WA_ZLLM-LIFNR.
+        IF SY-SUBRC EQ 0.
+          WA_DISP1-MATNR = WA_ZPRODBATCHES-MATNR.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+    SELECT SINGLE * FROM MAKT WHERE MATNR EQ WA_DISP1-MATNR AND SPRAS EQ 'EN'.
+    IF SY-SUBRC EQ 0.
+      WA_DISP1-MAKTX = MAKT-MAKTX.
+    ENDIF.
+    SELECT SINGLE * FROM MVKE WHERE MATNR EQ WA_DISP1-MATNR AND VKORG EQ '1000' AND VTWEG EQ '10'.
+    IF SY-SUBRC EQ 0.
+      SELECT SINGLE * FROM TVM5T WHERE MVGR5 EQ MVKE-MVGR5.
+      IF SY-SUBRC EQ 0.
+        WA_DISP1-BEZEI = TVM5T-BEZEI.
+      ENDIF.
+    ENDIF.
+    IF WA_DISP1-BEZEI EQ SPACE.
+      SELECT SINGLE * FROM MVKE WHERE MATNR EQ WA_DISP1-MATNR AND VKORG EQ '1000' AND VTWEG EQ '80'.
+      IF SY-SUBRC EQ 0.
+        SELECT SINGLE * FROM TVM5T WHERE MVGR5 EQ MVKE-MVGR5.
+        IF SY-SUBRC EQ 0.
+          WA_DISP1-BEZEI = TVM5T-BEZEI.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+
+    CLEAR : FKIMG.
+    FKIMG = WA_ZLLM-FKIMG.
+    WA_DISP1-FKIMG = FKIMG.
+    WA_DISP1-LIFNR = WA_ZLLM-LIFNR.
+    WA_DISP1-EBELN = WA_ZLLM-EBELN.
+    WA_DISP1-LIFNR = WA_ZLLM-LIFNR.
+    SELECT SINGLE * FROM LFA1 WHERE LIFNR EQ WA_ZLLM-LIFNR.
+    IF SY-SUBRC EQ 0.
+      WA_DISP1-NAME1 = LFA1-NAME1.
+    ENDIF.
+    IF WA_ZLLM-STATUS EQ 'R'.
+      WA_DISP1-STATUS = 'RELEASED'.
+    ELSE.
+      WA_DISP1-STATUS = 'UNDER TEST'.
+    ENDIF.
+    WA_DISP1-CPUDT = WA_ZLLM-CPUDT.
+    WA_DISP1-CPUTM = WA_ZLLM-CPUTM.
+    WA_DISP1-UNAME = WA_ZLLM-UNAME.
+
+***************check quality status****************
+    SELECT SINGLE * FROM MARA WHERE MATNR EQ WA_ZLLM-MATNR.
+    IF SY-SUBRC EQ 0.
+      CLEAR : VAR,LEN,ALP,NUM.
+      VAR = WA_ZLLM-CHARG.
+      FIND REGEX '([[:alpha:]]*)' IN VAR IGNORING CASE MATCH OFFSET MOFF MATCH LENGTH MLEN.
+      IF MLEN GT 0.
+        LEN = STRLEN( VAR ).
+        ALP = VAR+0(MLEN).
+        CONDENSE ALP.
+        READ TABLE IT_TAS2 INTO WA_TAS2 WITH KEY ALP = ALP COUNT = 4.
+        IF SY-SUBRC EQ 4.
+          WA_DISP1-QSTATUS = 'QUALITY TESTING'.
+        ENDIF.
+      ENDIF.
+      SELECT SINGLE * FROM ZTP_QLT_BATCH WHERE MATNR EQ WA_ZLLM-MATNR AND CHARG EQ WA_ZLLM-CHARG.
+      IF SY-SUBRC EQ 0.
+        WA_DISP1-QSTATUS = 'QUALITY TESTING'.
+      ENDIF.
+    ENDIF.
+
+    COLLECT WA_DISP1 INTO IT_DISP1.
+    CLEAR WA_DISP1.
+  ENDLOOP.
+
+
+  SORT IT_DISP1 BY MAKTX CHARG.
+  LOOP AT IT_DISP1 INTO WA_DISP1.
+    PACK WA_DISP1-MATNR TO WA_DISP1-MATNR.
+    MODIFY IT_DISP1 FROM WA_DISP1 TRANSPORTING MATNR.
+    CLEAR WA_DISP1.
+  ENDLOOP.
+
+  CALL SCREEN 9001.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  DISPATCH
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM DISPATCH .
+  SELECT * FROM ZPRODBATCHES INTO TABLE IT_ZPRODBATCHES WHERE KUNNR IN LIFNR AND ENDDA GE SY-DATUM.
+  SELECT * FROM ZPRODBATCHES INTO TABLE IT_ZPRODBATCHES1 WHERE KUNNR IN LIFNR AND ENDDA GE SY-DATUM AND COMB_MATNR1 GT 0.
+  SORT IT_ZPRODBATCHES DESCENDING BY MATNR.
+  SORT IT_ZPRODBATCHES1 DESCENDING BY COMB_MATNR1.
+
+  SELECT * FROM ZLLM_DSP INTO TABLE IT_ZLLM_DSP WHERE LIFNR IN LIFNR AND CPUDT IN SDATE.
+  PERFORM NEWBATCH.
+  LOOP AT IT_ZLLM_DSP INTO WA_ZLLM_DSP.
+    CLEAR : VAR,LEN,ALP,NUM.
+    VAR = WA_ZLLM_DSP-CHARG.
+    FIND REGEX '([[:alpha:]]*)' IN VAR IGNORING CASE MATCH OFFSET MOFF MATCH LENGTH MLEN.
+    IF MLEN GT 0.
+      LEN = STRLEN( VAR ).
+      ALP = VAR+0(MLEN).
+*num = var+mlen(len).
+*WRITE:/ alp, num.
+      CONDENSE ALP.
+    ENDIF.
+
+    WA_DISP1-STYPE = WA_ZLLM_DSP-STYPE.
+    WA_DISP1-CHARG = WA_ZLLM_DSP-CHARG.
+    WA_DISP1-MATNR = WA_ZLLM_DSP-MATNR.
+    IF WA_ZLLM_DSP-MATNR EQ SPACE.
+*      SELECT SINGLE * FROM ZTP_PRD_PREFIX WHERE PREFIX EQ ALP AND LIFNR EQ WA_ZLLM_DSP-LIFNR AND STYPE EQ WA_ZLLM_DSP-STYPE.
+*      IF SY-SUBRC EQ 0.
+*        WA_DISP1-MATNR = ZTP_PRD_PREFIX-MATNR.
+*      ENDIF.
+      IF WA_ZLLM_DSP-STYPE EQ 'SAMPLE'.
+        READ TABLE IT_ZPRODBATCHES1 INTO WA_ZPRODBATCHES1 WITH KEY BATCH_PREFIX = ALP KUNNR = WA_ZLLM_DSP-LIFNR.
+        IF SY-SUBRC EQ 0.
+          WA_DISP1-MATNR = WA_ZPRODBATCHES1-COMB_MATNR1.
+        ENDIF.
+      ELSE.
+        READ TABLE IT_ZPRODBATCHES INTO WA_ZPRODBATCHES WITH KEY BATCH_PREFIX = ALP KUNNR = WA_ZLLM_DSP-LIFNR.
+        IF SY-SUBRC EQ 0.
+          WA_DISP1-MATNR = WA_ZPRODBATCHES-MATNR.
+        ENDIF.
+      ENDIF.
+
+    ENDIF.
+    SELECT SINGLE * FROM MAKT WHERE MATNR EQ WA_DISP1-MATNR AND SPRAS EQ 'EN'.
+    IF SY-SUBRC EQ 0.
+      WA_DISP1-MAKTX = MAKT-MAKTX.
+    ENDIF.
+
+    SELECT SINGLE * FROM MVKE WHERE MATNR EQ WA_DISP1-MATNR AND VKORG EQ '1000' AND VTWEG EQ '10'.
+    IF SY-SUBRC EQ 0.
+      SELECT SINGLE * FROM TVM5T WHERE MVGR5 EQ MVKE-MVGR5.
+      IF SY-SUBRC EQ 0.
+        WA_DISP1-BEZEI = TVM5T-BEZEI.
+      ENDIF.
+    ENDIF.
+    IF WA_DISP1-BEZEI EQ SPACE.
+      SELECT SINGLE * FROM MVKE WHERE MATNR EQ WA_DISP1-MATNR AND VKORG EQ '1000' AND VTWEG EQ '80'.
+      IF SY-SUBRC EQ 0.
+        SELECT SINGLE * FROM TVM5T WHERE MVGR5 EQ MVKE-MVGR5.
+        IF SY-SUBRC EQ 0.
+          WA_DISP1-BEZEI = TVM5T-BEZEI.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+
+    CLEAR : FKIMG.
+    FKIMG = WA_ZLLM_DSP-FKIMG.
+    WA_DISP1-FKIMG = FKIMG.
+    WA_DISP1-FKDAT = WA_ZLLM_DSP-FKDAT.
+    WA_DISP1-GJAHR = WA_ZLLM_DSP-GJAHR.
+    WA_DISP1-XBLNR = WA_ZLLM_DSP-XBLNR.
+    WA_DISP1-BLDAT = WA_ZLLM_DSP-BLDAT.
+    WA_DISP1-LIFNR = WA_ZLLM_DSP-LIFNR.
+*    WA_DISP1-EBELN = WA_ZLLM_DSP-EBELN.
+    WA_DISP1-LIFNR = WA_ZLLM_DSP-LIFNR.
+    SELECT SINGLE * FROM LFA1 WHERE LIFNR EQ WA_ZLLM_DSP-LIFNR.
+    IF SY-SUBRC EQ 0.
+      WA_DISP1-NAME1 = LFA1-NAME1.
+    ENDIF.
+*    IF WA_ZLLM_DSP-STATUS EQ 'R'.
+*      WA_DISP1-STATUS = 'RELEASED'.
+*    ELSE.
+*      WA_DISP1-STATUS = 'UNDER TEST'.
+*    ENDIF.
+    WA_DISP1-CPUDT = WA_ZLLM_DSP-CPUDT.
+    WA_DISP1-CPUTM = WA_ZLLM_DSP-CPUTM.
+    WA_DISP1-UNAME = WA_ZLLM_DSP-UNAME.
+
+*    ***************check quality status****************
+    SELECT SINGLE * FROM MARA WHERE MATNR EQ WA_ZLLM_DSP-MATNR.
+    IF SY-SUBRC EQ 0.
+      CLEAR : VAR,LEN,ALP,NUM.
+      VAR = WA_ZLLM_DSP-CHARG.
+      FIND REGEX '([[:alpha:]]*)' IN VAR IGNORING CASE MATCH OFFSET MOFF MATCH LENGTH MLEN.
+      IF MLEN GT 0.
+        LEN = STRLEN( VAR ).
+        ALP = VAR+0(MLEN).
+        CONDENSE ALP.
+        READ TABLE IT_TAS2 INTO WA_TAS2 WITH KEY ALP = ALP COUNT = 4.
+        IF SY-SUBRC EQ 4.
+          WA_DISP1-QSTATUS = 'QUALITY TESTING'.
+        ENDIF.
+      ENDIF.
+      SELECT SINGLE * FROM ZTP_QLT_BATCH WHERE MATNR EQ WA_ZLLM_DSP-MATNR AND CHARG EQ WA_ZLLM_DSP-CHARG.
+      IF SY-SUBRC EQ 0.
+        WA_DISP1-QSTATUS = 'QUALITY TESTING'.
+      ENDIF.
+    ENDIF.
+
+    COLLECT WA_DISP1 INTO IT_DISP1.
+    CLEAR WA_DISP1.
+  ENDLOOP.
+
+
+  SORT IT_DISP1 BY MAKTX CHARG.
+  LOOP AT IT_DISP1 INTO WA_DISP1.
+    PACK WA_DISP1-MATNR TO WA_DISP1-MATNR.
+    MODIFY IT_DISP1 FROM WA_DISP1 TRANSPORTING MATNR.
+    CLEAR WA_DISP1.
+  ENDLOOP.
+
+  CALL SCREEN 9001.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Module  STATUS_9001  OUTPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE STATUS_9001 OUTPUT.
+  SET PF-STATUS 'STATUS'.
+  IF R1 EQ 'X'.
+    SET TITLEBAR 'TITLE1'.
+  ELSEIF R2 EQ 'X'.
+    SET TITLEBAR 'TITLE2'.
+  ELSEIF R3 EQ 'X'.
+    SET TITLEBAR 'TITLE3'.
+  ENDIF.
+  PERFORM ALV1.
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_9001  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE USER_COMMAND_9001 INPUT.
+* gr_alvgrid->check_changed_data( ).
+  CASE OK_CODE.
+*    when 'SAVE'.
+*      message' FILES ATTACHED' type 'I'.
+**      break-point.
+*      gr_alvgrid->check_changed_data( ).
+**      perform update.
+**      message 'SAVE' type 'I'.
+**      leave to screen 0.
+    WHEN 'BACK' OR 'EXIT' OR 'CANCEL'.
+      LEAVE TO SCREEN 0.
+  ENDCASE.
+  CLEAR: OK_CODE.
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Form  ALV1
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM ALV1 .
+  CLEAR : IT_FCAT,LV_FLDCAT.
+  CREATE OBJECT GR_ALVGRID
+    EXPORTING
+*     i_parent          = gr_ccontainer
+      I_PARENT          = CL_GUI_CUSTOM_CONTAINER=>SCREEN0
+    EXCEPTIONS
+      ERROR_CNTL_CREATE = 1
+      ERROR_CNTL_INIT   = 2
+      ERROR_CNTL_LINK   = 3
+      ERROR_DP_CREATE   = 4
+      OTHERS            = 5.
+  IF SY-SUBRC <> 0.
+*     MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*                WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+  ENDIF.
+
+  IF R1 EQ 'X'.
+    PERFORM ALV_BUILD_FIELDCAT1.
+  ELSEIF R2 EQ 'X'.
+    PERFORM ALV_BUILD_FIELDCAT2.
+  ELSEIF R3 EQ 'X'.
+    PERFORM ALV_BUILD_FIELDCAT3.
+  ENDIF.
+*  perform dropdown_table.
+  IF R3 EQ 'X'.
+    CALL METHOD GR_ALVGRID->SET_TABLE_FOR_FIRST_DISPLAY
+      EXPORTING
+*       I_BUFFER_ACTIVE =
+*       I_BYPASSING_BUFFER            =
+*       I_CONSISTENCY_CHECK           =
+*       I_STRUCTURE_NAME              =
+        IS_VARIANT      = VARIANT
+        I_SAVE          = 'A'
+*       I_DEFAULT       = 'X'
+        IS_LAYOUT       = GS_LAYO
+*       IS_PRINT        =
+*       IT_SPECIAL_GROUPS             =
+*       IT_TOOLBAR_EXCLUDING          =
+*       IT_HYPERLINK    =
+*       IT_ALV_GRAPHICS =
+*       IT_EXCEPT_QINFO =
+*       IR_SALV_ADAPTER =
+      CHANGING
+        IT_OUTTAB       = IT_STK3
+        IT_FIELDCATALOG = IT_FCAT
+*       IT_SORT         =
+*       IT_FILTER       =
+*      EXCEPTIONS
+*       INVALID_PARAMETER_COMBINATION = 1
+*       PROGRAM_ERROR   = 2
+*       TOO_MANY_LINES  = 3
+*       others          = 4
+      .
+    IF SY-SUBRC <> 0.
+*     MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*                WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+    ENDIF.
+  ELSE.
+
+    CALL METHOD GR_ALVGRID->SET_TABLE_FOR_FIRST_DISPLAY
+      EXPORTING
+*       I_BUFFER_ACTIVE =
+*       I_BYPASSING_BUFFER            =
+*       I_CONSISTENCY_CHECK           =
+*       I_STRUCTURE_NAME              =
+        IS_VARIANT      = VARIANT
+        I_SAVE          = 'A'
+*       I_DEFAULT       = 'X'
+        IS_LAYOUT       = GS_LAYO
+*       IS_PRINT        =
+*       IT_SPECIAL_GROUPS             =
+*       IT_TOOLBAR_EXCLUDING          =
+*       IT_HYPERLINK    =
+*       IT_ALV_GRAPHICS =
+*       IT_EXCEPT_QINFO =
+*       IR_SALV_ADAPTER =
+      CHANGING
+        IT_OUTTAB       = IT_DISP1
+        IT_FIELDCATALOG = IT_FCAT
+*       IT_SORT         =
+*       IT_FILTER       =
+*      EXCEPTIONS
+*       INVALID_PARAMETER_COMBINATION = 1
+*       PROGRAM_ERROR   = 2
+*       TOO_MANY_LINES  = 3
+*       others          = 4
+      .
+    IF SY-SUBRC <> 0.
+*     MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*                WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+    ENDIF.
+
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  ALV_BUILD_FIELDCAT1
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM ALV_BUILD_FIELDCAT1 .
+
+  LV_FLDCAT-FIELDNAME = 'STYPE'.
+  LV_FLDCAT-SCRTEXT_M = 'PRODUCT TYPE'.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'MATNR'.
+  LV_FLDCAT-SCRTEXT_M = 'PRODUCT CODE'.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'MAKTX'.
+  LV_FLDCAT-SCRTEXT_M = 'PRODUCT NAME'.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'BEZEI'.
+  LV_FLDCAT-SCRTEXT_M = 'PCK SIZE'.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'CHARG'.
+  LV_FLDCAT-SCRTEXT_M = 'BATCH'.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'QSTATUS'.
+  LV_FLDCAT-SCRTEXT_M = 'QUALITY TEST'.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'FKIMG'.
+  LV_FLDCAT-SCRTEXT_M = 'QUANTITY'.
+*  lv_fldcat-edit   = 'X'.
+  LV_FLDCAT-OUTPUTLEN = 10.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'STATUS'.
+  LV_FLDCAT-SCRTEXT_M = 'STATUS'.
+*  lv_fldcat-edit   = 'X'.
+  LV_FLDCAT-OUTPUTLEN = 10.
+*  lv_fldcat-drdn_hndl = '3'.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'LIFNR'.
+*  LV_FLDCAT-TABNAME   = 'IT_TAB1'.
+  LV_FLDCAT-SCRTEXT_M = 'VENDOR CODE'.
+  LV_FLDCAT-OUTPUTLEN = 10.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'NAME1'.
+*  LV_FLDCAT-TABNAME   = 'IT_TAB1'.
+  LV_FLDCAT-SCRTEXT_M = 'VENDOR NAME'.
+  LV_FLDCAT-OUTPUTLEN = 40.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'EBELN'.
+*  LV_FLDCAT-TABNAME   = 'IT_TAB1'.
+  LV_FLDCAT-SCRTEXT_M = 'PURCHASE ORDER NO.'.
+  LV_FLDCAT-OUTPUTLEN = 40.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+*
+  LV_FLDCAT-FIELDNAME = 'CPUDT'.
+  LV_FLDCAT-SCRTEXT_M = 'ENTRY DATE'.
+*  lv_fldcat-outputlen = 100.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'CPUTM'.
+  LV_FLDCAT-SCRTEXT_M = 'ENTRY TIME'.
+*  lv_fldcat-outputlen = 100.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'UNAME'.
+  LV_FLDCAT-SCRTEXT_M = 'ENTERED BY'.
+*  lv_fldcat-outputlen = 100.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  ALV_BUILD_FIELDCAT2
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM ALV_BUILD_FIELDCAT2 .
+
+
+  LV_FLDCAT-FIELDNAME = 'STYPE'.
+  LV_FLDCAT-SCRTEXT_M = 'PRODUCT TYPE'.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'MATNR'.
+  LV_FLDCAT-SCRTEXT_M = 'PRODUCT CODE'.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'MAKTX'.
+  LV_FLDCAT-SCRTEXT_M = 'PRODUCT NAME'.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'BEZEI'.
+  LV_FLDCAT-SCRTEXT_M = 'PACK SIZE'.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'CHARG'.
+  LV_FLDCAT-SCRTEXT_M = 'BATCH'.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'QSTATUS'.
+  LV_FLDCAT-SCRTEXT_M = 'QUALITY STATUS'.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'FKIMG'.
+  LV_FLDCAT-SCRTEXT_M = 'DISPATCHED QUANTITY'.
+*  lv_fldcat-edit   = 'X'.
+*  LV_FLDCAT-OUTPUTLEN = 10.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'XBLNR'.
+  LV_FLDCAT-SCRTEXT_M = 'BILL NO.'.
+*  lv_fldcat-edit   = 'X'.
+*  LV_FLDCAT-OUTPUTLEN = 10.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'BLDAT'.
+  LV_FLDCAT-SCRTEXT_M = 'BILL DATE'.
+*  lv_fldcat-edit   = 'X'.
+*  LV_FLDCAT-OUTPUTLEN = 10.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'LIFNR'.
+*  LV_FLDCAT-TABNAME   = 'IT_TAB1'.
+  LV_FLDCAT-SCRTEXT_M = 'VENDOR CODE'.
+  LV_FLDCAT-OUTPUTLEN = 10.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'NAME1'.
+*  LV_FLDCAT-TABNAME   = 'IT_TAB1'.
+  LV_FLDCAT-SCRTEXT_M = 'VENDOR NAME'.
+  LV_FLDCAT-OUTPUTLEN = 40.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+*
+  LV_FLDCAT-FIELDNAME = 'CPUDT'.
+  LV_FLDCAT-SCRTEXT_M = 'ENTRY DATE'.
+*  lv_fldcat-outputlen = 100.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'CPUTM'.
+  LV_FLDCAT-SCRTEXT_M = 'ENTRY TIME'.
+*  lv_fldcat-outputlen = 100.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'UNAME'.
+  LV_FLDCAT-SCRTEXT_M = 'ENTERED BY'.
+*  lv_fldcat-outputlen = 100.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  REMSTOCK
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM REMSTOCK .
+
+  SELECT * FROM ZPRODBATCHES INTO TABLE IT_ZPRODBATCHES WHERE KUNNR IN LIFNR AND ENDDA GE SY-DATUM.
+  SELECT * FROM ZPRODBATCHES INTO TABLE IT_ZPRODBATCHES1 WHERE KUNNR IN LIFNR AND ENDDA GE SY-DATUM AND COMB_MATNR1 GT 0.
+  SORT IT_ZPRODBATCHES DESCENDING BY MATNR.
+  SORT IT_ZPRODBATCHES1 DESCENDING BY COMB_MATNR1.
+
+  SELECT * FROM ZLLM INTO TABLE IT_ZLLM WHERE LIFNR IN LIFNR .
+  SELECT * FROM ZLLM_DSP INTO TABLE IT_ZLLM_DSP WHERE LIFNR IN LIFNR.
+  PERFORM NEWBATCH.
+  LOOP AT IT_ZLLM INTO WA_ZLLM.
+    WA_STK1-STYPE = WA_ZLLM-STYPE.
+    WA_STK1-CHARG = WA_ZLLM-CHARG.
+    WA_STK1-FKIMG = WA_ZLLM-FKIMG.
+    WA_STK1-LIFNR = WA_ZLLM-LIFNR.
+    COLLECT WA_STK1 INTO IT_STK1.
+    CLEAR WA_STK1.
+  ENDLOOP.
+
+  LOOP AT IT_ZLLM_DSP INTO WA_ZLLM_DSP.
+    WA_STK2-STYPE = WA_ZLLM_DSP-STYPE.
+    WA_STK2-CHARG = WA_ZLLM_DSP-CHARG.
+    WA_STK2-FKIMG = WA_ZLLM_DSP-FKIMG.
+    WA_STK2-LIFNR = WA_ZLLM_DSP-LIFNR.
+    COLLECT WA_STK2 INTO IT_STK2.
+    CLEAR WA_STK2.
+  ENDLOOP.
+
+  LOOP AT IT_STK1 INTO WA_STK1.
+    LOOP AT IT_STK2 INTO WA_STK2 WHERE STYPE = WA_STK1-STYPE AND CHARG = WA_STK1-CHARG AND LIFNR = WA_STK1-LIFNR.
+      CLEAR : STOCK1.
+      STOCK1 =  WA_STK1-FKIMG - WA_STK2-FKIMG.
+      IF STOCK1 GT 0.
+        WA_STK3-STYPE = WA_STK2-STYPE.
+        WA_STK3-CHARG = WA_STK2-CHARG.
+*      WA_STK3-FKIMG = WA_STK2-FKIMG.
+        WA_STK3-FKIMG = STOCK1.
+        WA_STK3-LIFNR = WA_STK2-LIFNR.
+        SELECT SINGLE * FROM LFA1 WHERE LIFNR EQ WA_STK2-LIFNR.
+        IF SY-SUBRC EQ 0.
+          WA_STK3-NAME1 = LFA1-NAME1.
+        ENDIF.
+****************************************************
+        CLEAR : VAR,LEN,ALP,NUM.
+        VAR = WA_STK2-CHARG.
+        FIND REGEX '([[:alpha:]]*)' IN VAR IGNORING CASE MATCH OFFSET MOFF MATCH LENGTH MLEN.
+        IF MLEN GT 0.
+          LEN = STRLEN( VAR ).
+          ALP = VAR+0(MLEN).
+          CONDENSE ALP.
+        ENDIF.
+*        SELECT SINGLE * FROM ZTP_PRD_PREFIX WHERE PREFIX EQ ALP AND LIFNR EQ WA_STK2-LIFNR AND STYPE EQ WA_STK2-STYPE.
+*        IF SY-SUBRC EQ 0.
+*          WA_STK3-MATNR = ZTP_PRD_PREFIX-MATNR.
+*        ENDIF.
+        IF WA_STK2-STYPE EQ 'SAMPLE'.
+          READ TABLE IT_ZPRODBATCHES1 INTO WA_ZPRODBATCHES1 WITH KEY BATCH_PREFIX = ALP KUNNR = WA_STK2-LIFNR.
+          IF SY-SUBRC EQ 0.
+            WA_STK3-MATNR = WA_ZPRODBATCHES1-COMB_MATNR1.
+          ENDIF.
+        ELSE.
+          READ TABLE IT_ZPRODBATCHES INTO WA_ZPRODBATCHES WITH KEY BATCH_PREFIX = ALP KUNNR = WA_STK2-LIFNR.
+          IF SY-SUBRC EQ 0.
+            WA_STK3-MATNR = WA_ZPRODBATCHES-MATNR.
+          ENDIF.
+        ENDIF.
+        SELECT SINGLE * FROM MAKT WHERE MATNR EQ WA_STK3-MATNR AND SPRAS EQ 'EN'.
+        IF SY-SUBRC EQ 0.
+          WA_STK3-MAKTX = MAKT-MAKTX.
+        ENDIF.
+
+        SELECT SINGLE * FROM MVKE WHERE MATNR EQ WA_STK3-MATNR AND VKORG EQ '1000' AND VTWEG EQ '10'.
+        IF SY-SUBRC EQ 0.
+          SELECT SINGLE * FROM TVM5T WHERE MVGR5 EQ MVKE-MVGR5.
+          IF SY-SUBRC EQ 0.
+            WA_STK3-BEZEI = TVM5T-BEZEI.
+          ENDIF.
+        ENDIF.
+        IF WA_STK3-BEZEI EQ SPACE.
+          SELECT SINGLE * FROM MVKE WHERE MATNR EQ WA_STK3-MATNR AND VKORG EQ '1000' AND VTWEG EQ '80'.
+          IF SY-SUBRC EQ 0.
+            SELECT SINGLE * FROM TVM5T WHERE MVGR5 EQ MVKE-MVGR5.
+            IF SY-SUBRC EQ 0.
+              WA_STK3-BEZEI = TVM5T-BEZEI.
+            ENDIF.
+          ENDIF.
+        ENDIF.
+
+        SELECT SINGLE * FROM ZLLM WHERE STYPE EQ WA_STK3-STYPE AND CHARG = WA_STK3-CHARG AND LIFNR EQ WA_STK3-LIFNR.
+        IF SY-SUBRC EQ 0.
+          WA_STK3-CPUDT = ZLLM-CPUDT.
+          WA_STK3-CPUTM = ZLLM-CPUTM.
+          WA_STK3-UNAME = ZLLM-UNAME.
+          WA_STK3-EBELN = ZLLM-EBELN.
+        ENDIF.
+
+*        *    ***************check quality status****************
+        SELECT SINGLE * FROM MARA WHERE MATNR EQ WA_STK3-MATNR.
+        IF SY-SUBRC EQ 0.
+          CLEAR : VAR,LEN,ALP,NUM.
+          VAR = WA_STK3-CHARG.
+          FIND REGEX '([[:alpha:]]*)' IN VAR IGNORING CASE MATCH OFFSET MOFF MATCH LENGTH MLEN.
+          IF MLEN GT 0.
+            LEN = STRLEN( VAR ).
+            ALP = VAR+0(MLEN).
+            CONDENSE ALP.
+            READ TABLE IT_TAS2 INTO WA_TAS2 WITH KEY ALP = ALP COUNT = 4.
+            IF SY-SUBRC EQ 4.
+              WA_STK3-QSTATUS = 'QUALITY TESTING'.
+            ENDIF.
+          ENDIF.
+          SELECT SINGLE * FROM ZTP_QLT_BATCH WHERE MATNR EQ WA_STK3-MATNR AND CHARG EQ WA_STK3-CHARG.
+          IF SY-SUBRC EQ 0.
+            WA_STK3-QSTATUS = 'QUALITY TESTING'.
+          ENDIF.
+        ENDIF.
+
+        COLLECT WA_STK3 INTO IT_STK3.
+        CLEAR WA_STK3.
+      ENDIF.
+    ENDLOOP.
+  ENDLOOP.
+
+  LOOP AT IT_STK1 INTO WA_STK1.
+    READ TABLE IT_STK2 INTO WA_STK2 WITH KEY STYPE = WA_STK1-STYPE CHARG = WA_STK1-CHARG LIFNR = WA_STK1-LIFNR.
+    IF SY-SUBRC EQ 4.
+      CLEAR : STOCK1.
+*      STK1 =  WA_STK1-FKIMG - WA_STK2-FKIMG.
+      WA_STK3-STYPE = WA_STK1-STYPE.
+      WA_STK3-CHARG = WA_STK1-CHARG.
+      STOCK1 = WA_STK1-FKIMG.
+      WA_STK3-FKIMG = STOCK1.
+      WA_STK3-LIFNR = WA_STK1-LIFNR.
+      SELECT SINGLE * FROM LFA1 WHERE LIFNR EQ WA_STK1-LIFNR.
+      IF SY-SUBRC EQ 0.
+        WA_STK3-NAME1 = LFA1-NAME1.
+      ENDIF.
+****************************************************
+      CLEAR : VAR,LEN,ALP,NUM.
+      VAR = WA_STK1-CHARG.
+      FIND REGEX '([[:alpha:]]*)' IN VAR IGNORING CASE MATCH OFFSET MOFF MATCH LENGTH MLEN.
+      IF MLEN GT 0.
+        LEN = STRLEN( VAR ).
+        ALP = VAR+0(MLEN).
+        CONDENSE ALP.
+      ENDIF.
+      IF WA_STK1-STYPE EQ 'SAMPLE'.
+        READ TABLE IT_ZPRODBATCHES1 INTO WA_ZPRODBATCHES1 WITH KEY BATCH_PREFIX = ALP KUNNR = WA_STK1-LIFNR.
+        IF SY-SUBRC EQ 0.
+          WA_STK3-MATNR = WA_ZPRODBATCHES1-COMB_MATNR1.
+        ENDIF.
+      ELSE.
+        READ TABLE IT_ZPRODBATCHES INTO WA_ZPRODBATCHES WITH KEY BATCH_PREFIX = ALP KUNNR = WA_STK1-LIFNR.
+        IF SY-SUBRC EQ 0.
+          WA_STK3-MATNR = WA_ZPRODBATCHES1-MATNR.
+        ENDIF.
+      ENDIF.
+*      SELECT SINGLE * FROM ZTP_PRD_PREFIX WHERE PREFIX EQ ALP AND LIFNR EQ WA_STK1-LIFNR AND STYPE EQ WA_STK1-STYPE.
+*      IF SY-SUBRC EQ 0.
+*        WA_STK3-MATNR = ZTP_PRD_PREFIX-MATNR.
+*      ENDIF.
+      SELECT SINGLE * FROM MAKT WHERE MATNR EQ WA_STK3-MATNR AND SPRAS EQ 'EN'.
+      IF SY-SUBRC EQ 0.
+        WA_STK3-MAKTX = MAKT-MAKTX.
+      ENDIF.
+
+      SELECT SINGLE * FROM MVKE WHERE MATNR EQ WA_STK3-MATNR AND VKORG EQ '1000' AND VTWEG EQ '10'.
+      IF SY-SUBRC EQ 0.
+        SELECT SINGLE * FROM TVM5T WHERE MVGR5 EQ MVKE-MVGR5.
+        IF SY-SUBRC EQ 0.
+          WA_STK3-BEZEI = TVM5T-BEZEI.
+        ENDIF.
+      ENDIF.
+      IF WA_STK3-BEZEI EQ SPACE.
+        SELECT SINGLE * FROM MVKE WHERE MATNR EQ WA_STK3-MATNR AND VKORG EQ '1000' AND VTWEG EQ '80'.
+        IF SY-SUBRC EQ 0.
+          SELECT SINGLE * FROM TVM5T WHERE MVGR5 EQ MVKE-MVGR5.
+          IF SY-SUBRC EQ 0.
+            WA_STK3-BEZEI = TVM5T-BEZEI.
+          ENDIF.
+        ENDIF.
+      ENDIF.
+
+      SELECT SINGLE * FROM ZLLM WHERE STYPE EQ WA_STK3-STYPE AND CHARG = WA_STK3-CHARG AND LIFNR EQ WA_STK3-LIFNR.
+      IF SY-SUBRC EQ 0.
+        WA_STK3-CPUDT = ZLLM-CPUDT.
+        WA_STK3-CPUTM = ZLLM-CPUTM.
+        WA_STK3-UNAME = ZLLM-UNAME.
+        WA_STK3-EBELN = ZLLM-EBELN.
+      ENDIF.
+
+*        *    ***************check quality status****************
+      SELECT SINGLE * FROM MARA WHERE MATNR EQ WA_STK3-MATNR.
+      IF SY-SUBRC EQ 0.
+        CLEAR : VAR,LEN,ALP,NUM.
+        VAR = WA_STK1-CHARG.
+        FIND REGEX '([[:alpha:]]*)' IN VAR IGNORING CASE MATCH OFFSET MOFF MATCH LENGTH MLEN.
+        IF MLEN GT 0.
+          LEN = STRLEN( VAR ).
+          ALP = VAR+0(MLEN).
+          CONDENSE ALP.
+          READ TABLE IT_TAS2 INTO WA_TAS2 WITH KEY ALP = ALP COUNT = 4.
+          IF SY-SUBRC EQ 4.
+            WA_STK3-QSTATUS = 'QUALITY TESTING'.
+          ENDIF.
+        ENDIF.
+        SELECT SINGLE * FROM ZTP_QLT_BATCH WHERE MATNR EQ WA_STK3-MATNR AND CHARG EQ WA_STK3-CHARG.
+        IF SY-SUBRC EQ 0.
+          WA_STK3-QSTATUS = 'QUALITY TESTING'.
+        ENDIF.
+      ENDIF.
+
+
+      COLLECT WA_STK3 INTO IT_STK3.
+      CLEAR WA_STK3.
+    ENDIF.
+  ENDLOOP.
+
+  CALL SCREEN 9001.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  ALV_BUILD_FIELDCAT3
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM ALV_BUILD_FIELDCAT3 .
+
+
+  LV_FLDCAT-FIELDNAME = 'STYPE'.
+  LV_FLDCAT-SCRTEXT_M = 'PRODUCT TYPE'.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'MATNR'.
+  LV_FLDCAT-SCRTEXT_M = 'PRODUCT CODE'.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'MAKTX'.
+  LV_FLDCAT-SCRTEXT_M = 'PRODUCT NAME'.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'BEZEI'.
+  LV_FLDCAT-SCRTEXT_M = 'PACK SIZE'.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'CHARG'.
+  LV_FLDCAT-SCRTEXT_M = 'BATCH'.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'QSTATUS'.
+  LV_FLDCAT-SCRTEXT_M = 'QUALITY STATUS'.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'FKIMG'.
+  LV_FLDCAT-SCRTEXT_M = 'QUANTITY'.
+*  lv_fldcat-edit   = 'X'.
+*  LV_FLDCAT-OUTPUTLEN = 10.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+
+  LV_FLDCAT-FIELDNAME = 'LIFNR'.
+*  LV_FLDCAT-TABNAME   = 'IT_TAB1'.
+  LV_FLDCAT-SCRTEXT_M = 'VENDOR CODE'.
+  LV_FLDCAT-OUTPUTLEN = 10.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'NAME1'.
+*  LV_FLDCAT-TABNAME   = 'IT_TAB1'.
+  LV_FLDCAT-SCRTEXT_M = 'VENDOR NAME'.
+  LV_FLDCAT-OUTPUTLEN = 40.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'EBELN'.
+*  LV_FLDCAT-TABNAME   = 'IT_TAB1'.
+  LV_FLDCAT-SCRTEXT_M = 'PURCHASE ORDER NO.'.
+  LV_FLDCAT-OUTPUTLEN = 40.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+*
+  LV_FLDCAT-FIELDNAME = 'CPUDT'.
+  LV_FLDCAT-SCRTEXT_M = 'ENTRY DATE'.
+*  lv_fldcat-outputlen = 100.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'CPUTM'.
+  LV_FLDCAT-SCRTEXT_M = 'ENTRY TIME'.
+*  lv_fldcat-outputlen = 100.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'UNAME'.
+  LV_FLDCAT-SCRTEXT_M = 'ENTERED BY'.
+*  lv_fldcat-outputlen = 100.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  BATCHPREFIX
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM BATCHPREFIX .
+  DO 10 TIMES.
+    WA_BAT1-PREFIX = SPACE.
+    WA_BAT1-MATNR = SPACE.
+    WA_BAT1-LIFNR = SPACE.
+    WA_BAT1-STYPE = SPACE.
+    WA_BAT1-COUNT = COUNT.
+    COLLECT WA_BAT1 INTO IT_BAT1.
+    CLEAR WA_BAT1.
+    COUNT = COUNT + 1.
+  ENDDO.
+
+  CALL SCREEN 9002.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Module  STATUS_9002  OUTPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE STATUS_9002 OUTPUT.
+  SET PF-STATUS 'STATUS1'.
+  SET TITLEBAR 'TITLEA'.
+  PERFORM DATA1.
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Form  DATA1
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM DATA1 .
+*  BREAK-POINT.
+  CREATE OBJECT GR_ALVGRID
+    EXPORTING
+*     i_parent          = gr_ccontainer
+      I_PARENT          = CL_GUI_CUSTOM_CONTAINER=>SCREEN0
+    EXCEPTIONS
+      ERROR_CNTL_CREATE = 1
+      ERROR_CNTL_INIT   = 2
+      ERROR_CNTL_LINK   = 3
+      ERROR_DP_CREATE   = 4
+      OTHERS            = 5.
+  IF SY-SUBRC <> 0.
+*     MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*                WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+  ENDIF.
+
+
+  PERFORM ALV_BUILD_FIELDCAT_UPD.
+  PERFORM DROPDOWN_TABLE.
+
+
+  CALL METHOD GR_ALVGRID->SET_TABLE_FOR_FIRST_DISPLAY
+    EXPORTING
+*     I_BUFFER_ACTIVE =
+*     I_BYPASSING_BUFFER            =
+*     I_CONSISTENCY_CHECK           =
+*     I_STRUCTURE_NAME              =
+      IS_VARIANT      = VARIANT
+      I_SAVE          = 'A'
+*     I_DEFAULT       = 'X'
+      IS_LAYOUT       = GS_LAYO
+*     IS_PRINT        =
+*     IT_SPECIAL_GROUPS             =
+*     IT_TOOLBAR_EXCLUDING          =
+*     IT_HYPERLINK    =
+*     IT_ALV_GRAPHICS =
+*     IT_EXCEPT_QINFO =
+*     IR_SALV_ADAPTER =
+    CHANGING
+      IT_OUTTAB       = IT_BAT1
+      IT_FIELDCATALOG = IT_FCAT
+*     IT_SORT         =
+*     IT_FILTER       =
+*      EXCEPTIONS
+*     INVALID_PARAMETER_COMBINATION = 1
+*     PROGRAM_ERROR   = 2
+*     TOO_MANY_LINES  = 3
+*     others          = 4
+    .
+  IF SY-SUBRC <> 0.
+*     MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*                WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  ALV_BUILD_FIELDCAT_UPD
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM ALV_BUILD_FIELDCAT_UPD .
+
+
+  LV_FLDCAT-FIELDNAME = 'PREFIX'.
+*  LV_FLDCAT-TABNAME   = 'IT_TAB1'.
+  LV_FLDCAT-SCRTEXT_M = 'BATCH PREFIX'.
+  LV_FLDCAT-EDIT   = 'X'.
+*  lv_fldcat-f4availabl = 'X'.
+*  lv_fldcat-ref_table = 'MARA'.
+*  lv_fldcat-ref_field = 'MATNR'.
+  LV_FLDCAT-OUTPUTLEN = 10.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'MATNR'.
+*  LV_FLDCAT-TABNAME   = 'IT_TAB1'.
+  LV_FLDCAT-SCRTEXT_M = 'PRODUCT CODE'.
+  LV_FLDCAT-EDIT   = 'X'.
+  LV_FLDCAT-F4AVAILABL = 'X'.
+  LV_FLDCAT-REF_TABLE = 'MARA'.
+  LV_FLDCAT-REF_FIELD = 'MATNR'.
+  LV_FLDCAT-OUTPUTLEN = 10.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+
+  LV_FLDCAT-FIELDNAME = 'LIFNR'.
+*  LV_FLDCAT-TABNAME   = 'IT_TAB1'.
+  LV_FLDCAT-SCRTEXT_M = 'VENDOR CODE'.
+  LV_FLDCAT-EDIT   = 'X'.
+  LV_FLDCAT-F4AVAILABL = 'X'.
+  LV_FLDCAT-REF_TABLE = 'LFA1'.
+  LV_FLDCAT-REF_FIELD = 'LIFNR'.
+  LV_FLDCAT-OUTPUTLEN = 10.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LV_FLDCAT-FIELDNAME = 'STYPE'.
+  LV_FLDCAT-SCRTEXT_M = 'SALE/SAMPLE'.
+  LV_FLDCAT-EDIT   = 'X'.
+  LV_FLDCAT-OUTPUTLEN = 10.
+  APPEND LV_FLDCAT TO IT_FCAT.
+  CLEAR LV_FLDCAT.
+
+  LOOP AT IT_FCAT INTO LV_FLDCAT.
+
+*    if    lv_fldcat-fieldname eq 'STATUS'.
+*  loop at it_fcat into lv_fldcat.
+    CASE LV_FLDCAT-FIELDNAME.
+      WHEN 'STYPE'.
+        LV_FLDCAT-FIELDNAME = 'STYPE'.
+        LV_FLDCAT-SCRTEXT_M = 'TYPE'.
+        LV_FLDCAT-EDIT   = 'X'.
+        LV_FLDCAT-OUTPUTLEN = 6.
+        LV_FLDCAT-DRDN_HNDL = '3'.
+
+        MODIFY IT_FCAT FROM LV_FLDCAT.
+        CLEAR LV_FLDCAT.
+
+*      if 1 eq 2.
+*        ls_fcat-drdn_alias = abap_true.
+*      endif.
+*      ls_fcat-checktable = '!'.        "do not check foreign keys
+*        modify it_fcat from lv_fldcat.
+*      endif.
+    ENDCASE.
+  ENDLOOP.
+
+ENDFORM.
+*  *&---------------------------------------------------------------------*
+*&      Form  DROPDOWN_TABLE
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM DROPDOWN_TABLE .
+
+  DATA: LT_DROPDOWN TYPE LVC_T_DROP,
+        LS_DROPDOWN TYPE LVC_S_DROP.
+* First SLART listbox (handle '1').
+  LS_DROPDOWN-HANDLE = '3'.
+  LS_DROPDOWN-VALUE = 'SALE'.
+  APPEND LS_DROPDOWN TO LT_DROPDOWN.
+*  ls_dropdown-handle = '3'.
+*  ls_dropdown-value = 'Dispatched'.
+*  append ls_dropdown to lt_dropdown.
+  LS_DROPDOWN-HANDLE = '3'.
+  LS_DROPDOWN-VALUE = 'SAMPLE'.
+  APPEND LS_DROPDOWN TO LT_DROPDOWN.
+
+*  *method to display the dropdown in ALV
+  CALL METHOD GR_ALVGRID->SET_DROP_DOWN_TABLE
+    EXPORTING
+      IT_DROP_DOWN = LT_DROPDOWN.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_9002  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE USER_COMMAND_9002 INPUT.
+
+
+  GR_ALVGRID->CHECK_CHANGED_DATA( ).
+  CASE OK_CODE2.
+    WHEN 'SAVE'.
+*      break-point.
+      GR_ALVGRID->CHECK_CHANGED_DATA( ).
+      PERFORM DATAUPD.
+*      message 'SAVE' type 'I'.
+*      leave to screen 0.
+    WHEN 'BACK' OR 'EXIT' OR 'CANCEL'.
+      LEAVE TO SCREEN 0.
+  ENDCASE.
+  CLEAR: OK_CODE2.
+
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Form  DATAUPD
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM DATAUPD .
+*  BREAK-POINT .
+  CLEAR : E1.
+  LOOP AT IT_BAT1 INTO WA_BAT1 WHERE MATNR GT 0.
+    SELECT SINGLE * FROM MARA WHERE MATNR EQ WA_BAT1-MATNR.
+    IF SY-SUBRC EQ 4.
+      E1 = 1.
+      MESSAGE 'INVALID PRODUCT CODE' TYPE 'E'.
+      EXIT.
+    ENDIF.
+    SELECT SINGLE * FROM LFA1 WHERE LIFNR EQ WA_BAT1-LIFNR.
+    IF SY-SUBRC EQ 4.
+      E1 = 1.
+      MESSAGE 'INVALID VENDOR CODE' TYPE 'E'.
+      EXIT.
+    ENDIF.
+    IF WA_BAT1-STYPE EQ 'SALE'.
+    ELSEIF   WA_BAT1-STYPE EQ 'SAMPLE'.
+    ELSE.
+      E1 = 1.
+      MESSAGE 'Invalid type: select SALE or SAMPLE' TYPE 'E'.
+      EXIT.
+    ENDIF.
+
+  ENDLOOP.
+
+
+  IF E1 NE 1.
+    LOOP AT IT_BAT1 INTO WA_BAT1 WHERE MATNR GT 0 AND LIFNR GT 0 AND PREFIX NE SPACE.
+      UNPACK WA_BAT1-MATNR TO WA_BAT1-MATNR.
+      UNPACK WA_BAT1-LIFNR TO WA_BAT1-LIFNR.
+      TRANSLATE WA_BAT1-PREFIX TO UPPER CASE.
+      ZTP_PRD_PREFIX_WA-PREFIX = WA_BAT1-PREFIX.
+      ZTP_PRD_PREFIX_WA-MATNR = WA_BAT1-MATNR.
+      ZTP_PRD_PREFIX_WA-LIFNR = WA_BAT1-LIFNR.
+      ZTP_PRD_PREFIX_WA-STYPE = WA_BAT1-STYPE.
+      ZTP_PRD_PREFIX_WA-CPUDT = SY-DATUM.
+      ZTP_PRD_PREFIX_WA-CPUTM = SY-UZEIT.
+      ZTP_PRD_PREFIX_WA-UNAME = SY-UNAME.
+      MODIFY ZTP_PRD_PREFIX FROM ZTP_PRD_PREFIX_WA.
+      COMMIT WORK AND WAIT.
+      CLEAR ZTP_PRD_PREFIX_WA.
+    ENDLOOP.
+
+    IF SY-SUBRC EQ 0.
+      MESSAGE 'DATA UPDATED' TYPE 'I'.
+    ENDIF.
+  ENDIF.
+  LEAVE TO SCREEN 0.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  DISPBATCHPR
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM DISPBATCHPR .
+*  SELECT * FROM ZTP_PRD_PREFIX INTO TABLE IT_ZTP_PRD_PREFIX.
+  SELECT * FROM ZPRODBATCHES INTO TABLE IT_ZPRODBATCHES WHERE ENDDA GE SY-DATUM.
+
+  LOOP AT IT_ZPRODBATCHES INTO WA_ZPRODBATCHES.
+    WA_PRE1-PREFIX = WA_ZPRODBATCHES-BATCH_PREFIX.
+    WA_PRE1-MATNR = WA_ZPRODBATCHES-MATNR.
+    SELECT SINGLE * FROM MAKT WHERE MATNR EQ WA_ZPRODBATCHES-MATNR AND SPRAS EQ 'EN'.
+    IF SY-SUBRC EQ 0.
+      WA_PRE1-MAKTX = MAKT-MAKTX.
+    ENDIF.
+    SELECT SINGLE * FROM MVKE WHERE MATNR EQ WA_PRE1-MATNR AND VKORG EQ '1000' AND VTWEG EQ '10'.
+    IF SY-SUBRC EQ 0.
+      SELECT SINGLE * FROM TVM5T WHERE MVGR5 EQ MVKE-MVGR5.
+      IF SY-SUBRC EQ 0.
+        WA_PRE1-BEZEI = TVM5T-BEZEI.
+      ENDIF.
+    ENDIF.
+    IF WA_PRE1-BEZEI EQ SPACE.
+      SELECT SINGLE * FROM MVKE WHERE MATNR EQ WA_PRE1-MATNR AND VKORG EQ '1000' AND VTWEG EQ '80'.
+      IF SY-SUBRC EQ 0.
+        SELECT SINGLE * FROM TVM5T WHERE MVGR5 EQ MVKE-MVGR5.
+        IF SY-SUBRC EQ 0.
+          WA_PRE1-BEZEI = TVM5T-BEZEI.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+
+    WA_PRE1-LIFNR = WA_ZPRODBATCHES-KUNNR.
+    SELECT SINGLE * FROM LFA1 WHERE LIFNR EQ WA_ZPRODBATCHES-KUNNR.
+    IF SY-SUBRC EQ 0.
+      WA_PRE1-NAME1 = LFA1-NAME1.
+      WA_PRE1-ORT01 = LFA1-ORT01.
+    ENDIF.
+    WA_PRE1-STYPE = 'SALE'.
+    COLLECT WA_PRE1 INTO IT_PRE1.
+    CLEAR WA_PRE1.
+
+    IF WA_ZPRODBATCHES-COMB_MATNR1 GT 0.
+      WA_PRE1-PREFIX = WA_ZPRODBATCHES-BATCH_PREFIX.
+      WA_PRE1-MATNR = WA_ZPRODBATCHES-COMB_MATNR1.
+      SELECT SINGLE * FROM MAKT WHERE MATNR EQ WA_ZPRODBATCHES-COMB_MATNR1 AND SPRAS EQ 'EN'.
+      IF SY-SUBRC EQ 0.
+        WA_PRE1-MAKTX = MAKT-MAKTX.
+      ENDIF.
+      SELECT SINGLE * FROM MVKE WHERE MATNR EQ WA_PRE1-MATNR AND VKORG EQ '1000' AND VTWEG EQ '10'.
+      IF SY-SUBRC EQ 0.
+        SELECT SINGLE * FROM TVM5T WHERE MVGR5 EQ MVKE-MVGR5.
+        IF SY-SUBRC EQ 0.
+          WA_PRE1-BEZEI = TVM5T-BEZEI.
+        ENDIF.
+      ENDIF.
+      IF WA_PRE1-BEZEI EQ SPACE.
+        SELECT SINGLE * FROM MVKE WHERE MATNR EQ WA_PRE1-MATNR AND VKORG EQ '1000' AND VTWEG EQ '80'.
+        IF SY-SUBRC EQ 0.
+          SELECT SINGLE * FROM TVM5T WHERE MVGR5 EQ MVKE-MVGR5.
+          IF SY-SUBRC EQ 0.
+            WA_PRE1-BEZEI = TVM5T-BEZEI.
+          ENDIF.
+        ENDIF.
+      ENDIF.
+
+      WA_PRE1-LIFNR = WA_ZPRODBATCHES-KUNNR.
+      SELECT SINGLE * FROM LFA1 WHERE LIFNR EQ WA_ZPRODBATCHES-KUNNR.
+      IF SY-SUBRC EQ 0.
+        WA_PRE1-NAME1 = LFA1-NAME1.
+        WA_PRE1-ORT01 = LFA1-ORT01.
+      ENDIF.
+      WA_PRE1-STYPE = 'SAMPLE'.
+      COLLECT WA_PRE1 INTO IT_PRE1.
+      CLEAR WA_PRE1.
+    ENDIF.
+
+  ENDLOOP.
+
+  LOOP AT IT_PRE1 INTO WA_PRE1.
+    PACK WA_PRE1-MATNR TO WA_PRE1-MATNR.
+    PACK WA_PRE1-LIFNR TO WA_PRE1-LIFNR.
+    CONDENSE:  WA_PRE1-MATNR, WA_PRE1-LIFNR.
+    MODIFY IT_PRE1 FROM WA_PRE1 TRANSPORTING MATNR LIFNR.
+    CLEAR WA_PRE1.
+  ENDLOOP.
+
+
+
+  WA_FIELDCAT-FIELDNAME = 'PREFIX'.
+  WA_FIELDCAT-SELTEXT_L = 'PREFIX'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+
+  WA_FIELDCAT-FIELDNAME = 'MATNR'.
+  WA_FIELDCAT-SELTEXT_L = 'PRODUCT CODE'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+
+  WA_FIELDCAT-FIELDNAME = 'BEZEI'.
+  WA_FIELDCAT-SELTEXT_L = 'PACK SIZE'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+
+  WA_FIELDCAT-FIELDNAME = 'STYPE'.
+  WA_FIELDCAT-SELTEXT_L = 'TYPE'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+
+  WA_FIELDCAT-FIELDNAME = 'MAKTX'.
+  WA_FIELDCAT-SELTEXT_L = 'PRODUCT NAME'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+
+  WA_FIELDCAT-FIELDNAME = 'LIFNR'.
+  WA_FIELDCAT-SELTEXT_L = 'VENDOR CODE'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+
+  WA_FIELDCAT-FIELDNAME = 'NAME1'.
+  WA_FIELDCAT-SELTEXT_L = 'VENDOR NAME'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+
+  WA_FIELDCAT-FIELDNAME = 'ORT01'.
+  WA_FIELDCAT-SELTEXT_L = 'VENDOR PLACE'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+
+
+
+
+  LAYOUT-ZEBRA = 'X'.
+  LAYOUT-COLWIDTH_OPTIMIZE = 'X'.
+  LAYOUT-WINDOW_TITLEBAR  = 'THIRD PARTY BATCH PREFIX'.
+
+
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+*     I_INTERFACE_CHECK       = ' '
+*     I_BYPASSING_BUFFER      = ' '
+*     I_BUFFER_ACTIVE         = ' '
+      I_CALLBACK_PROGRAM      = G_REPID
+*     I_CALLBACK_PF_STATUS_SET          = ' '
+      I_CALLBACK_USER_COMMAND = 'USER_COMM'
+      I_CALLBACK_TOP_OF_PAGE  = 'TOP'
+*     I_CALLBACK_HTML_TOP_OF_PAGE       = ' '
+*     I_CALLBACK_HTML_END_OF_LIST       = ' '
+*     I_STRUCTURE_NAME        =
+*     I_BACKGROUND_ID         = ' '
+*     I_GRID_TITLE            =
+*     I_GRID_SETTINGS         =
+      IS_LAYOUT               = LAYOUT
+      IT_FIELDCAT             = FIELDCAT
+*     IT_EXCLUDING            =
+*     IT_SPECIAL_GROUPS       =
+*     IT_SORT                 =
+*     IT_FILTER               =
+*     IS_SEL_HIDE             =
+*     I_DEFAULT               = 'X'
+      I_SAVE                  = 'A'
+*     IS_VARIANT              =
+*     IT_EVENTS               =
+*     IT_EVENT_EXIT           =
+*     IS_PRINT                =
+*     IS_REPREP_ID            =
+*     I_SCREEN_START_COLUMN   = 0
+*     I_SCREEN_START_LINE     = 0
+*     I_SCREEN_END_COLUMN     = 0
+*     I_SCREEN_END_LINE       = 0
+*     I_HTML_HEIGHT_TOP       = 0
+*     I_HTML_HEIGHT_END       = 0
+*     IT_ALV_GRAPHICS         =
+*     IT_HYPERLINK            =
+*     IT_ADD_FIELDCAT         =
+*     IT_EXCEPT_QINFO         =
+*     IR_SALV_FULLSCREEN_ADAPTER        =
+* IMPORTING
+*     E_EXIT_CAUSED_BY_CALLER =
+*     ES_EXIT_CAUSED_BY_USER  =
+    TABLES
+      T_OUTTAB                = IT_PRE1
+    EXCEPTIONS
+      PROGRAM_ERROR           = 1
+      OTHERS                  = 2.
+  IF SY-SUBRC <> 0.
+* MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*         WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+  ENDIF.
+ENDFORM.
+
+FORM TOP.
+
+
+  DATA: COMMENT    TYPE SLIS_T_LISTHEADER,
+        WA_COMMENT LIKE LINE OF COMMENT.
+
+  WA_COMMENT-TYP = 'A'.
+  WA_COMMENT-INFO = 'BATCH PREFIX,  PRODUCT CODE & VENDOR CODE LINK '.
+  APPEND WA_COMMENT TO COMMENT.
+  CLEAR WA_COMMENT.
+
+
+
+  CALL FUNCTION 'REUSE_ALV_COMMENTARY_WRITE'
+    EXPORTING
+      IT_LIST_COMMENTARY = COMMENT
+*     I_LOGO             = 'ENJOYSAP_LOGO'
+*     I_END_OF_LIST_GRID =
+*     I_ALV_FORM         =
+    .
+
+  CLEAR COMMENT.
+
+ENDFORM.                    "TOP
+
+FORM USER_COMM USING UCOMM LIKE SY-UCOMM
+                     SELFIELD TYPE SLIS_SELFIELD.
+
+
+
+  CASE SELFIELD-FIELDNAME.
+    WHEN 'MATNR'.
+      SET PARAMETER ID 'MAT' FIELD SELFIELD-VALUE.
+      CALL TRANSACTION 'MM03' AND SKIP FIRST SCREEN.
+*    WHEN 'VBELN1'.
+*      SET PARAMETER ID 'BV' FIELD SELFIELD-VALUE.
+*      CALL TRANSACTION 'VL03N' AND SKIP FIRST SCREEN.
+    WHEN OTHERS.
+  ENDCASE.
+ENDFORM.                    "USER_COMM
+*&---------------------------------------------------------------------*
+*&      Form  NEWBATCH
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM NEWBATCH .
+  LDATE1 = SY-DATUM - 700.
+  CLEAR : IT_MCHA1,WA_MCHA1.
+  SELECT * FROM MCHA INTO TABLE IT_MCHA1 WHERE ERSDA GE LDATE1 AND LIFNR NE SPACE.
+  SORT IT_MCHA1 BY CHARG.
+
+  CLEAR : IT_TAS1,WA_TAS1,IT_TAS2,WA_TAS2.
+  LOOP AT IT_MCHA1 INTO WA_MCHA1.
+    SELECT SINGLE * FROM MARA WHERE MATNR EQ WA_MCHA1-MATNR AND MTART IN ('ZFRT','ZDSM','ZHWA','ZESC','ZESM').
+    IF SY-SUBRC EQ 0.
+      CLEAR : VAR,LEN,ALP,NUM.
+      VAR = WA_MCHA1-CHARG.
+      FIND REGEX '([[:alpha:]]*)' IN VAR IGNORING CASE MATCH OFFSET MOFF MATCH LENGTH MLEN.
+      IF MLEN GT 0.
+        LEN = STRLEN( VAR ).
+        ALP = VAR+0(MLEN).
+*num = var+mlen(len).
+*WRITE:/ alp, num.
+        CONDENSE ALP.
+
+        WA_TAS1-ALP = ALP.
+        WA_TAS1-CHARG = WA_MCHA1-CHARG.
+        COLLECT WA_TAS1 INTO IT_TAS1.
+        CLEAR WA_TAS1.
+      ENDIF.
+    ENDIF.
+  ENDLOOP.
+
+  SORT IT_TAS1 BY CHARG.
+  DELETE ADJACENT DUPLICATES FROM IT_TAS1 COMPARING CHARG.
+
+  SORT IT_TAS1 BY ALP.
+  CLEAR : COUNT2.
+*  BREAK-POINT.
+  LOOP AT IT_TAS1 INTO WA_TAS1.
+    ON CHANGE OF WA_TAS1-ALP.
+      COUNT2 = 1.
+    ENDON.
+    WA_TAS2-ALP = WA_TAS1-ALP.
+    WA_TAS2-CHARG = WA_TAS1-CHARG.
+    WA_TAS2-COUNT = COUNT2.
+    COLLECT WA_TAS2 INTO IT_TAS2.
+    CLEAR WA_TAS2.
+    COUNT2 = COUNT2 + 1.
+  ENDLOOP.
+ENDFORM.

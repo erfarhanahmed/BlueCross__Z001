@@ -1,0 +1,1859 @@
+*&---------------------------------------------------------------------*
+*& Report  ZSR24_NEW
+*&
+*&---------------------------------------------------------------------*
+*& TR - BCDK935912 / 19.10.2024
+*& Description - remove discontinued stockist from output.
+*&               i.e.03 inactive stockiest
+*&---------------------------------------------------------------------*
+REPORT ZSR24_NEW5 NO STANDARD PAGE HEADING LINE-SIZE 200.
+
+TABLES : ZDSMTER,
+         MARA,
+         KNA1,
+         PA0001,
+         ZDRPHQ,
+         ZTHR_HEQ_DES,
+         YTERRALLC,
+         PA0105,
+         ZSTKSALE.
+
+
+DATA: DATE1 TYPE SY-DATUM,
+      DATE2 TYPE SY-DATUM.
+
+DATA: IT_ZSTKSALE  TYPE TABLE OF ZSTKSALE,
+      WA_ZSTKSALE  TYPE ZSTKSALE,
+      IT_ZSTKSALE1 TYPE TABLE OF ZSTKSALE1,
+      WA_ZSTKSALE1 TYPE ZSTKSALE1,
+      IT_ZSTKRM    TYPE TABLE OF ZSTKRM,
+      WA_ZSTKRM    TYPE ZSTKRM,
+      IT_ZDSMTER   TYPE TABLE OF ZDSMTER,
+      WA_ZDSMTER   TYPE ZDSMTER,
+      IT_ZDSMTER1  TYPE TABLE OF ZDSMTER,
+      WA_ZDSMTER1  TYPE ZDSMTER.
+TYPES: BEGIN OF SL1,
+         KUNAG  TYPE VBRK-KUNAG,
+         SPART  TYPE MARA-SPART,
+         S_VAL  TYPE P,
+         C_VAL  TYPE P,
+         C_VAL1 TYPE P,
+         D_VAL  TYPE P,
+       END OF SL1.
+
+TYPES: BEGIN OF SL2,
+         KUNAG  TYPE VBRK-KUNAG,
+         INVNO  TYPE I,
+         NINVNO TYPE I,
+       END OF SL2.
+TYPES: BEGIN OF ITAB1,
+         KUNNR  TYPE VBRK-KUNAG,
+         RM     TYPE ZDSMTER-BZIRK,
+         DZM    TYPE ZDSMTER-BZIRK,
+         ZM     TYPE ZDSMTER-BZIRK,
+         S_VAL  TYPE P,
+         C_VAL  TYPE P,
+         C_VAL1 TYPE P,
+         D_VAL  TYPE P,
+         INV1   TYPE I,
+       END OF ITAB1.
+
+TYPES: BEGIN OF ITAB2,
+         ZM     TYPE ZDSMTER-BZIRK,
+         DZM    TYPE ZDSMTER-BZIRK,
+         RM     TYPE ZDSMTER-BZIRK,
+
+
+         KUNNR  TYPE VBRK-KUNAG,
+         NAME1  TYPE KNA1-NAME1,
+         ORT01  TYPE KNA1-ORT01,
+
+         S_VAL  TYPE P,
+         C_VAL  TYPE P,
+         C_VAL1 TYPE P,
+         D_VAL  TYPE P,
+         INV1   TYPE I,
+       END OF ITAB2.
+
+TYPES: BEGIN OF RM1,
+         RM TYPE YTERRALLC-BZIRK,
+         ZM TYPE YTERRALLC-BZIRK,
+       END OF RM1.
+
+TYPES: BEGIN OF RM2,
+         RM    TYPE YTERRALLC-BZIRK,
+         EMAIL TYPE PA0105-USRID_LONG,
+       END OF RM2.
+
+TYPES: BEGIN OF ZM1,
+         ZM TYPE YTERRALLC-BZIRK,
+         RM TYPE YTERRALLC-BZIRK,
+       END OF ZM1.
+
+TYPES: BEGIN OF ZM2,
+         ZM    TYPE YTERRALLC-BZIRK,
+         EMAIL TYPE PA0105-USRID_LONG,
+       END OF ZM2.
+
+DATA: IT_SL1  TYPE TABLE OF SL1,
+      WA_SL1  TYPE SL1,
+      IT_SL2  TYPE TABLE OF SL2,
+      WA_SL2  TYPE SL2,
+      IT_TAB1 TYPE TABLE OF ITAB1,
+      WA_TAB1 TYPE ITAB1,
+      IT_TAB2 TYPE TABLE OF ITAB2,
+      WA_TAB2 TYPE ITAB2,
+      IT_TAB3 TYPE TABLE OF ZSR24,
+      WA_TAB3 TYPE ZSR24,
+      IT_TAB4 TYPE TABLE OF ZSR24,
+      WA_TAB4 TYPE ZSR24,
+      IT_RM1  TYPE TABLE OF RM1,
+      WA_RM1  TYPE RM1,
+      IT_RM2  TYPE TABLE OF RM2,
+      WA_RM2  TYPE RM2,
+      IT_ZM1  TYPE TABLE OF ZM1,
+      WA_ZM1  TYPE ZM1,
+      IT_ZM2  TYPE TABLE OF ZM2,
+      WA_ZM2  TYPE ZM2.
+DATA: CHK1 TYPE P DECIMALS 2,
+      DEL1 TYPE I.
+DATA: TSVAL1     TYPE P,
+      TSVAL(15)  TYPE C,
+      TCVAL1     TYPE P,
+      TCVAL(15)  TYPE C,
+      TCVAL2     TYPE P,
+      TC1VAL(15) TYPE C,
+      TDVAL1     TYPE P,
+      TDVAL(15)  TYPE C,
+      TNET1      TYPE P,
+      TNET(15)   TYPE C,
+      TINV1      TYPE P,
+      TINV(15)   TYPE C.
+DATA: TXT1(2) TYPE C.
+
+DATA : V_FM TYPE RS38L_FNAM.
+DATA: FORMAT(100) TYPE C.
+DATA : CONTROL  TYPE SSFCTRLOP.
+DATA : W_SSFCOMPOP TYPE SSFCOMPOP.
+
+************************
+DATA : W_RETURN    TYPE SSFCRESCL.
+DATA: I_OTF       TYPE ITCOO    OCCURS 0 WITH HEADER LINE,
+      I_TLINE     LIKE TLINE    OCCURS 0 WITH HEADER LINE,
+      I_RECORD    LIKE SOLISTI1 OCCURS 0 WITH HEADER LINE,
+      I_XSTRING   TYPE XSTRING,
+* Objects to send mail.
+      I_OBJPACK   LIKE SOPCKLSTI1 OCCURS 0 WITH HEADER LINE,
+      I_OBJTXT    LIKE SOLISTI1   OCCURS 0 WITH HEADER LINE,
+      I_OBJBIN    LIKE SOLIX      OCCURS 0 WITH HEADER LINE,
+      I_RECLIST   LIKE SOMLRECI1  OCCURS 0 WITH HEADER LINE,
+* Work Area declarations
+      WA_OBJHEAD  TYPE SOLI_TAB,
+      W_CTRLOP    TYPE SSFCTRLOP,
+      W_COMPOP    TYPE SSFCOMPOP,
+*      w_return    TYPE ssfcrescl,
+      WA_BUFFER   TYPE STRING,
+* Variables declarations
+      V_FORM_NAME TYPE RS38L_FNAM,
+      V_LEN_IN    LIKE SOOD-OBJLEN.
+
+DATA: IN_MAILID TYPE AD_SMTPADR.
+**************************
+
+DATA: VAL1 TYPE P,
+      VAL2 TYPE P,
+      VAL3 TYPE P,
+      VAL4 TYPE P,
+      INV1 TYPE I.
+DATA: MONTH(2) TYPE C,
+      YEAR(4)  TYPE C.
+DATA: RMNAME TYPE PA0001-ENAME,
+      HQ     TYPE ZTHR_HEQ_DES-ZZ_HQDESC.
+
+SELECTION-SCREEN BEGIN OF BLOCK MERKMALE1 WITH FRAME TITLE TEXT-001.
+PARAMETERS : R1  RADIOBUTTON GROUP R1,
+             R2  RADIOBUTTON GROUP R1,
+             R3  RADIOBUTTON GROUP R1,
+             R21 RADIOBUTTON GROUP R1,
+             R31 RADIOBUTTON GROUP R1.
+SELECT-OPTIONS: ZONE FOR ZDSMTER-ZDSM MATCHCODE OBJECT ZSR9_1.
+*RM_TER FOR ZDSMTER-ZDSM MATCHCODE OBJECT ZSR7R NO INTERVALS.
+SELECTION-SCREEN END OF BLOCK MERKMALE1.
+
+START-OF-SELECTION.
+
+  DATE1 = SY-DATUM.
+  DATE1+6(2) = '01'.
+*  DATE1+4(2) = '03'.
+
+  DATE2 = SY-DATUM.
+*  DATE2+6(2) = '31'.
+*  DATE2+4(2) = '03'.
+
+  CALL FUNCTION 'HR_JP_MONTH_BEGIN_END_DATE'
+    EXPORTING
+      IV_DATE           = DATE1
+    IMPORTING
+*     EV_MONTH_BEGIN_DATE       =
+      EV_MONTH_END_DATE = DATE2.
+
+  MONTH = DATE1+4(2).
+  YEAR = DATE1+0(4).
+
+  IF SY-DATUM+6(2) GE '29'.
+    EXIT.
+  ENDIF.
+
+  IF R1 EQ 'X'.
+    CALL TRANSACTION 'ZSTKSALE1'.
+  ELSEIF R2 EQ 'X' .
+    TXT1 = 'RM'.
+    PERFORM DETAIL.
+  ELSEIF R3 EQ 'X'.
+    IF SY-HOST EQ 'SAPQLT' OR SY-HOST EQ 'SAPDEV'.
+    ELSE.
+      TXT1 = 'RM'.
+      PERFORM FORM1.
+      PERFORM EMAILRM.
+      PERFORM EMAILZM.
+      PERFORM EMAILDZM.
+    ENDIF.
+  ELSEIF R21 EQ 'X' .
+    SELECT SINGLE * FROM ZSTKSALE WHERE CPUDT EQ SY-DATUM.
+    IF SY-SUBRC EQ 0.
+      TXT1 = 'ZM'.
+      PERFORM DETAIL1.
+    ENDIF.
+  ELSEIF R31 EQ 'X'.
+    SELECT SINGLE * FROM ZSTKSALE WHERE CPUDT EQ SY-DATUM.
+    IF SY-SUBRC EQ 0.
+      IF SY-HOST EQ 'SAPQLT' OR SY-HOST EQ 'SAPDEV'.
+      ELSE.
+        TXT1 = 'ZM'.
+        PERFORM FORM11.
+        PERFORM EMAILZM1.
+      ENDIF.
+    ENDIF.
+  ENDIF.
+*&---------------------------------------------------------------------*
+*&      Form  EMAILALL
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM DETAIL .
+  PERFORM FORM1.
+
+
+*  LOOP AT IT_TAB2 INTO WA_TAB2.
+*    WRITE :/ WA_TAB2-RM,WA_TAB2-DZM,WA_TAB2-ZM,WA_TAB2-ZM,WA_TAB2-KUNNR,WA_TAB2-NAME1,WA_TAB2-S_VAL,WA_TAB2-C_VAL,WA_TAB2-C_VAL1,WA_TAB2-D_VAL,
+*    WA_TAB2-INV1.
+*  ENDLOOP.
+
+  LOOP AT IT_TAB2 INTO WA_TAB2.
+    WA_RM1-RM = WA_TAB2-RM.
+    WA_RM1-ZM = WA_TAB2-ZM.
+    COLLECT WA_RM1 INTO IT_RM1.
+    CLEAR WA_RM1.
+  ENDLOOP.
+  SORT IT_RM1 BY ZM RM.
+  DELETE ADJACENT DUPLICATES FROM IT_RM1 COMPARING ZM RM.
+
+  CALL FUNCTION 'SSF_FUNCTION_MODULE_NAME'
+    EXPORTING
+      FORMNAME           = 'ZSR24'
+*     VARIANT            = ' '
+*     DIRECT_CALL        = ' '
+    IMPORTING
+      FM_NAME            = V_FM
+    EXCEPTIONS
+      NO_FORM            = 1
+      NO_FUNCTION_MODULE = 2
+      OTHERS             = 3.
+
+  CONTROL-NO_OPEN   = 'X'.
+  CONTROL-NO_CLOSE  = 'X'.
+
+  CALL FUNCTION 'SSF_OPEN'
+    EXPORTING
+      CONTROL_PARAMETERS = CONTROL.
+  LOOP AT IT_RM1 INTO WA_RM1.
+    CLEAR : IT_TAB3,WA_TAB3.
+    CLEAR : TSVAL1,TSVAL,TCVAL1,TCVAL,TCVAL2,TC1VAL,TDVAL1,TDVAL,TNET1,TNET,TINV1,TINV.
+    LOOP AT IT_TAB2 INTO WA_TAB2 WHERE ZM = WA_RM1-ZM AND RM = WA_RM1-RM.
+      WA_TAB3-NAME1 = WA_TAB2-NAME1.
+      WA_TAB3-ORT01 = WA_TAB2-ORT01.
+
+      WA_TAB3-S_VAL = WA_TAB2-S_VAL.
+      WA_TAB3-C_VAL = WA_TAB2-C_VAL.
+      WA_TAB3-C_VAL1 = WA_TAB2-C_VAL1.
+      WA_TAB3-D_VAL = WA_TAB2-D_VAL.
+      WA_TAB3-NET = WA_TAB2-S_VAL - WA_TAB2-C_VAL1 + WA_TAB2-D_VAL.
+      WA_TAB3-INV = WA_TAB2-INV1.
+
+      TSVAL1 = TSVAL1 + WA_TAB2-S_VAL.
+      TCVAL1 = TCVAL1 + WA_TAB2-C_VAL.
+      TCVAL2 = TCVAL2 + WA_TAB2-C_VAL1.
+      TDVAL1 = TDVAL1 + WA_TAB2-D_VAL.
+      TNET1 = TNET1 +  WA_TAB3-NET .
+      TINV1 = TINV1 + WA_TAB2-INV1.
+      COLLECT WA_TAB3 INTO IT_TAB3.
+      CLEAR WA_TAB3.
+    ENDLOOP.
+    SORT IT_TAB3 BY NAME1.
+    DELETE IT_TAB3 WHERE NAME1 EQ SPACE.
+    TSVAL = TSVAL1.
+    TCVAL = TCVAL1.
+    TC1VAL = TCVAL2.
+    TDVAL = TDVAL1.
+    TNET = TNET1.
+    TINV = TINV1.
+    CONDENSE : TSVAL,TCVAL,TC1VAL,TDVAL,TNET,TINV.
+
+    CLEAR : RMNAME,HQ.
+    SELECT SINGLE * FROM YTERRALLC WHERE BZIRK EQ WA_RM1-RM AND ENDDA GE SY-DATUM.
+    IF SY-SUBRC EQ 0.
+      SELECT SINGLE * FROM PA0001 WHERE PLANS EQ YTERRALLC-PLANS AND ENDDA GE SY-DATUM.
+      IF SY-SUBRC EQ 0.
+        RMNAME = PA0001-ENAME.
+      ENDIF.
+    ENDIF.
+    IF RMNAME EQ SPACE.
+      RMNAME = 'VACANT'.
+    ENDIF.
+    SELECT SINGLE * FROM ZDRPHQ WHERE BZIRK = WA_RM1-RM.
+    IF SY-SUBRC EQ 0.
+      SELECT SINGLE * FROM  ZTHR_HEQ_DES WHERE ZZ_HQCODE EQ ZDRPHQ-ZZ_HQCODE.
+      IF SY-SUBRC EQ 0.
+        HQ =  ZTHR_HEQ_DES-ZZ_HQDESC.
+      ENDIF.
+    ENDIF.
+
+
+    CALL FUNCTION V_FM
+      EXPORTING
+        CONTROL_PARAMETERS = CONTROL
+        USER_SETTINGS      = 'X'
+        OUTPUT_OPTIONS     = W_SSFCOMPOP
+        FORMAT             = FORMAT
+        RMNAME             = RMNAME
+        HQ                 = HQ
+        DATE1              = DATE1
+        DATE2              = DATE2
+        TSVAL              = TSVAL
+        TCVAL              = TCVAL
+        TC1VAL             = TC1VAL
+        TDVAL              = TDVAL
+        TNET               = TNET
+        TINV               = TINV
+        TXT1               = TXT1
+      TABLES
+        IT_TAB1            = IT_TAB3
+*       itab_division      = itab_division
+*       itab_storage       = itab_storage
+*       itab_pa0002        = itab_pa0002
+      EXCEPTIONS
+        FORMATTING_ERROR   = 1
+        INTERNAL_ERROR     = 2
+        SEND_ERROR         = 3
+        USER_CANCELED      = 4
+        OTHERS             = 5.
+
+
+  ENDLOOP.
+  CLEAR : FORMAT.
+
+  CALL FUNCTION 'SSF_CLOSE'.
+
+
+
+
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  FORM1
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM FORM1 .
+  SELECT * FROM ZDSMTER INTO TABLE IT_ZDSMTER WHERE ZMONTH EQ MONTH AND ZYEAR EQ YEAR AND ZDSM IN ZONE.
+  SELECT * FROM ZDSMTER INTO TABLE IT_ZDSMTER1 WHERE ZMONTH EQ MONTH AND ZYEAR EQ YEAR.
+  IF IT_ZDSMTER IS NOT INITIAL.
+    SELECT * FROM ZSTKRM INTO TABLE IT_ZSTKRM FOR ALL ENTRIES IN IT_ZDSMTER WHERE BEGDA GE DATE1 AND ENDDA LE DATE2 AND BZIRK EQ IT_ZDSMTER-BZIRK.
+  ENDIF.
+  IF IT_ZSTKRM IS NOT INITIAL.
+    SELECT * FROM ZSTKSALE INTO TABLE IT_ZSTKSALE FOR ALL ENTRIES IN IT_ZSTKRM WHERE KUNAG EQ IT_ZSTKRM-KUNNR.
+    SELECT * FROM ZSTKSALE1 INTO TABLE IT_ZSTKSALE1 FOR ALL ENTRIES IN IT_ZSTKRM WHERE KUNAG EQ IT_ZSTKRM-KUNNR.
+  ENDIF.
+
+  SORT IT_ZSTKRM BY KUNNR.
+
+  LOOP AT IT_ZSTKSALE INTO WA_ZSTKSALE.
+    WA_SL1-KUNAG = WA_ZSTKSALE-KUNAG.
+    WA_SL1-SPART = WA_ZSTKSALE-SPART.
+    WA_SL1-S_VAL = WA_ZSTKSALE-S_VAL.
+    WA_SL1-C_VAL = WA_ZSTKSALE-C_VAL.
+    WA_SL1-C_VAL1 = WA_ZSTKSALE-C_VAL1.
+    WA_SL1-D_VAL = WA_ZSTKSALE-D_VAL.
+    COLLECT WA_SL1 INTO IT_SL1.
+    CLEAR WA_SL1.
+  ENDLOOP.
+
+  LOOP AT IT_ZSTKSALE1 INTO WA_ZSTKSALE1.
+    WA_SL2-KUNAG = WA_ZSTKSALE1-KUNAG.
+    WA_SL2-INVNO = WA_ZSTKSALE1-INVNO.
+    WA_SL2-NINVNO = WA_ZSTKSALE1-NINVNO.
+    COLLECT WA_SL2 INTO IT_SL2.
+    CLEAR WA_SL2.
+  ENDLOOP.
+
+  LOOP AT IT_SL1 INTO WA_SL1.
+*    WRITE : / 'A1',WA_SL1-KUNAG,WA_SL1-SPART,WA_SL1-S_VAL,WA_SL1-C_VAL,WA_SL1-D_VAL.
+    LOOP AT IT_ZSTKRM INTO WA_ZSTKRM WHERE KUNNR = WA_SL1-KUNAG AND SPART = WA_SL1-SPART.
+*      WRITE : / 'A1',WA_ZSTKRM-KUNNR,WA_ZSTKRM-SPART,WA_ZSTKRM-ENDDA,WA_ZSTKRM-BEGDA,WA_ZSTKRM-BZIRK,WA_ZSTKRM-PERCNT.
+      WA_TAB1-KUNNR = WA_ZSTKRM-KUNNR.
+      WA_TAB1-RM = WA_ZSTKRM-BZIRK.
+
+      READ TABLE IT_ZDSMTER INTO WA_ZDSMTER WITH KEY BZIRK = WA_ZSTKRM-BZIRK ZDSM+0(2) =  'D-'.
+      IF SY-SUBRC EQ 0.
+        WA_TAB1-ZM = WA_ZDSMTER-ZDSM.
+      ENDIF.
+
+      READ TABLE IT_ZDSMTER1 INTO WA_ZDSMTER1 WITH KEY BZIRK = WA_ZSTKRM-BZIRK ZDSM+0(2) =  'Z-'.
+      IF SY-SUBRC EQ 0.
+        WA_TAB1-DZM = WA_ZDSMTER1-ZDSM.
+      ENDIF.
+
+      CLEAR : VAL1,VAL2,VAL3,VAL4,INV1.
+      VAL1 = WA_SL1-S_VAL * ( WA_ZSTKRM-PERCNT / 100 ).
+      VAL2 = WA_SL1-C_VAL * ( WA_ZSTKRM-PERCNT / 100 ).
+      VAL4 = WA_SL1-C_VAL1 * ( WA_ZSTKRM-PERCNT / 100 ).
+      VAL3 = WA_SL1-D_VAL * ( WA_ZSTKRM-PERCNT / 100 ).
+      READ TABLE IT_SL2 INTO WA_SL2 WITH KEY KUNAG = WA_ZSTKRM-KUNNR.
+      IF SY-SUBRC EQ 0.
+        INV1 = ( WA_SL2-INVNO + WA_SL2-NINVNO ) .
+      ENDIF.
+*      WRITE : / 'A2',WA_ZSTKRM-PERCNT,VAL1,VAL2,VAL3,INV1.
+      WA_TAB1-S_VAL = VAL1.
+      WA_TAB1-C_VAL = VAL2.
+      WA_TAB1-C_VAL1 = VAL4.
+      WA_TAB1-D_VAL = VAL3.
+      WA_TAB1-INV1 = INV1.
+      COLLECT WA_TAB1 INTO IT_TAB1.
+      CLEAR WA_TAB1.
+    ENDLOOP.
+  ENDLOOP.
+
+  LOOP AT IT_ZSTKRM INTO WA_ZSTKRM.
+    READ TABLE IT_SL1 INTO WA_SL1 WITH KEY KUNAG = WA_ZSTKRM-KUNNR SPART = WA_ZSTKRM-SPART.
+    IF SY-SUBRC EQ 4.
+
+      WA_TAB1-KUNNR = WA_ZSTKRM-KUNNR.
+      WA_TAB1-RM = WA_ZSTKRM-BZIRK.
+
+      READ TABLE IT_ZDSMTER INTO WA_ZDSMTER WITH KEY BZIRK = WA_ZSTKRM-BZIRK ZDSM+0(2) =  'D-'.
+      IF SY-SUBRC EQ 0.
+        WA_TAB1-ZM = WA_ZDSMTER-ZDSM.
+      ENDIF.
+
+      READ TABLE IT_ZDSMTER1 INTO WA_ZDSMTER1 WITH KEY BZIRK = WA_ZSTKRM-BZIRK ZDSM+0(2) =  'Z-'.
+      IF SY-SUBRC EQ 0.
+        WA_TAB1-DZM = WA_ZDSMTER1-ZDSM.
+      ENDIF.
+
+      CLEAR : VAL1,VAL2,VAL3,VAL4,INV1.
+      VAL1 = 0.
+      VAL2 = 0.
+      VAL4 = 0.
+      VAL3 = 0.
+
+      WA_TAB1-S_VAL = VAL1.
+      WA_TAB1-C_VAL = VAL2.
+      WA_TAB1-C_VAL1 = VAL4.
+      WA_TAB1-D_VAL = VAL3.
+      WA_TAB1-INV1 = 0.
+      COLLECT WA_TAB1 INTO IT_TAB1.
+      CLEAR WA_TAB1.
+
+    ENDIF.
+  ENDLOOP.
+
+*  ULINE.
+  SORT IT_TAB1 BY RM KUNNR.
+  FORMAT COLOR 1.
+  LOOP AT IT_TAB1 INTO WA_TAB1 WHERE ZM IN ZONE .
+    CLEAR : CHK1,DEL1.
+    CHK1 = WA_TAB1-S_VAL + WA_TAB1-C_VAL + WA_TAB1-C_VAL1 + WA_TAB1-D_VAL.
+    IF CHK1 LE 0.
+      SELECT SINGLE * FROM KNA1 WHERE KUNNR EQ WA_TAB1-KUNNR AND LOEVM EQ 'X'.
+      IF SY-SUBRC EQ 0.
+        DEL1 = 1.
+      ENDIF.
+    ENDIF.
+
+    IF DEL1 NE 1.
+*    ON CHANGE OF WA_TAB1-RM.
+      WA_TAB2-RM = WA_TAB1-RM.
+      WA_TAB2-DZM = WA_TAB1-DZM.
+      WA_TAB2-ZM = WA_TAB1-ZM.
+*    ENDON.
+      WA_TAB2-KUNNR = WA_TAB1-KUNNR.
+      SELECT SINGLE * FROM KNA1 WHERE KUNNR EQ WA_TAB1-KUNNR AND aufsd <> '03'.
+      IF SY-SUBRC EQ 0.
+        WA_TAB2-NAME1 = KNA1-NAME1.
+        WA_TAB2-ORT01 = KNA1-ORT01.
+      ENDIF.
+      WA_TAB2-S_VAL = WA_TAB1-S_VAL.
+      WA_TAB2-C_VAL = WA_TAB1-C_VAL.
+      WA_TAB2-C_VAL1 = WA_TAB1-C_VAL1.
+      WA_TAB2-D_VAL = WA_TAB1-D_VAL.
+      WA_TAB2-INV1 = WA_TAB1-INV1.
+      COLLECT WA_TAB2 INTO IT_TAB2.
+      CLEAR WA_TAB2.
+    ENDIF.
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  EMAILRM
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM EMAILRM .
+
+
+  LOOP AT IT_TAB2 INTO WA_TAB2.
+    WA_RM1-RM = WA_TAB2-RM.
+    COLLECT WA_RM1 INTO IT_RM1.
+    CLEAR WA_RM1.
+  ENDLOOP.
+  SORT IT_RM1 BY RM.
+  DELETE ADJACENT DUPLICATES FROM IT_RM1 COMPARING RM.
+
+  LOOP AT IT_RM1 INTO WA_RM1.
+    SELECT SINGLE * FROM YTERRALLC WHERE BZIRK EQ WA_RM1-RM AND ENDDA GE SY-DATUM.
+    IF SY-SUBRC EQ 0.
+      SELECT SINGLE * FROM PA0001 WHERE PLANS EQ YTERRALLC-PLANS AND ENDDA GE SY-DATUM.
+      IF SY-SUBRC EQ 0.
+        SELECT SINGLE * FROM PA0105 WHERE PERNR EQ PA0001-PERNR AND SUBTY EQ '0010'.
+        IF SY-SUBRC EQ 0.
+          WA_RM2-RM = WA_RM1-RM.
+          WA_RM2-EMAIL = PA0105-USRID_LONG.
+          COLLECT WA_RM2 INTO IT_RM2.
+          CLEAR WA_RM2.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+  ENDLOOP.
+  DELETE IT_RM2 WHERE EMAIL EQ SPACE.
+
+  LOOP AT IT_RM2 INTO WA_RM2.
+    LOOP AT IT_RM1 INTO WA_RM1 WHERE RM = WA_RM2-RM.
+
+      CALL FUNCTION 'SSF_FUNCTION_MODULE_NAME'
+        EXPORTING
+          FORMNAME           = 'ZSR24'
+*         VARIANT            = ' '
+*         DIRECT_CALL        = ' '
+        IMPORTING
+          FM_NAME            = V_FM
+        EXCEPTIONS
+          NO_FORM            = 1
+          NO_FUNCTION_MODULE = 2
+          OTHERS             = 3.
+      IF SY-SUBRC <> 0.
+        MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+        WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+      ENDIF.
+
+*  CONTROL-NO_OPEN   = 'X'.
+*  CONTROL-NO_CLOSE  = 'X'.
+*
+*  CALL FUNCTION 'SSF_OPEN'
+*    EXPORTING
+*      CONTROL_PARAMETERS = CONTROL.
+
+*   * Set the control parameter
+      W_CTRLOP-GETOTF = ABAP_TRUE.
+      W_CTRLOP-NO_DIALOG = ABAP_TRUE.
+      W_COMPOP-TDNOPREV = ABAP_TRUE.
+      W_CTRLOP-PREVIEW = SPACE.
+      W_COMPOP-TDDEST = 'LOCL'.
+
+*  LOOP AT IT_RM1 INTO WA_RM1.
+      CLEAR : IT_TAB3,WA_TAB3.
+      CLEAR : TSVAL1,TSVAL,TCVAL1,TCVAL,TCVAL2,TC1VAL,TDVAL1,TDVAL,TNET1,TNET,TINV1,TINV.
+      LOOP AT IT_TAB2 INTO WA_TAB2 WHERE RM = WA_RM1-RM.
+        WA_TAB3-NAME1 = WA_TAB2-NAME1.
+        WA_TAB3-ORT01 = WA_TAB2-ORT01.
+
+        WA_TAB3-S_VAL = WA_TAB2-S_VAL.
+        WA_TAB3-C_VAL = WA_TAB2-C_VAL.
+        WA_TAB3-C_VAL1 = WA_TAB2-C_VAL1.
+        WA_TAB3-D_VAL = WA_TAB2-D_VAL.
+        WA_TAB3-NET = WA_TAB2-S_VAL - WA_TAB2-C_VAL1 + WA_TAB2-D_VAL.
+        WA_TAB3-INV = WA_TAB2-INV1.
+
+        TSVAL1 = TSVAL1 + WA_TAB2-S_VAL.
+        TCVAL1 = TCVAL1 + WA_TAB2-C_VAL.
+        TCVAL2 = TCVAL2 + WA_TAB2-C_VAL1.
+        TDVAL1 = TDVAL1 + WA_TAB2-D_VAL.
+        TNET1 = TNET1 +  WA_TAB3-NET .
+        TINV1 = TINV1 + WA_TAB2-INV1.
+        COLLECT WA_TAB3 INTO IT_TAB3.
+        CLEAR WA_TAB3.
+      ENDLOOP.
+      SORT IT_TAB3 BY NAME1.
+      DELETE IT_TAB3 WHERE NAME1 EQ SPACE.
+      TSVAL = TSVAL1.
+      TCVAL = TCVAL1.
+      TC1VAL = TCVAL2.
+      TDVAL = TDVAL1.
+      TNET = TNET1.
+      TINV = TINV1.
+      CONDENSE : TSVAL,TCVAL,TC1VAL,TDVAL,TNET,TINV.
+
+      CLEAR : RMNAME,HQ.
+      SELECT SINGLE * FROM YTERRALLC WHERE BZIRK EQ WA_RM1-RM AND ENDDA GE SY-DATUM.
+      IF SY-SUBRC EQ 0.
+        SELECT SINGLE * FROM PA0001 WHERE PLANS EQ YTERRALLC-PLANS AND ENDDA GE SY-DATUM.
+        IF SY-SUBRC EQ 0.
+          RMNAME = PA0001-ENAME.
+        ENDIF.
+      ENDIF.
+      IF RMNAME EQ SPACE.
+        RMNAME = 'VACANT'.
+      ENDIF.
+      SELECT SINGLE * FROM ZDRPHQ WHERE BZIRK = WA_RM1-RM.
+      IF SY-SUBRC EQ 0.
+        SELECT SINGLE * FROM  ZTHR_HEQ_DES WHERE ZZ_HQCODE EQ ZDRPHQ-ZZ_HQCODE.
+        IF SY-SUBRC EQ 0.
+          HQ =  ZTHR_HEQ_DES-ZZ_HQDESC.
+        ENDIF.
+      ENDIF.
+
+
+      CALL FUNCTION V_FM
+        EXPORTING
+          CONTROL_PARAMETERS = W_CTRLOP
+          OUTPUT_OPTIONS     = W_COMPOP
+          USER_SETTINGS      = ABAP_TRUE
+          FORMAT             = FORMAT
+          RMNAME             = RMNAME
+          HQ                 = HQ
+          DATE1              = DATE1
+          DATE2              = DATE2
+          TSVAL              = TSVAL
+          TCVAL              = TCVAL
+          TC1VAL             = TC1VAL
+          TDVAL              = TDVAL
+          TNET               = TNET
+          TINV               = TINV
+          TXT1               = TXT1
+        IMPORTING
+          JOB_OUTPUT_INFO    = W_RETURN " This will have all output
+        TABLES
+          IT_TAB1            = IT_TAB3
+*         itab_division      = itab_division
+*         itab_storage       = itab_storage
+*         itab_pa0002        = itab_pa0002
+        EXCEPTIONS
+          FORMATTING_ERROR   = 1
+          INTERNAL_ERROR     = 2
+          SEND_ERROR         = 3
+          USER_CANCELED      = 4
+          OTHERS             = 5.
+
+*      CLEAR : RMNAME,HQ,DATE1,DATE2,TSVAL,TCVAL,TC1VAL,TDVAL,TNET,TINV,IT_TAB3,WA_TAB3.
+
+      I_OTF[] = W_RETURN-OTFDATA[].
+
+* Import Binary file and filesize
+      CALL FUNCTION 'CONVERT_OTF'
+        EXPORTING
+          FORMAT                = 'PDF'
+          MAX_LINEWIDTH         = 132
+        IMPORTING
+          BIN_FILESIZE          = V_LEN_IN
+          BIN_FILE              = I_XSTRING   " This is NOT Binary. This is Hexa
+        TABLES
+          OTF                   = I_OTF
+          LINES                 = I_TLINE
+        EXCEPTIONS
+          ERR_MAX_LINEWIDTH     = 1
+          ERR_FORMAT            = 2
+          ERR_CONV_NOT_POSSIBLE = 3
+          OTHERS                = 4.
+* Sy-subrc check not checked
+
+
+
+*  * Convert Hexa String to Binary format
+      CALL FUNCTION 'SCMS_XSTRING_TO_BINARY'
+        EXPORTING
+          BUFFER     = I_XSTRING
+        TABLES
+          BINARY_TAB = I_OBJBIN[].
+
+      IN_MAILID = WA_RM2-EMAIL.
+*      IN_MAILID = 'JYOTSNA@BLUECROSSLABS.COM'.
+*      BREAK-POINT .
+      IF IT_TAB3 IS NOT INITIAL.
+        PERFORM SEND_MAIL USING IN_MAILID .
+      ENDIF.
+      CLEAR : RMNAME,HQ,DATE1,DATE2,TSVAL,TCVAL,TC1VAL,TDVAL,TNET,TINV,IT_TAB3,WA_TAB3.
+      CLEAR : RMNAME,HQ,DATE1,DATE2,TSVAL,TCVAL,TC1VAL,TDVAL,TNET,TINV,IT_TAB3,WA_TAB3.
+
+    ENDLOOP.
+  ENDLOOP.
+*  CLEAR : FORMAT.
+*
+*  CALL FUNCTION 'SSF_CLOSE'.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  SEND_MAIL
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->P_IN_MAILID  text
+*----------------------------------------------------------------------*
+FORM SEND_MAIL  USING    P_IN_MAILID.
+  DATA: SALUTATION TYPE STRING.
+  DATA: BODY TYPE STRING.
+  DATA: FOOTER TYPE STRING.
+
+  DATA: LO_SEND_REQUEST TYPE REF TO CL_BCS,
+        LO_DOCUMENT     TYPE REF TO CL_DOCUMENT_BCS,
+        LO_SENDER       TYPE REF TO IF_SENDER_BCS,
+        LO_RECIPIENT    TYPE REF TO IF_RECIPIENT_BCS VALUE IS INITIAL,LT_MESSAGE_BODY TYPE BCSY_TEXT,
+        LX_DOCUMENT_BCS TYPE REF TO CX_DOCUMENT_BCS,
+        LV_SENT_TO_ALL  TYPE OS_BOOLEAN.
+
+  "create send request
+  LO_SEND_REQUEST = CL_BCS=>CREATE_PERSISTENT( ).
+
+  "create message body and subject
+  SALUTATION ='Dear Sir/Madam,'.
+  APPEND SALUTATION TO LT_MESSAGE_BODY.
+  APPEND INITIAL LINE TO LT_MESSAGE_BODY.
+
+  BODY = 'Please find the attached SR24 REPORT in PDF format.'.
+
+  APPEND BODY TO LT_MESSAGE_BODY.
+  APPEND INITIAL LINE TO LT_MESSAGE_BODY.
+
+  FOOTER = 'With Regards,'.
+  APPEND FOOTER TO LT_MESSAGE_BODY.
+  FOOTER = 'BLUE CROSS LABORATORIES PVT LTD.'.
+  APPEND FOOTER TO LT_MESSAGE_BODY.
+
+*  IF r4 EQ 'X'.
+*    ntext1 = 'HALB LYING FOR MORE THAN 20 DAYS'.
+*  ELSEIF r6 EQ 'X'.
+*    ntext1 = 'REJECTION DONE BY QUALITY CONTROL'.
+*  ELSE.
+*    ntext1 = 'INSPECTION PLAN NOT ATTACHED'.
+*  ENDIF.
+*  "put your text into the document
+
+
+  LO_DOCUMENT = CL_DOCUMENT_BCS=>CREATE_DOCUMENT(
+I_TYPE = 'RAW'
+I_TEXT = LT_MESSAGE_BODY
+I_SUBJECT = 'SR24 REPORT' ).
+
+*DATA: l_size TYPE sood-objlen. " Size of Attachment
+*l_size = l_lines * 255.
+  TRY.
+
+      LO_DOCUMENT->ADD_ATTACHMENT(
+      EXPORTING
+      I_ATTACHMENT_TYPE = 'PDF'
+      I_ATTACHMENT_SUBJECT = 'SR24 REPORT'
+      I_ATT_CONTENT_HEX = I_OBJBIN[] ).
+    CATCH CX_DOCUMENT_BCS INTO LX_DOCUMENT_BCS.
+
+  ENDTRY.
+
+
+* Add attachment
+* Pass the document to send request
+  LO_SEND_REQUEST->SET_DOCUMENT( LO_DOCUMENT ).
+
+  "Create sender
+  LO_SENDER = CL_SAPUSER_BCS=>CREATE( SY-UNAME ).
+
+  LO_SENDER     = CL_CAM_ADDRESS_BCS=>CREATE_INTERNET_ADDRESS(
+
+        I_ADDRESS_STRING = 'sales@bluecrosslabs.com'
+
+        I_ADDRESS_NAME   = 'sales@bluecrosslabs.com' ).
+
+
+  "Set sender
+  LO_SEND_REQUEST->SET_SENDER( LO_SENDER ).
+
+  "Create recipient
+  LO_RECIPIENT = CL_CAM_ADDRESS_BCS=>CREATE_INTERNET_ADDRESS( IN_MAILID ).
+
+*Set recipient
+  LO_SEND_REQUEST->ADD_RECIPIENT(
+  EXPORTING
+  I_RECIPIENT = LO_RECIPIENT
+  I_EXPRESS = ABAP_TRUE
+  ).
+
+  LO_SEND_REQUEST->ADD_RECIPIENT( LO_RECIPIENT ).
+
+* Send email
+  LO_SEND_REQUEST->SEND(
+  EXPORTING
+  I_WITH_ERROR_SCREEN = ABAP_TRUE
+  RECEIVING
+  RESULT = LV_SENT_TO_ALL ).
+
+  CONCATENATE 'Email sent to' IN_MAILID INTO DATA(LV_MSG) SEPARATED BY SPACE.
+  WRITE:/ LV_MSG COLOR COL_POSITIVE.
+  SKIP.
+* Commit Work to send the email
+  COMMIT WORK.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  EMAILDZM
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM EMAILZM .
+
+
+  LOOP AT IT_TAB2 INTO WA_TAB2.
+    WA_ZM1-ZM = WA_TAB2-ZM.
+    WA_ZM1-RM = WA_TAB2-RM.
+    COLLECT WA_ZM1 INTO IT_ZM1.
+    CLEAR WA_ZM1.
+  ENDLOOP.
+  SORT IT_ZM1 BY ZM RM.
+
+  LOOP AT IT_ZM1 INTO WA_ZM1.
+    SELECT SINGLE * FROM YTERRALLC WHERE BZIRK EQ WA_ZM1-ZM AND ENDDA GE SY-DATUM.
+    IF SY-SUBRC EQ 0.
+      SELECT SINGLE * FROM PA0001 WHERE PLANS EQ YTERRALLC-PLANS AND ENDDA GE SY-DATUM.
+      IF SY-SUBRC EQ 0.
+        SELECT SINGLE * FROM PA0105 WHERE PERNR EQ PA0001-PERNR AND SUBTY EQ '0010'.
+        IF SY-SUBRC EQ 0.
+          WA_ZM2-ZM = WA_ZM1-ZM.
+          WA_ZM2-EMAIL = PA0105-USRID_LONG.
+          COLLECT WA_ZM2 INTO IT_ZM2.
+          CLEAR WA_ZM2.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+  ENDLOOP.
+  SORT IT_ZM2 BY ZM.
+  DELETE ADJACENT DUPLICATES FROM IT_ZM2 COMPARING ZM.
+  DELETE IT_ZM2 WHERE EMAIL EQ SPACE.
+  LOOP AT IT_ZM2 INTO WA_ZM2.
+    CALL FUNCTION 'SSF_FUNCTION_MODULE_NAME'
+      EXPORTING
+        FORMNAME           = 'ZSR24B'
+*       VARIANT            = ' '
+*       DIRECT_CALL        = ' '
+      IMPORTING
+        FM_NAME            = V_FM
+      EXCEPTIONS
+        NO_FORM            = 1
+        NO_FUNCTION_MODULE = 2
+        OTHERS             = 3.
+    IF SY-SUBRC <> 0.
+      MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+      WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+    ENDIF.
+
+*  CONTROL-NO_OPEN   = 'X'.
+*  CONTROL-NO_CLOSE  = 'X'.
+*
+*  CALL FUNCTION 'SSF_OPEN'
+*    EXPORTING
+*      CONTROL_PARAMETERS = CONTROL.
+
+
+*  LOOP AT IT_ZM2 INTO WA_ZM2.
+*    LOOP AT IT_ZM1 INTO WA_ZM1 WHERE ZM = WA_ZM2-ZM.
+
+
+*   * Set the control parameter
+    W_CTRLOP-GETOTF = ABAP_TRUE.
+    W_CTRLOP-NO_DIALOG = ABAP_TRUE.
+    W_COMPOP-TDNOPREV = ABAP_TRUE.
+    W_CTRLOP-PREVIEW = SPACE.
+    W_COMPOP-TDDEST = 'LOCL'.
+
+*  LOOP AT IT_RM1 INTO WA_RM1.
+    CLEAR : IT_TAB3,WA_TAB3.
+    CLEAR : TSVAL1,TSVAL,TCVAL1,TCVAL,TCVAL2,TC1VAL,TDVAL1,TDVAL,TNET1,TNET,TINV1,TINV.
+
+    LOOP AT IT_TAB2 INTO WA_TAB2 WHERE ZM = WA_ZM2-ZM .
+
+      AT NEW RM.
+        SELECT SINGLE * FROM YTERRALLC WHERE BZIRK EQ WA_TAB2-RM AND ENDDA GE SY-DATUM.
+        IF SY-SUBRC EQ 0.
+          SELECT SINGLE * FROM PA0001 WHERE PLANS EQ YTERRALLC-PLANS AND ENDDA GE SY-DATUM.
+          IF SY-SUBRC EQ 0.
+            CONCATENATE 'RM:' PA0001-ENAME INTO  WA_TAB3-NAME1 SEPARATED BY SPACE.
+          ENDIF.
+        ENDIF.
+        IF WA_TAB3-NAME1 EQ SPACE.
+          WA_TAB3-NAME1 = 'VACANT'.
+        ENDIF.
+        SELECT SINGLE * FROM ZDRPHQ WHERE BZIRK = WA_TAB2-RM.
+        IF SY-SUBRC EQ 0.
+          SELECT SINGLE * FROM  ZTHR_HEQ_DES WHERE ZZ_HQCODE EQ ZDRPHQ-ZZ_HQCODE.
+          IF SY-SUBRC EQ 0.
+            WA_TAB3-ORT01 =  ZTHR_HEQ_DES-ZZ_HQDESC.
+          ENDIF.
+        ENDIF.
+        WA_TAB3-TYP = 'NEWRM'.
+        APPEND WA_TAB3 TO IT_TAB3.
+        CLEAR WA_TAB3.
+      ENDAT.
+
+      WA_TAB3-NAME1 = WA_TAB2-NAME1.
+      WA_TAB3-ORT01 = WA_TAB2-ORT01.
+
+      WA_TAB3-S_VAL = WA_TAB2-S_VAL.
+      WA_TAB3-C_VAL = WA_TAB2-C_VAL.
+      WA_TAB3-C_VAL1 = WA_TAB2-C_VAL1.
+      WA_TAB3-D_VAL = WA_TAB2-D_VAL.
+      WA_TAB3-NET = WA_TAB2-S_VAL - WA_TAB2-C_VAL1 + WA_TAB2-D_VAL.
+      WA_TAB3-INV = WA_TAB2-INV1.
+      WA_TAB3-ZM = WA_TAB2-ZM.
+      WA_TAB3-RM = WA_TAB2-RM.
+
+      COLLECT WA_TAB3 INTO IT_TAB3.
+      CLEAR WA_TAB3.
+
+
+      TSVAL1 = TSVAL1 + WA_TAB2-S_VAL.
+      TCVAL1 = TCVAL1 + WA_TAB2-C_VAL.
+      TCVAL2 = TCVAL2 + WA_TAB2-C_VAL1.
+      TDVAL1 = TDVAL1 + WA_TAB2-D_VAL.
+      TNET1 = TNET1 +  WA_TAB3-NET .
+      TINV1 = TINV1 + WA_TAB2-INV1.
+
+
+
+      AT END OF RM.
+
+        TSVAL =  TSVAL1.
+        TCVAL = TCVAL1.
+        TC1VAL = TCVAL2.
+        TDVAL = TDVAL1.
+        TNET = TNET1.
+        TINV = TINV1.
+        CONDENSE : TSVAL,TCVAL,TC1VAL,TDVAL,TNET,TINV.
+        WA_TAB3-NAME1 = 'RM TOTAL'.
+        WA_TAB3-TYP = 'RMTOT'.
+        WA_TAB3-S_VAL = TSVAL.
+        WA_TAB3-C_VAL = TCVAL.
+        WA_TAB3-C_VAL1 = TCVAL.
+        WA_TAB3-D_VAL = TDVAL.
+        WA_TAB3-NET = TNET.
+        WA_TAB3-INV = TINV.
+        WA_TAB3-ZM = WA_TAB2-ZM.
+        WA_TAB3-RM = WA_TAB2-RM.
+        APPEND WA_TAB3 TO IT_TAB3.
+        CLEAR WA_TAB3.
+        CLEAR : TSVAL1,TCVAL1,TCVAL2,TDVAL1,TNET1,TINV1.
+        CLEAR : TSVAL,TCVAL,TC1VAL,TDVAL,TNET,TINV.
+      ENDAT.
+
+
+
+      WA_TAB4-ZM = WA_TAB2-ZM.
+      WA_TAB4-RM = WA_TAB2-RM.
+      COLLECT WA_TAB4 INTO IT_TAB4.
+      CLEAR WA_TAB4.
+    ENDLOOP.
+
+
+    SORT IT_TAB4 BY ZM RM.
+    DELETE ADJACENT DUPLICATES FROM IT_TAB4 COMPARING ZM RM.
+
+    TSVAL = TSVAL1.
+    TCVAL = TCVAL1.
+    TC1VAL = TCVAL2.
+    TDVAL = TDVAL1.
+    TNET = TNET1.
+    TINV = TINV1.
+    CONDENSE : TSVAL,TCVAL,TC1VAL,TDVAL,TNET,TINV.
+
+*    CLEAR : RMNAME,HQ.
+*    SELECT SINGLE * FROM YTERRALLC WHERE BZIRK EQ WA_ZM2-ZM AND ENDDA GE SY-DATUM.
+*    IF SY-SUBRC EQ 0.
+*      SELECT SINGLE * FROM PA0001 WHERE PLANS EQ YTERRALLC-PLANS AND ENDDA GE SY-DATUM.
+*      IF SY-SUBRC EQ 0.
+*        RMNAME = PA0001-ENAME.
+*      ENDIF.
+*    ENDIF.
+*    IF RMNAME EQ SPACE.
+*      RMNAME = 'VACANT'.
+*    ENDIF.
+*    SELECT SINGLE * FROM ZDRPHQ WHERE BZIRK = WA_RM1-RM.
+*    IF SY-SUBRC EQ 0.
+*      SELECT SINGLE * FROM  ZTHR_HEQ_DES WHERE ZZ_HQCODE EQ ZDRPHQ-ZZ_HQCODE.
+*      IF SY-SUBRC EQ 0.
+*        HQ =  ZTHR_HEQ_DES-ZZ_HQDESC.
+*      ENDIF.
+*    ENDIF.
+
+
+    CALL FUNCTION V_FM
+      EXPORTING
+*       CONTROL_PARAMETERS = CONTROL
+*       USER_SETTINGS      = 'X'
+*       OUTPUT_OPTIONS     = W_SSFCOMPOP
+        CONTROL_PARAMETERS = W_CTRLOP
+        OUTPUT_OPTIONS     = W_COMPOP
+        USER_SETTINGS      = ABAP_TRUE
+        FORMAT             = FORMAT
+        RMNAME             = RMNAME
+        HQ                 = HQ
+        DATE1              = DATE1
+        DATE2              = DATE2
+        TSVAL              = TSVAL
+        TCVAL              = TCVAL
+        TC1VAL             = TC1VAL
+        TDVAL              = TDVAL
+        TNET               = TNET
+        TINV               = TINV
+        TXT1               = TXT1
+      IMPORTING
+        JOB_OUTPUT_INFO    = W_RETURN " This will have all output
+      TABLES
+        IT_TAB1            = IT_TAB3
+*       IT_TAB2            = IT_TAB4
+*       itab_division      = itab_division
+*       itab_storage       = itab_storage
+*       itab_pa0002        = itab_pa0002
+      EXCEPTIONS
+        FORMATTING_ERROR   = 1
+        INTERNAL_ERROR     = 2
+        SEND_ERROR         = 3
+        USER_CANCELED      = 4
+        OTHERS             = 5.
+
+*    CLEAR : rmname,hq,date1,date2,tsval,tcval,tc1val,tdval,tnet,tinv,it_tab3,wa_tab3.
+
+    I_OTF[] = W_RETURN-OTFDATA[].
+
+* Import Binary file and filesize
+    CALL FUNCTION 'CONVERT_OTF'
+      EXPORTING
+        FORMAT                = 'PDF'
+        MAX_LINEWIDTH         = 132
+      IMPORTING
+        BIN_FILESIZE          = V_LEN_IN
+        BIN_FILE              = I_XSTRING   " This is NOT Binary. This is Hexa
+      TABLES
+        OTF                   = I_OTF
+        LINES                 = I_TLINE
+      EXCEPTIONS
+        ERR_MAX_LINEWIDTH     = 1
+        ERR_FORMAT            = 2
+        ERR_CONV_NOT_POSSIBLE = 3
+        OTHERS                = 4.
+* Sy-subrc check not checked
+
+
+
+*  * Convert Hexa String to Binary format
+    CALL FUNCTION 'SCMS_XSTRING_TO_BINARY'
+      EXPORTING
+        BUFFER     = I_XSTRING
+      TABLES
+        BINARY_TAB = I_OBJBIN[].
+
+    IN_MAILID = WA_ZM2-EMAIL.
+*    IN_MAILID = 'JYOTSNA@BLUECROSSLABS.COM'.
+*      BREAK-POINT .
+    IF IT_TAB3 IS NOT INITIAL.
+      PERFORM SEND_MAIL USING IN_MAILID .
+    ENDIF.
+
+    CLEAR : RMNAME,HQ,DATE1,DATE2,TSVAL,TCVAL,TC1VAL,TDVAL,TNET,TINV,IT_TAB3,WA_TAB3.
+    CLEAR : RMNAME,HQ,DATE1,DATE2,TSVAL,TCVAL,TC1VAL,TDVAL,TNET,TINV,IT_TAB3,WA_TAB3.
+
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  EMAILDZM
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM EMAILDZM .
+
+  LOOP AT IT_TAB2 INTO WA_TAB2 WHERE DZM NE SPACE.
+    WA_ZM1-ZM = WA_TAB2-DZM.
+    WA_ZM1-RM = WA_TAB2-RM.
+    COLLECT WA_ZM1 INTO IT_ZM1.
+    CLEAR WA_ZM1.
+  ENDLOOP.
+  SORT IT_ZM1 BY ZM RM.
+
+  LOOP AT IT_ZM1 INTO WA_ZM1.
+    SELECT SINGLE * FROM YTERRALLC WHERE BZIRK EQ WA_ZM1-ZM AND ENDDA GE SY-DATUM.
+    IF SY-SUBRC EQ 0.
+      SELECT SINGLE * FROM PA0001 WHERE PLANS EQ YTERRALLC-PLANS AND ENDDA GE SY-DATUM.
+      IF SY-SUBRC EQ 0.
+        SELECT SINGLE * FROM PA0105 WHERE PERNR EQ PA0001-PERNR AND SUBTY EQ '0010'.
+        IF SY-SUBRC EQ 0.
+          WA_ZM2-ZM = WA_ZM1-ZM.
+          WA_ZM2-EMAIL = PA0105-USRID_LONG.
+          COLLECT WA_ZM2 INTO IT_ZM2.
+          CLEAR WA_ZM2.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+  ENDLOOP.
+  SORT IT_ZM2 BY ZM.
+  DELETE ADJACENT DUPLICATES FROM IT_ZM2 COMPARING ZM.
+  DELETE IT_ZM2 WHERE EMAIL EQ SPACE.
+  LOOP AT IT_ZM2 INTO WA_ZM2.
+    CALL FUNCTION 'SSF_FUNCTION_MODULE_NAME'
+      EXPORTING
+        FORMNAME           = 'ZSR24B'
+*       VARIANT            = ' '
+*       DIRECT_CALL        = ' '
+      IMPORTING
+        FM_NAME            = V_FM
+      EXCEPTIONS
+        NO_FORM            = 1
+        NO_FUNCTION_MODULE = 2
+        OTHERS             = 3.
+    IF SY-SUBRC <> 0.
+      MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+      WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+    ENDIF.
+
+*  CONTROL-NO_OPEN   = 'X'.
+*  CONTROL-NO_CLOSE  = 'X'.
+*
+*  CALL FUNCTION 'SSF_OPEN'
+*    EXPORTING
+*      CONTROL_PARAMETERS = CONTROL.
+
+
+*  LOOP AT IT_ZM2 INTO WA_ZM2.
+*    LOOP AT IT_ZM1 INTO WA_ZM1 WHERE ZM = WA_ZM2-ZM.
+
+
+*   * Set the control parameter
+    W_CTRLOP-GETOTF = ABAP_TRUE.
+    W_CTRLOP-NO_DIALOG = ABAP_TRUE.
+    W_COMPOP-TDNOPREV = ABAP_TRUE.
+    W_CTRLOP-PREVIEW = SPACE.
+    W_COMPOP-TDDEST = 'LOCL'.
+
+*  LOOP AT IT_RM1 INTO WA_RM1.
+    CLEAR : IT_TAB3,WA_TAB3.
+    CLEAR : TSVAL1,TSVAL,TCVAL1,TCVAL,TCVAL2,TC1VAL,TDVAL1,TDVAL,TNET1,TNET,TINV1,TINV.
+
+    LOOP AT IT_TAB2 INTO WA_TAB2 WHERE DZM = WA_ZM2-ZM .
+
+      AT NEW RM.
+        SELECT SINGLE * FROM YTERRALLC WHERE BZIRK EQ WA_TAB2-RM AND ENDDA GE SY-DATUM.
+        IF SY-SUBRC EQ 0.
+          SELECT SINGLE * FROM PA0001 WHERE PLANS EQ YTERRALLC-PLANS AND ENDDA GE SY-DATUM.
+          IF SY-SUBRC EQ 0.
+            CONCATENATE 'RM:' PA0001-ENAME INTO  WA_TAB3-NAME1 SEPARATED BY SPACE.
+          ENDIF.
+        ENDIF.
+        IF WA_TAB3-NAME1 EQ SPACE.
+          WA_TAB3-NAME1 = 'VACANT'.
+        ENDIF.
+        SELECT SINGLE * FROM ZDRPHQ WHERE BZIRK = WA_TAB2-RM.
+        IF SY-SUBRC EQ 0.
+          SELECT SINGLE * FROM  ZTHR_HEQ_DES WHERE ZZ_HQCODE EQ ZDRPHQ-ZZ_HQCODE.
+          IF SY-SUBRC EQ 0.
+            WA_TAB3-ORT01 =  ZTHR_HEQ_DES-ZZ_HQDESC.
+          ENDIF.
+        ENDIF.
+        WA_TAB3-TYP = 'NEWRM'.
+        APPEND WA_TAB3 TO IT_TAB3.
+        CLEAR WA_TAB3.
+      ENDAT.
+
+      WA_TAB3-NAME1 = WA_TAB2-NAME1.
+      WA_TAB3-ORT01 = WA_TAB2-ORT01.
+
+      WA_TAB3-S_VAL = WA_TAB2-S_VAL.
+      WA_TAB3-C_VAL = WA_TAB2-C_VAL.
+      WA_TAB3-C_VAL1 = WA_TAB2-C_VAL1.
+      WA_TAB3-D_VAL = WA_TAB2-D_VAL.
+      WA_TAB3-NET = WA_TAB2-S_VAL - WA_TAB2-C_VAL1 + WA_TAB2-D_VAL.
+      WA_TAB3-INV = WA_TAB2-INV1.
+      WA_TAB3-ZM = WA_TAB2-ZM.
+      WA_TAB3-RM = WA_TAB2-RM.
+
+      COLLECT WA_TAB3 INTO IT_TAB3.
+      CLEAR WA_TAB3.
+
+
+      TSVAL1 = TSVAL1 + WA_TAB2-S_VAL.
+      TCVAL1 = TCVAL1 + WA_TAB2-C_VAL.
+      TCVAL2 = TCVAL2 + WA_TAB2-C_VAL1.
+      TDVAL1 = TDVAL1 + WA_TAB2-D_VAL.
+      TNET1 = TNET1 +  WA_TAB3-NET .
+      TINV1 = TINV1 + WA_TAB2-INV1.
+
+
+
+      AT END OF RM.
+
+        TSVAL =  TSVAL1.
+        TCVAL = TCVAL1.
+        TC1VAL = TCVAL2.
+        TDVAL = TDVAL1.
+        TNET = TNET1.
+        TINV = TINV1.
+        CONDENSE : TSVAL,TCVAL,TC1VAL,TDVAL,TNET,TINV.
+        WA_TAB3-NAME1 = 'RM TOTAL'.
+        WA_TAB3-TYP = 'RMTOT'.
+        WA_TAB3-S_VAL = TSVAL.
+        WA_TAB3-C_VAL = TCVAL.
+        WA_TAB3-C_VAL1 = TCVAL.
+        WA_TAB3-D_VAL = TDVAL.
+        WA_TAB3-NET = TNET.
+        WA_TAB3-INV = TINV.
+        WA_TAB3-ZM = WA_TAB2-ZM.
+        WA_TAB3-RM = WA_TAB2-RM.
+        APPEND WA_TAB3 TO IT_TAB3.
+        CLEAR WA_TAB3.
+        CLEAR : TSVAL1,TCVAL1,TCVAL2,TDVAL1,TNET1,TINV1.
+        CLEAR : TSVAL,TCVAL,TC1VAL,TDVAL,TNET,TINV.
+      ENDAT.
+
+
+
+      WA_TAB4-ZM = WA_TAB2-ZM.
+      WA_TAB4-RM = WA_TAB2-RM.
+      COLLECT WA_TAB4 INTO IT_TAB4.
+      CLEAR WA_TAB4.
+    ENDLOOP.
+
+    SORT IT_TAB4 BY ZM RM.
+    DELETE ADJACENT DUPLICATES FROM IT_TAB4 COMPARING ZM RM.
+
+    TSVAL = TSVAL1.
+    TCVAL = TCVAL1.
+    TC1VAL = TCVAL2.
+    TDVAL = TDVAL1.
+    TNET = TNET1.
+    TINV = TINV1.
+    CONDENSE : TSVAL,TCVAL,TC1VAL,TDVAL,TNET,TINV.
+
+*    CLEAR : RMNAME,HQ.
+*    SELECT SINGLE * FROM YTERRALLC WHERE BZIRK EQ WA_ZM2-ZM AND ENDDA GE SY-DATUM.
+*    IF SY-SUBRC EQ 0.
+*      SELECT SINGLE * FROM PA0001 WHERE PLANS EQ YTERRALLC-PLANS AND ENDDA GE SY-DATUM.
+*      IF SY-SUBRC EQ 0.
+*        RMNAME = PA0001-ENAME.
+*      ENDIF.
+*    ENDIF.
+*    IF RMNAME EQ SPACE.
+*      RMNAME = 'VACANT'.
+*    ENDIF.
+*    SELECT SINGLE * FROM ZDRPHQ WHERE BZIRK = WA_RM1-RM.
+*    IF SY-SUBRC EQ 0.
+*      SELECT SINGLE * FROM  ZTHR_HEQ_DES WHERE ZZ_HQCODE EQ ZDRPHQ-ZZ_HQCODE.
+*      IF SY-SUBRC EQ 0.
+*        HQ =  ZTHR_HEQ_DES-ZZ_HQDESC.
+*      ENDIF.
+*    ENDIF.
+
+
+    CALL FUNCTION V_FM
+      EXPORTING
+*       CONTROL_PARAMETERS = CONTROL
+*       USER_SETTINGS      = 'X'
+*       OUTPUT_OPTIONS     = W_SSFCOMPOP
+        CONTROL_PARAMETERS = W_CTRLOP
+        OUTPUT_OPTIONS     = W_COMPOP
+        USER_SETTINGS      = ABAP_TRUE
+        FORMAT             = FORMAT
+        RMNAME             = RMNAME
+        HQ                 = HQ
+        DATE1              = DATE1
+        DATE2              = DATE2
+        TSVAL              = TSVAL
+        TCVAL              = TCVAL
+        TC1VAL             = TC1VAL
+        TDVAL              = TDVAL
+        TNET               = TNET
+        TINV               = TINV
+        TXT1               = TXT1
+      IMPORTING
+        JOB_OUTPUT_INFO    = W_RETURN " This will have all output
+      TABLES
+        IT_TAB1            = IT_TAB3
+*       IT_TAB2            = IT_TAB4
+*       itab_division      = itab_division
+*       itab_storage       = itab_storage
+*       itab_pa0002        = itab_pa0002
+      EXCEPTIONS
+        FORMATTING_ERROR   = 1
+        INTERNAL_ERROR     = 2
+        SEND_ERROR         = 3
+        USER_CANCELED      = 4
+        OTHERS             = 5.
+
+*    CLEAR : rmname,hq,date1,date2,tsval,tcval,tc1val,tdval,tnet,tinv,it_tab3,wa_tab3.
+
+    I_OTF[] = W_RETURN-OTFDATA[].
+
+* Import Binary file and filesize
+    CALL FUNCTION 'CONVERT_OTF'
+      EXPORTING
+        FORMAT                = 'PDF'
+        MAX_LINEWIDTH         = 132
+      IMPORTING
+        BIN_FILESIZE          = V_LEN_IN
+        BIN_FILE              = I_XSTRING   " This is NOT Binary. This is Hexa
+      TABLES
+        OTF                   = I_OTF
+        LINES                 = I_TLINE
+      EXCEPTIONS
+        ERR_MAX_LINEWIDTH     = 1
+        ERR_FORMAT            = 2
+        ERR_CONV_NOT_POSSIBLE = 3
+        OTHERS                = 4.
+* Sy-subrc check not checked
+
+
+
+*  * Convert Hexa String to Binary format
+    CALL FUNCTION 'SCMS_XSTRING_TO_BINARY'
+      EXPORTING
+        BUFFER     = I_XSTRING
+      TABLES
+        BINARY_TAB = I_OBJBIN[].
+
+    IN_MAILID = WA_ZM2-EMAIL.
+*    IN_MAILID = 'JYOTSNA@BLUECROSSLABS.COM'.
+*      BREAK-POINT .
+    IF IT_TAB3 IS NOT INITIAL.
+      PERFORM SEND_MAIL USING IN_MAILID .
+    ENDIF.
+
+    CLEAR : RMNAME,HQ,DATE1,DATE2,TSVAL,TCVAL,TC1VAL,TDVAL,TNET,TINV,IT_TAB3,WA_TAB3.
+    CLEAR : RMNAME,HQ,DATE1,DATE2,TSVAL,TCVAL,TC1VAL,TDVAL,TNET,TINV,IT_TAB3,WA_TAB3.
+
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  DETAIL1
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM DETAIL1 .
+
+  PERFORM FORM11.
+
+
+*  LOOP AT IT_TAB2 INTO WA_TAB2.
+*    WRITE :/ WA_TAB2-RM,WA_TAB2-DZM,WA_TAB2-ZM,WA_TAB2-ZM,WA_TAB2-KUNNR,WA_TAB2-NAME1,WA_TAB2-S_VAL,WA_TAB2-C_VAL,WA_TAB2-C_VAL1,WA_TAB2-D_VAL,
+*    WA_TAB2-INV1.
+*  ENDLOOP.
+
+  LOOP AT IT_TAB2 INTO WA_TAB2.
+*    wa_rm1-rm = wa_tab2-rm.
+    WA_RM1-ZM = WA_TAB2-ZM.
+    COLLECT WA_RM1 INTO IT_RM1.
+    CLEAR WA_RM1.
+  ENDLOOP.
+  SORT IT_RM1 BY ZM.
+  DELETE ADJACENT DUPLICATES FROM IT_RM1 COMPARING ZM.
+
+  CALL FUNCTION 'SSF_FUNCTION_MODULE_NAME'
+    EXPORTING
+      FORMNAME           = 'ZSR24'
+*     VARIANT            = ' '
+*     DIRECT_CALL        = ' '
+    IMPORTING
+      FM_NAME            = V_FM
+    EXCEPTIONS
+      NO_FORM            = 1
+      NO_FUNCTION_MODULE = 2
+      OTHERS             = 3.
+
+  CONTROL-NO_OPEN   = 'X'.
+  CONTROL-NO_CLOSE  = 'X'.
+
+  CALL FUNCTION 'SSF_OPEN'
+    EXPORTING
+      CONTROL_PARAMETERS = CONTROL.
+  LOOP AT IT_RM1 INTO WA_RM1.
+    CLEAR : IT_TAB3,WA_TAB3.
+    CLEAR : TSVAL1,TSVAL,TCVAL1,TCVAL,TCVAL2,TC1VAL,TDVAL1,TDVAL,TNET1,TNET,TINV1,TINV.
+    LOOP AT IT_TAB2 INTO WA_TAB2 WHERE ZM = WA_RM1-ZM.
+
+      SELECT SINGLE * FROM KNA1 WHERE KUNNR EQ WA_TAB2-KUNNR AND aufsd <> '03'.
+      IF SY-SUBRC EQ 0.
+        WA_TAB3-NAME1 = KNA1-NAME1.
+        WA_TAB3-ORT01 = KNA1-ORT01.
+      ENDIF.
+
+*      WA_TAB3-NAME1 = WA_TAB2-NAME1.
+*      WA_TAB3-ORT01 = WA_TAB2-ORT01.
+
+      WA_TAB3-S_VAL = WA_TAB2-S_VAL.
+      WA_TAB3-C_VAL = WA_TAB2-C_VAL.
+      WA_TAB3-C_VAL1 = WA_TAB2-C_VAL1.
+      WA_TAB3-D_VAL = WA_TAB2-D_VAL.
+      WA_TAB3-NET = WA_TAB2-S_VAL - WA_TAB2-C_VAL1 + WA_TAB2-D_VAL.
+      WA_TAB3-INV = WA_TAB2-INV1.
+
+      TSVAL1 = TSVAL1 + WA_TAB2-S_VAL.
+      TCVAL1 = TCVAL1 + WA_TAB2-C_VAL.
+      TCVAL2 = TCVAL2 + WA_TAB2-C_VAL1.
+      TDVAL1 = TDVAL1 + WA_TAB2-D_VAL.
+      TNET1 = TNET1 +  WA_TAB3-NET .
+      TINV1 = TINV1 + WA_TAB2-INV1.
+      COLLECT WA_TAB3 INTO IT_TAB3.
+      CLEAR WA_TAB3.
+    ENDLOOP.
+    SORT IT_TAB3 BY NAME1.
+    DELETE IT_TAB3 WHERE NAME1 EQ SPACE.
+    TSVAL = TSVAL1.
+    TCVAL = TCVAL1.
+    TC1VAL = TCVAL2.
+    TDVAL = TDVAL1.
+    TNET = TNET1.
+    TINV = TINV1.
+    CONDENSE : TSVAL,TCVAL,TC1VAL,TDVAL,TNET,TINV.
+
+    CLEAR : RMNAME,HQ.
+    SELECT SINGLE * FROM YTERRALLC WHERE BZIRK EQ WA_RM1-ZM AND ENDDA GE SY-DATUM.
+    IF SY-SUBRC EQ 0.
+      SELECT SINGLE * FROM PA0001 WHERE PLANS EQ YTERRALLC-PLANS AND ENDDA GE SY-DATUM.
+      IF SY-SUBRC EQ 0.
+        RMNAME = PA0001-ENAME.
+      ENDIF.
+    ENDIF.
+    IF RMNAME EQ SPACE.
+      RMNAME = 'VACANT'.
+    ENDIF.
+    SELECT SINGLE * FROM ZDRPHQ WHERE BZIRK = WA_RM1-ZM.
+    IF SY-SUBRC EQ 0.
+      SELECT SINGLE * FROM  ZTHR_HEQ_DES WHERE ZZ_HQCODE EQ ZDRPHQ-ZZ_HQCODE.
+      IF SY-SUBRC EQ 0.
+        HQ =  ZTHR_HEQ_DES-ZZ_HQDESC.
+      ENDIF.
+    ENDIF.
+
+
+    CALL FUNCTION V_FM
+      EXPORTING
+        CONTROL_PARAMETERS = CONTROL
+        USER_SETTINGS      = 'X'
+        OUTPUT_OPTIONS     = W_SSFCOMPOP
+        FORMAT             = FORMAT
+        RMNAME             = RMNAME
+        HQ                 = HQ
+        DATE1              = DATE1
+        DATE2              = DATE2
+        TSVAL              = TSVAL
+        TCVAL              = TCVAL
+        TC1VAL             = TC1VAL
+        TDVAL              = TDVAL
+        TNET               = TNET
+        TINV               = TINV
+        TXT1               = TXT1
+      TABLES
+        IT_TAB1            = IT_TAB3
+*       itab_division      = itab_division
+*       itab_storage       = itab_storage
+*       itab_pa0002        = itab_pa0002
+      EXCEPTIONS
+        FORMATTING_ERROR   = 1
+        INTERNAL_ERROR     = 2
+        SEND_ERROR         = 3
+        USER_CANCELED      = 4
+        OTHERS             = 5.
+
+
+  ENDLOOP.
+  CLEAR : FORMAT.
+
+  CALL FUNCTION 'SSF_CLOSE'.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  EMAILZM1
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM EMAILZM1 .
+
+  LOOP AT IT_TAB2 INTO WA_TAB2.
+    WA_RM1-RM = WA_TAB2-ZM.
+    COLLECT WA_RM1 INTO IT_RM1.
+    CLEAR WA_RM1.
+  ENDLOOP.
+  SORT IT_RM1 BY RM.
+  DELETE ADJACENT DUPLICATES FROM IT_RM1 COMPARING RM.
+
+  LOOP AT IT_RM1 INTO WA_RM1.
+    SELECT SINGLE * FROM YTERRALLC WHERE BZIRK EQ WA_RM1-RM AND ENDDA GE SY-DATUM.
+    IF SY-SUBRC EQ 0.
+      SELECT SINGLE * FROM PA0001 WHERE PLANS EQ YTERRALLC-PLANS AND ENDDA GE SY-DATUM.
+      IF SY-SUBRC EQ 0.
+        SELECT SINGLE * FROM PA0105 WHERE PERNR EQ PA0001-PERNR AND SUBTY EQ '0010'.
+        IF SY-SUBRC EQ 0.
+          WA_RM2-RM = WA_RM1-RM.
+          WA_RM2-EMAIL = PA0105-USRID_LONG.
+          COLLECT WA_RM2 INTO IT_RM2.
+          CLEAR WA_RM2.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+  ENDLOOP.
+  DELETE IT_RM2 WHERE EMAIL EQ SPACE.
+
+  LOOP AT IT_RM2 INTO WA_RM2.
+    LOOP AT IT_RM1 INTO WA_RM1 WHERE RM = WA_RM2-RM.
+
+      CALL FUNCTION 'SSF_FUNCTION_MODULE_NAME'
+        EXPORTING
+          FORMNAME           = 'ZSR24'
+*         VARIANT            = ' '
+*         DIRECT_CALL        = ' '
+        IMPORTING
+          FM_NAME            = V_FM
+        EXCEPTIONS
+          NO_FORM            = 1
+          NO_FUNCTION_MODULE = 2
+          OTHERS             = 3.
+      IF SY-SUBRC <> 0.
+        MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+        WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+      ENDIF.
+
+*  CONTROL-NO_OPEN   = 'X'.
+*  CONTROL-NO_CLOSE  = 'X'.
+*
+*  CALL FUNCTION 'SSF_OPEN'
+*    EXPORTING
+*      CONTROL_PARAMETERS = CONTROL.
+
+*   * Set the control parameter
+      W_CTRLOP-GETOTF = ABAP_TRUE.
+      W_CTRLOP-NO_DIALOG = ABAP_TRUE.
+      W_COMPOP-TDNOPREV = ABAP_TRUE.
+      W_CTRLOP-PREVIEW = SPACE.
+      W_COMPOP-TDDEST = 'LOCL'.
+
+*  LOOP AT IT_RM1 INTO WA_RM1.
+      CLEAR : IT_TAB3,WA_TAB3.
+      CLEAR : TSVAL1,TSVAL,TCVAL1,TCVAL,TCVAL2,TC1VAL,TDVAL1,TDVAL,TNET1,TNET,TINV1,TINV.
+      LOOP AT IT_TAB2 INTO WA_TAB2 WHERE ZM = WA_RM1-RM.
+
+        SELECT SINGLE * FROM KNA1 WHERE KUNNR EQ WA_TAB2-KUNNR AND aufsd <> '03'.
+        IF SY-SUBRC EQ 0.
+          WA_TAB3-NAME1 = KNA1-NAME1.
+          WA_TAB3-ORT01 = KNA1-ORT01.
+        ENDIF.
+        WA_TAB3-S_VAL = WA_TAB2-S_VAL.
+        WA_TAB3-C_VAL = WA_TAB2-C_VAL.
+        WA_TAB3-C_VAL1 = WA_TAB2-C_VAL1.
+        WA_TAB3-D_VAL = WA_TAB2-D_VAL.
+        WA_TAB3-NET = WA_TAB2-S_VAL - WA_TAB2-C_VAL1 + WA_TAB2-D_VAL.
+        WA_TAB3-INV = WA_TAB2-INV1.
+
+        TSVAL1 = TSVAL1 + WA_TAB2-S_VAL.
+        TCVAL1 = TCVAL1 + WA_TAB2-C_VAL.
+        TCVAL2 = TCVAL2 + WA_TAB2-C_VAL1.
+        TDVAL1 = TDVAL1 + WA_TAB2-D_VAL.
+        TNET1 = TNET1 +  WA_TAB3-NET .
+        TINV1 = TINV1 + WA_TAB2-INV1.
+        COLLECT WA_TAB3 INTO IT_TAB3.
+        CLEAR WA_TAB3.
+      ENDLOOP.
+      SORT IT_TAB3 BY NAME1.
+      DELETE IT_TAB3 WHERE NAME1 EQ SPACE.
+      TSVAL = TSVAL1.
+      TCVAL = TCVAL1.
+      TC1VAL = TCVAL2.
+      TDVAL = TDVAL1.
+      TNET = TNET1.
+      TINV = TINV1.
+      CONDENSE : TSVAL,TCVAL,TC1VAL,TDVAL,TNET,TINV.
+
+      CLEAR : RMNAME,HQ.
+      SELECT SINGLE * FROM YTERRALLC WHERE BZIRK EQ WA_RM1-RM AND ENDDA GE SY-DATUM.
+      IF SY-SUBRC EQ 0.
+        SELECT SINGLE * FROM PA0001 WHERE PLANS EQ YTERRALLC-PLANS AND ENDDA GE SY-DATUM.
+        IF SY-SUBRC EQ 0.
+          RMNAME = PA0001-ENAME.
+        ENDIF.
+      ENDIF.
+      IF RMNAME EQ SPACE.
+        RMNAME = 'VACANT'.
+      ENDIF.
+      SELECT SINGLE * FROM ZDRPHQ WHERE BZIRK = WA_RM1-RM.
+      IF SY-SUBRC EQ 0.
+        SELECT SINGLE * FROM  ZTHR_HEQ_DES WHERE ZZ_HQCODE EQ ZDRPHQ-ZZ_HQCODE.
+        IF SY-SUBRC EQ 0.
+          HQ =  ZTHR_HEQ_DES-ZZ_HQDESC.
+        ENDIF.
+      ENDIF.
+
+
+      CALL FUNCTION V_FM
+        EXPORTING
+          CONTROL_PARAMETERS = W_CTRLOP
+          OUTPUT_OPTIONS     = W_COMPOP
+          USER_SETTINGS      = ABAP_TRUE
+          FORMAT             = FORMAT
+          RMNAME             = RMNAME
+          HQ                 = HQ
+          DATE1              = DATE1
+          DATE2              = DATE2
+          TSVAL              = TSVAL
+          TCVAL              = TCVAL
+          TC1VAL             = TC1VAL
+          TDVAL              = TDVAL
+          TNET               = TNET
+          TINV               = TINV
+          TXT1               = TXT1
+        IMPORTING
+          JOB_OUTPUT_INFO    = W_RETURN " This will have all output
+        TABLES
+          IT_TAB1            = IT_TAB3
+*         itab_division      = itab_division
+*         itab_storage       = itab_storage
+*         itab_pa0002        = itab_pa0002
+        EXCEPTIONS
+          FORMATTING_ERROR   = 1
+          INTERNAL_ERROR     = 2
+          SEND_ERROR         = 3
+          USER_CANCELED      = 4
+          OTHERS             = 5.
+
+*      CLEAR : rmname,hq,date1,date2,tsval,tcval,tc1val,tdval,tnet,tinv,it_tab3,wa_tab3.
+
+      I_OTF[] = W_RETURN-OTFDATA[].
+
+* Import Binary file and filesize
+      CALL FUNCTION 'CONVERT_OTF'
+        EXPORTING
+          FORMAT                = 'PDF'
+          MAX_LINEWIDTH         = 132
+        IMPORTING
+          BIN_FILESIZE          = V_LEN_IN
+          BIN_FILE              = I_XSTRING   " This is NOT Binary. This is Hexa
+        TABLES
+          OTF                   = I_OTF
+          LINES                 = I_TLINE
+        EXCEPTIONS
+          ERR_MAX_LINEWIDTH     = 1
+          ERR_FORMAT            = 2
+          ERR_CONV_NOT_POSSIBLE = 3
+          OTHERS                = 4.
+* Sy-subrc check not checked
+
+
+
+*  * Convert Hexa String to Binary format
+      CALL FUNCTION 'SCMS_XSTRING_TO_BINARY'
+        EXPORTING
+          BUFFER     = I_XSTRING
+        TABLES
+          BINARY_TAB = I_OBJBIN[].
+
+      IN_MAILID = WA_RM2-EMAIL.
+*      IN_MAILID = 'JYOTSNA@BLUECROSSLABS.COM'.
+*      BREAK-POINT .
+      IF IT_TAB3 IS NOT INITIAL.
+        PERFORM SEND_MAIL USING IN_MAILID .
+      ENDIF.
+
+      CLEAR : RMNAME,HQ,DATE1,DATE2,TSVAL,TCVAL,TC1VAL,TDVAL,TNET,TINV,IT_TAB3,WA_TAB3.
+      CLEAR : RMNAME,HQ,DATE1,DATE2,TSVAL,TCVAL,TC1VAL,TDVAL,TNET,TINV,IT_TAB3,WA_TAB3.
+
+    ENDLOOP.
+  ENDLOOP.
+*  CLEAR : FORMAT.
+*
+*  CALL FUNCTION 'SSF_CLOSE'.
+
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  FORM11
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM FORM11 .
+  SELECT * FROM ZDSMTER INTO TABLE IT_ZDSMTER WHERE ZMONTH EQ MONTH AND ZYEAR EQ YEAR AND ZDSM IN ZONE.
+  SELECT * FROM ZDSMTER INTO TABLE IT_ZDSMTER1 WHERE ZMONTH EQ MONTH AND ZYEAR EQ YEAR.
+  IF IT_ZDSMTER IS NOT INITIAL.
+    SELECT * FROM ZSTKRM INTO TABLE IT_ZSTKRM FOR ALL ENTRIES IN IT_ZDSMTER WHERE BEGDA GE DATE1 AND ENDDA LE DATE2 AND BZIRK EQ IT_ZDSMTER-BZIRK.
+  ENDIF.
+  IF IT_ZSTKRM IS NOT INITIAL.
+    SELECT * FROM ZSTKSALE INTO TABLE IT_ZSTKSALE FOR ALL ENTRIES IN IT_ZSTKRM WHERE KUNAG EQ IT_ZSTKRM-KUNNR.
+    SELECT * FROM ZSTKSALE1 INTO TABLE IT_ZSTKSALE1 FOR ALL ENTRIES IN IT_ZSTKRM WHERE KUNAG EQ IT_ZSTKRM-KUNNR.
+  ENDIF.
+
+  SORT IT_ZSTKRM BY KUNNR.
+
+  LOOP AT IT_ZSTKSALE INTO WA_ZSTKSALE.
+    WA_SL1-KUNAG = WA_ZSTKSALE-KUNAG.
+    WA_SL1-SPART = WA_ZSTKSALE-SPART.
+    WA_SL1-S_VAL = WA_ZSTKSALE-S_VAL.
+    WA_SL1-C_VAL = WA_ZSTKSALE-C_VAL.
+    WA_SL1-C_VAL1 = WA_ZSTKSALE-C_VAL1.
+    WA_SL1-D_VAL = WA_ZSTKSALE-D_VAL.
+    COLLECT WA_SL1 INTO IT_SL1.
+    CLEAR WA_SL1.
+  ENDLOOP.
+
+  LOOP AT IT_ZSTKSALE1 INTO WA_ZSTKSALE1.
+    WA_SL2-KUNAG = WA_ZSTKSALE1-KUNAG.
+    WA_SL2-INVNO = WA_ZSTKSALE1-INVNO.
+    WA_SL2-NINVNO = WA_ZSTKSALE1-NINVNO.
+    COLLECT WA_SL2 INTO IT_SL2.
+    CLEAR WA_SL2.
+  ENDLOOP.
+
+  LOOP AT IT_SL1 INTO WA_SL1.
+*    WRITE : / 'A1',WA_SL1-KUNAG,WA_SL1-SPART,WA_SL1-S_VAL,WA_SL1-C_VAL,WA_SL1-D_VAL.
+    LOOP AT IT_ZSTKRM INTO WA_ZSTKRM WHERE KUNNR = WA_SL1-KUNAG AND SPART = WA_SL1-SPART.
+*      WRITE : / 'A1',WA_ZSTKRM-KUNNR,WA_ZSTKRM-SPART,WA_ZSTKRM-ENDDA,WA_ZSTKRM-BEGDA,WA_ZSTKRM-BZIRK,WA_ZSTKRM-PERCNT.
+      WA_TAB1-KUNNR = WA_ZSTKRM-KUNNR.
+      WA_TAB1-RM = WA_ZSTKRM-BZIRK.
+
+      READ TABLE IT_ZDSMTER INTO WA_ZDSMTER WITH KEY BZIRK = WA_ZSTKRM-BZIRK ZDSM+0(2) =  'D-'.
+      IF SY-SUBRC EQ 0.
+        WA_TAB1-ZM = WA_ZDSMTER-ZDSM.
+      ENDIF.
+
+      READ TABLE IT_ZDSMTER1 INTO WA_ZDSMTER1 WITH KEY BZIRK = WA_ZSTKRM-BZIRK ZDSM+0(2) =  'Z-'.
+      IF SY-SUBRC EQ 0.
+        WA_TAB1-DZM = WA_ZDSMTER1-ZDSM.
+      ENDIF.
+
+      CLEAR : VAL1,VAL2,VAL3,VAL4,INV1.
+      VAL1 = WA_SL1-S_VAL * ( WA_ZSTKRM-PERCNT / 100 ).
+      VAL2 = WA_SL1-C_VAL * ( WA_ZSTKRM-PERCNT / 100 ).
+      VAL4 = WA_SL1-C_VAL1 * ( WA_ZSTKRM-PERCNT / 100 ).
+      VAL3 = WA_SL1-D_VAL * ( WA_ZSTKRM-PERCNT / 100 ).
+      READ TABLE IT_SL2 INTO WA_SL2 WITH KEY KUNAG = WA_ZSTKRM-KUNNR.
+      IF SY-SUBRC EQ 0.
+        INV1 = ( WA_SL2-INVNO + WA_SL2-NINVNO ) .
+      ENDIF.
+*      WRITE : / 'A2',WA_ZSTKRM-PERCNT,VAL1,VAL2,VAL3,INV1.
+      WA_TAB1-S_VAL = VAL1.
+      WA_TAB1-C_VAL = VAL2.
+      WA_TAB1-C_VAL1 = VAL4.
+      WA_TAB1-D_VAL = VAL3.
+      WA_TAB1-INV1 = INV1.
+      COLLECT WA_TAB1 INTO IT_TAB1.
+      CLEAR WA_TAB1.
+    ENDLOOP.
+  ENDLOOP.
+
+  LOOP AT IT_ZSTKRM INTO WA_ZSTKRM.
+    READ TABLE IT_SL1 INTO WA_SL1 WITH KEY KUNAG = WA_ZSTKRM-KUNNR SPART = WA_ZSTKRM-SPART.
+    IF SY-SUBRC EQ 4.
+
+      WA_TAB1-KUNNR = WA_ZSTKRM-KUNNR.
+      WA_TAB1-RM = WA_ZSTKRM-BZIRK.
+
+      READ TABLE IT_ZDSMTER INTO WA_ZDSMTER WITH KEY BZIRK = WA_ZSTKRM-BZIRK ZDSM+0(2) =  'D-'.
+      IF SY-SUBRC EQ 0.
+        WA_TAB1-ZM = WA_ZDSMTER-ZDSM.
+      ENDIF.
+
+      READ TABLE IT_ZDSMTER1 INTO WA_ZDSMTER1 WITH KEY BZIRK = WA_ZSTKRM-BZIRK ZDSM+0(2) =  'Z-'.
+      IF SY-SUBRC EQ 0.
+        WA_TAB1-DZM = WA_ZDSMTER1-ZDSM.
+      ENDIF.
+
+      CLEAR : VAL1,VAL2,VAL3,VAL4,INV1.
+      VAL1 = 0.
+      VAL2 = 0.
+      VAL4 = 0.
+      VAL3 = 0.
+
+      WA_TAB1-S_VAL = VAL1.
+      WA_TAB1-C_VAL = VAL2.
+      WA_TAB1-C_VAL1 = VAL4.
+      WA_TAB1-D_VAL = VAL3.
+      WA_TAB1-INV1 = 0.
+      COLLECT WA_TAB1 INTO IT_TAB1.
+      CLEAR WA_TAB1.
+
+    ENDIF.
+  ENDLOOP.
+
+*  ULINE.
+  SORT IT_TAB1 BY RM KUNNR.
+  FORMAT COLOR 1.
+  LOOP AT IT_TAB1 INTO WA_TAB1 WHERE ZM IN ZONE AND KUNNR ne space.
+
+    CLEAR : CHK1,DEL1.
+    CHK1 = WA_TAB1-S_VAL + WA_TAB1-C_VAL + WA_TAB1-C_VAL1 + WA_TAB1-D_VAL.
+    IF CHK1 LE 0.
+      SELECT SINGLE * FROM KNA1 WHERE KUNNR EQ WA_TAB1-KUNNR AND LOEVM EQ 'X'.
+      IF SY-SUBRC EQ 0.
+        DEL1 = 1.
+      ENDIF.
+    ENDIF.
+
+    IF DEL1 NE 1.
+
+*    ON CHANGE OF WA_TAB1-RM.
+*    WA_TAB2-ZM = WA_TAB1-ZM.
+*    WA_TAB2-DZM = WA_TAB1-DZM.
+      WA_TAB2-ZM = WA_TAB1-ZM.
+*    ENDON.
+      WA_TAB2-KUNNR = WA_TAB1-KUNNR.
+*    SELECT SINGLE * FROM KNA1 WHERE KUNNR EQ WA_TAB1-KUNNR.
+*    IF SY-SUBRC EQ 0.
+*      WA_TAB2-NAME1 = KNA1-NAME1.
+*      WA_TAB2-ORT01 = KNA1-ORT01.
+*    ENDIF.
+      WA_TAB2-S_VAL = WA_TAB1-S_VAL.
+      WA_TAB2-C_VAL = WA_TAB1-C_VAL.
+      WA_TAB2-C_VAL1 = WA_TAB1-C_VAL1.
+      WA_TAB2-D_VAL = WA_TAB1-D_VAL.
+      WA_TAB2-INV1 = WA_TAB1-INV1.
+      COLLECT WA_TAB2 INTO IT_TAB2.
+      CLEAR WA_TAB2.
+    ENDIF.
+  ENDLOOP.
+ENDFORM.

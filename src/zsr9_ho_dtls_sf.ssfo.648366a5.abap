@@ -1,0 +1,25 @@
+CLEAR GV_CNT.
+DESCRIBE TABLE GT_SR9_ZM LINES GV_CNT.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_FUGR" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <AREAT>PO Tax details</AREAT>
+   <INCLUDES>
+    <SOBJ_NAME>LZFG_PO_TAXTOP</SOBJ_NAME>
+    <SOBJ_NAME>SAPLZFG_PO_TAX</SOBJ_NAME>
+   </INCLUDES>
+   <FUNCTIONS>
+    <item>
+     <FUNCNAME>ZIND_PO_TAX</FUNCNAME>
+     <SHORT_TEXT>PO tax details for FG</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>I_EBELN</PARAMETER>
+       <REFERENCE>X</REFERENCE>
+       <TYP>EBELN</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>I_EBELP</PARAMETER>
+       <REFERENCE>X</REFERENCE>
+       <TYP>EBELP</TYP>
+      </RSIMP>
+     </IMPORT>
+     <TABLES>
+      <RSTBL>
+       <PARAMETER>IT_KOMV</PARAMETER>
+       <DBSTRUCT>KOMV</DBSTRUCT>
+      </RSTBL>
+     </TABLES>
+     <EXCEPTION>
+      <RSEXC>
+       <EXCEPTION>MWSKZ_NOT_DEFINED</EXCEPTION>
+      </RSEXC>
+      <RSEXC>
+       <EXCEPTION>MWSKZ_NO</EXCEPTION>
+      </RSEXC>
+      <RSEXC>
+       <EXCEPTION>MWSKZ_NOT_FOUND</EXCEPTION>
+      </RSEXC>
+      <RSEXC>
+       <EXCEPTION>MWSKZ_NOT_VALID</EXCEPTION>
+      </RSEXC>
+      <RSEXC>
+       <EXCEPTION>STEUERBETRAG_FALSCH</EXCEPTION>
+      </RSEXC>
+      <RSEXC>
+       <EXCEPTION>COUNTRY_NOT_FOUND</EXCEPTION>
+      </RSEXC>
+     </EXCEPTION>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>I_EBELN</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Purchasing Document Number</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>I_EBELP</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Item Number of Purchasing Document</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>IT_KOMV</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Pricing Communications-Condition Record</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>MWSKZ_NOT_DEFINED</PARAMETER>
+       <KIND>X</KIND>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>MWSKZ_NO</PARAMETER>
+       <KIND>X</KIND>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>MWSKZ_NOT_FOUND</PARAMETER>
+       <KIND>X</KIND>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>MWSKZ_NOT_VALID</PARAMETER>
+       <KIND>X</KIND>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>STEUERBETRAG_FALSCH</PARAMETER>
+       <KIND>X</KIND>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>COUNTRY_NOT_FOUND</PARAMETER>
+       <KIND>X</KIND>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+   </FUNCTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

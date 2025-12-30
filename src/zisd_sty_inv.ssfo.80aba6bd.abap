@@ -1,0 +1,22 @@
+
+GV_Tot = GV_UST + GV_CST + GV_IST + GV_SGT.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

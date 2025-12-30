@@ -1,0 +1,910 @@
+﻿<?xml version="1.0" encoding="utf-16"?>
+<abapGit version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <TDLINES>
+    <TLINE>
+     <TDFORMAT>/W</TDFORMAT>
+     <TDLINE>MAIN</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>V1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>NEW-PAGE</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>N1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>NEW-PAGE</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>V2</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>PROTECT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;B2&gt;    ZONE : &amp;WA_TAB8-ZZ_HQDESC&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>     &amp;ULINE(151)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>VL</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>BOX XPOS  &apos;21.5&apos; CM  WIDTH 0 TW FRAME 10 TW</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>H1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>PROTECT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>     &amp;ULINE(151)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;B2&gt;     ZM :&amp;ZM_NAME(CIZ)&amp; : &amp;ZONE(CIZ)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>     &amp;ULINE(151)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>D1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>NEW-PAGE</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>BOX XPOS  &apos;18.7&apos; CM  WIDTH 0 TW FRAME 10 TW</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>DET1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>PROTECT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F2&gt;     &amp;WA_TAB8-ENAME+0(20)&amp; &amp;WA_TAB8-ZZ_HQDESC+0(12)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>  &amp;WA_TAB8-SHORT+0(3)&amp; &amp;SPACE(1)&amp; &amp;WA_TAB8-JOIN_DT+0(7)&amp;   %</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>&amp;wa_tab9-TYP+0(1)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_TAB8-LPQRT1+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_tab8-LPQRT2+0(8)&amp; &amp;wa_tab8-LPQRT3+0(8)&amp; &amp;WA_TAB8-LPQRT4+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_tab8-LCUMM+0(8)&amp; &amp;wa_tab8-LGRW+0(5)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> &amp;wa_tab8-cTAR+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>  &amp;SPACE(10)&amp; &amp;WA_TAB8-CP3+0(7)&amp; &amp;WA_TAB8-CP2+0(7)&amp; &amp;WA_TAB8-CP1+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_tab8-CPQRT1+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>&amp;WA_TAB8-CPQRT2+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> &amp;WA_TAB8-CPQRT3+0(7)&amp; &amp;WA_TAB8-CPQRT4+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_TAB8-CCUMM+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_tab8-CGRW+0(5)&amp; &lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>A2</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;space(37)&amp;   &amp;wa_tab8-noofpso+6(3)&amp;   &amp;WA_TAB8-PROM+0(8)&amp;  R</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>   &amp;WA_TAB8-LYSALE1+0(8)&amp; &amp;WA_TAB8-LYSALE2+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_TAB8-LYSALE3+0(8)&amp; &amp;WA_TAB8-LYSALE4+0(8)&amp; &amp;wa_tab8-lysale+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>&amp;SPACE(9)&amp;  &amp;WA_TAB8-CTAR+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>  &amp;WA_TAB8-C3SALE+0(7)&amp; &amp;WA_TAB8-C2SALE+0(7)&amp; &amp;WA_TAB8-C1SALE+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_TAB8-CYSALE1+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>&amp;WA_TAB8-CYSALE2+0(7)&amp; &amp;WA_TAB8-CYSALE3+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> &amp;WA_TAB8-CYSALE4+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_tab8-cysale+0(8)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>ENDPROTECT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>     &amp;ULINE(151)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>DET2</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>A2</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;space(54)&amp;  R   &amp;WA_TAB8-LYSALEC1+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_TAB8-LYSALEC2+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_TAB8-LYSALEC3+0(8)&amp; &amp;WA_TAB8-LYSALEC4+0(8)&amp; &amp;wa_tab8-lysaleC+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>DET3</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>     &amp;ULINE(151)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>ENDPROTECT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>DZM1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>PROTECT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;     &amp;WA_ZM2-ENAME+0(20)&amp; &amp;WA_ZM2-ZZ_HQDESC+0(12)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_ZM2-SHORT+0(3)&amp; &amp;SPACE(1)&amp;  &amp;WA_ZM2-JOIN_DT+0(7)&amp;   %</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>&amp;wa_tab9-TYP+0(1)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_ZM2-LPQRT1+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_ZM2-LPQRT2+0(8)&amp; &amp;wa_ZM2-LPQRT3+0(8)&amp; &amp;WA_ZM2-LPQRT4+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_ZM2-LCUMM+0(8)&amp; &amp;wa_ZM2-LGRW+0(5)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> &amp;wa_ZM2-cTAR+0(5)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>  &amp;SPACE(10)&amp; &amp;WA_ZM2-CP3+0(7)&amp; &amp;WA_ZM2-CP2+0(7)&amp; &amp;WA_ZM2-CP1+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_ZM2-CPQRT1+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>&amp;WA_ZM2-CPQRT2+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> &amp;WA_ZM2-CPQRT3+0(7)&amp; &amp;WA_ZM2-CPQRT4+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_ZM2-CCUMM+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_ZM2-CGRW+0(5)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>A2</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;space(39)&amp; &amp;WA_ZM2-NOOFPSO+6(3)&amp; &amp;SPACE(1)&amp; &amp;WA_ZM2-PROM+0(8)&amp;  R</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>  &amp;WA_ZM2-LYSALE1+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_ZM2-LYSALE2+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_ZM2-LYSALE3+0(8)&amp; &amp;WA_ZM2-LYSALE4+0(8)&amp; &amp;wa_Zm2-lysale+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>&amp;SPACE(9)&amp;  &amp;WA_ZM2-CTAR+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>  &amp;WA_ZM2-C3SALE(7)&amp; &amp;WA_ZM2-C2SALE+0(7)&amp; &amp;WA_ZM2-C1SALE+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_ZM2-CYSALE1+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>&amp;WA_ZM2-CYSALE2+0(7)&amp; &amp;WA_ZM2-CYSALE3+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> &amp;WA_ZM2-CYSALE4+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_Zm2-cysale+0(8)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>DZM2</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>A2</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;space(54)&amp; R &amp;WA_ZM2-LYSALEC1+0(8)&amp; &amp;WA_ZM2-LYSALEC2+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_ZM2-LYSALEC3+0(8)&amp; &amp;WA_ZM2-LYSALEC4+0(8)&amp; &amp;wa_ZM2-lysaleC+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>DZM3</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>     &amp;uline(151)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>ENDPROTECT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>RM1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>     &amp;ULINE(151)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>ENDPROTECT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>PROTECT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;     &amp;WA_RM2-ENAME+0(20)&amp; &amp;WA_RM2-ZZ_HQDESC+0(12)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>  &amp;WA_RM2-SHORT+0(3)&amp; &amp;SPACE(1)&amp; &amp;WA_RM2-JOIN_DT+0(7)&amp;   %</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>&amp;wa_tab9-TYP+0(1)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_RM2-LPQRT1+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_RM2-LPQRT2+0(8)&amp; &amp;wa_RM2-LPQRT3+0(8)&amp; &amp;WA_RM2-LPQRT4+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_RM2-LCUMM+0(8)&amp; &amp;wa_RM2-LGRW+0(5)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> &amp;wa_RM2-cTAR+0(5)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>  &amp;SPACE(10)&amp; &amp;WA_RM2-CP3+0(7)&amp; &amp;WA_RM2-CP2+0(7)&amp; &amp;WA_RM2-CP1+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_RM2-CPQRT1+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> &amp;WA_RM2-CPQRT2+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> &amp;WA_RM2-CPQRT3+0(7)&amp; &amp;WA_RM2-CPQRT4+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_RM2-CCUMM+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_RM2-CGRW+0(5)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>A2</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;space(37)&amp;   &amp;WA_RM2-NOOFPSO+6(3)&amp;   &amp;WA_RM2-PROM+0(8)&amp;  R</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>  &amp;WA_RM2-LYSALE1+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_RM2-LYSALE2+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_RM2-LYSALE3+0(8)&amp; &amp;WA_RM2-LYSALE4+0(8)&amp; &amp;wa_rm2-lysale+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>&amp;SPACE(9)&amp;  &amp;WA_RM2-CTAR+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>  &amp;WA_RM2-C3SALE(7)&amp; &amp;WA_RM2-C2SALE+0(7)&amp; &amp;WA_RM2-C1SALE+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_RM2-CYSALE1+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>&amp;WA_RM2-CYSALE2+0(7)&amp; &amp;WA_RM2-CYSALE3+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> &amp;WA_RM2-CYSALE4+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_rm2-cysale+0(8)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>RM2</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>A2</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;space(54)&amp;  R  &amp;WA_RM2-LYSALEC1+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_RM2-LYSALEC2+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_RM2-LYSALEC3+0(8)&amp; &amp;WA_RM2-LYSALEC4+0(8)&amp; &amp;wa_RM2-lysaleC+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>RM3</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>     &amp;uline(151)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>ENDPROTECT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>PSO1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;WA_PSO2-ENAME+0(20)&amp; &amp;WA_PSO2-ZZ_HQDESC+0(12)&amp; &amp;WA_PSO2-SHORT+0(3)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_PSO2-DIV+0(3)&amp; &amp;WA_PSO2-JOIN_DT+0(7)&amp; %</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>&amp;wa_tab9-TYP+0(1)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_PSO2-LPQRT1+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_PSO2-LPQRT2+0(7)&amp; &amp;wa_PSO2-LPQRT3+0(7)&amp; &amp;WA_PSO2-LPQRT4+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_PSO2-LCUMM+0(7)&amp; &amp;wa_PSO2-LGRW+0(4)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> &amp;wa_PSO2-cTAR+0(5)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>  &amp;SPACE(5)&amp; &amp;WA_PSO2-CP3+0(6)&amp; &amp;WA_PSO2-CP2+0(6)&amp; &amp;WA_PSO2-CP1+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_PSO2-CPQRT1+0(7)&amp; &amp;WA_PSO2-CPQRT2+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_PSO2-CPQRT3+0(7)&amp; &amp;WA_PSO2-CPQRT4+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_PSO2-CCUMM+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_PSO2-CGRW+0(4)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>A2</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;space(41)&amp; &amp;WA_PSO2-PROM+0(7)&amp; R</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_PSO2-LYSALE1+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_PSO2-LYSALE2+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_PSO2-LYSALE3+0(7)&amp; &amp;WA_PSO2-LYSALE4+0(7)&amp; &amp;wa_pso2-lysale+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>&amp;SPACE(4)&amp;  &amp;WA_PSO2-CTAR+0(5)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>  &amp;WA_PSO2-C3SALE(6)&amp; &amp;WA_PSO2-C2SALE+0(6)&amp; &amp;WA_PSO2-C1SALE+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_PSO2-CYSALE1+0(7)&amp; &amp;WA_PSO2-CYSALE2+0(7)&amp; &amp;WA_PSO2-CYSALE3+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_PSO2-CYSALE4+0(7)&amp; &amp;wa_pso2-cysale+0(7)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>PSO2</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>PROTECT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>A2</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;space(49)&amp; R &amp;WA_PSO2-LYSALEC1+0(7)&amp; &amp;WA_PSO2-LYSALEC2+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_PSO2-LYSALEC3+0(7)&amp; &amp;WA_PSO2-LYSALEC4+0(7)&amp; &amp;wa_PSO2-lysaleC+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>PSO3</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>PROTECT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>L2</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>ENDPROTECT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>L1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>NEW-PAGE</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>H3</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>COM1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F2&gt;&amp;space(4)&amp; &amp;W4+0(24)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;SPACE(27)&amp; &amp;WA_COM2-LPQRT1+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_COM2-LPQRT2+0(8)&amp; &amp;wa_COM2-LPQRT3+0(8)&amp; &amp;WA_COM2-LPQRT4+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_COM2-LCUMM+0(8)&amp; &amp;wa_COM2-LGRW+0(4)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> &amp;wa_COM1-cTAR+0(5)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>  &amp;SPACE(10)&amp; &amp;WA_COM2-CP3+0(7)&amp; &amp;WA_COM2-CP2+0(7)&amp; &amp;WA_COM2-CP1+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_COM2-CPQRT1+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>&amp;WA_COM2-CPQRT2+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> &amp;WA_COM2-CPQRT3+0(7)&amp; &amp;WA_COM2-CPQRT4+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;SPACE(3)&amp; &amp;WA_COM2-CCUMM+0(5)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>  &amp;wa_COM2-CGRW+0(4)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>A2</TDFORMAT>
+     <TDLINE>&lt;F2&gt;&amp;space(47)&amp; &amp;WA_COM2-PROM+0(7)&amp; R</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>   &amp;WA_COM2-LYSALE1+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_COM2-LYSALE2+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_COM2-LYSALE3+0(8)&amp; &amp;WA_COM2-LYSALE4+0(8)&amp; &amp;wa_COM2-lysale+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>&amp;SPACE(10)&amp; &amp;WA_COM2-CTAR+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_COM2-C3SALE(7)&amp; &amp;WA_COM2-C2SALE+0(7)&amp; &amp;WA_COM2-C1SALE+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_COM2-CYSALE1+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>&amp;WA_COM2-CYSALE2+0(7)&amp; &amp;WA_COM2-CYSALE3+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> &amp;WA_COM2-CYSALE4+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>   &amp;wa_COM2-cysale+0(8)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>COM2</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>     &amp;ULINE(151)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>COMP1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F2&gt;&amp;space(4)&amp; COMPANY TOTAL</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;SPACE(38)&amp; &amp;WA_COMP2-LPQRT1+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_COMP2-LPQRT2+0(8)&amp; &amp;wa_COMP2-LPQRT3+0(8)&amp; &amp;WA_COMP2-LPQRT4+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_COMP2-LCUMM+0(8)&amp; &amp;wa_COMP2-LGRW+0(4)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> &amp;wa_COMP1-cTAR+0(5)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;SPACE(11)&amp; &amp;WA_COMP2-CP3+0(7)&amp; &amp;WA_COMP2-CP2+0(7)&amp; &amp;WA_COMP2-CP1+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;wa_COMP2-CPQRT1+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>&amp;WA_COMP2-CPQRT2+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> &amp;WA_COMP2-CPQRT3+0(7)&amp; &amp;WA_COMP2-CPQRT4+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;SPACE(3)&amp; &amp;WA_COMP2-CCUMM+0(5)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>  &amp;wa_COMP2-CGRW+0(4)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>A2</TDFORMAT>
+     <TDLINE>&lt;F2&gt;&amp;space(47)&amp;&amp;WA_COMP2-PROM+0(7)&amp;  R</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;SPACE(1)&amp; &amp;WA_COMP2-LYSALE1+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_COMP2-LYSALE2+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_COMP2-LYSALE3+0(8)&amp; &amp;WA_COMP2-LYSALE4+0(8)&amp; &amp;wa_COMP2-lysale+0(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>&amp;SPACE(10)&amp; &amp;WA_COMP2-CTAR+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_COMP2-C3SALE(7)&amp; &amp;WA_COMP2-C2SALE+0(7)&amp; &amp;WA_COMP2-C1SALE+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_COMP2-CYSALE1+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>&amp;WA_COMP2-CYSALE2+0(7)&amp; &amp;WA_COMP2-CYSALE3+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> &amp;WA_COMP2-CYSALE4+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>  &amp;wa_COMP2-cysale+0(8)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>COMP2</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>     &amp;ULINE(151)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/W</TDFORMAT>
+     <TDLINE>WINDOW1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;B2&gt;     SR-11-M: FIELD PERFORMANCE HISTORY - % AND Rs. NET - Figs. in</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>Rs.  &apos;000 UPTO : &amp;NMONTH1&amp;/&amp;YR1&amp; &amp;SPACE(15)&amp; &lt;B3&gt;DIV : &amp;PDIV&amp;&lt;/&gt;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> (&amp;ZM_NAME(CIZ)&amp; : &amp;ZONE(CIZ)&amp;) &amp;wa_tab9-reg&amp;&lt;/&gt;.</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&amp;SAPCE(120)&amp; PAGE &amp;PAGE&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>SPECIALITIES</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>     &amp;ULINE(151)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F2&gt;&amp;SPACE(39)&amp;DES &amp;SPACE(4)&amp; &amp;W7+0(7)&amp; &amp;SPACE(6)&amp;SALES/PERFORMANCE</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;LY+0(5)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;SAPCE(6)&amp; %&amp;SAPCE(18)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>CUR_MTH &amp;SAPCE(25)&amp; SALES/PERFORMANCE &amp;CY&amp; &amp;SAPCE(80)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>A2</TDFORMAT>
+     <TDLINE>&lt;F2&gt;     &amp;W1+0(8)&amp;&amp;SAPCE(12)&amp; &amp;W2+0(4)&amp; &amp;SAPCE(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> &amp;W3+0(3)&amp; DIV</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>NO.PSO &amp;SPACE(2)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;W6+0(6)&amp; &amp;SAPCE(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>QTR1  &amp;space(2)&amp; QTR2 &amp;space(3)&amp; QTR3 &amp;space(2)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> QTR4 &amp;space(4)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> CUM &amp;space(3)&amp;GTH</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>&amp;LY+0(5)&amp;&amp;SPACE(14)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;space(6)&amp; TGT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>      &amp;NMONTH3+0(3)&amp;     &amp;NMONTH2+0(3)&amp;     &amp;NMONTH1+0(3)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;space(4)&amp; Q-1 &amp;space(2)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>Q-2 &amp;space(3)&amp; Q-3</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE> &amp;SPACE(3)&amp; Q-4</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;space(1)&amp; CUM   GTH&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>     &amp;ULINE(151)&amp;</TDLINE>
+    </TLINE>
+   </TDLINES>
+  </asx:values>
+ </asx:abap>
+</abapGit>

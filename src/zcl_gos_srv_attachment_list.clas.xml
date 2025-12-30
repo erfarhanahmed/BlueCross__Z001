@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_GOS_SRV_ATTACHMENT_LIST</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>SGOS: Display Attachments, Notes and BDS Documents</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>CHECK_SUPERTYPES</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Get Super Type for Object</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>CREATE_ROOT_ITEM</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Generate Start Item for Browser</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GC_SRVC</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Service Attachment List</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GET_ARCHIVE_IMAGES</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Get Linked Documents in Archive</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GO_ATTACHMENT_LIST</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Generic Attachment List for BOR and BDS</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GO_BADI</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>BAdI Class CL_EX_GOS_MULT_PUBLISH</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GT_SUPERTYPE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Super Type of Object Type</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>G_REFRESH</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>General Flag</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>ON_COMMIT_REQUIRED</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>COMMIT WORK from Attachment List Necessary</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>ON_LINK_CREATED</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Attachment Generated</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>ON_LINK_DELETED</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Attachment Has Been Deleted</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>CREATE_ROOT_ITEM</CMPNAME>
+     <SCONAME>RESULT</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Element in Object Relationship Browser</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>ON_LINK_CREATED</CMPNAME>
+     <SCONAME>EI_LINK</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Access to Binary Relationship</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>ON_LINK_DELETED</CMPNAME>
+     <SCONAME>EI_LINK</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Access to Binary Relationship</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
+  </asx:values>
+ </asx:abap>
+</abapGit>

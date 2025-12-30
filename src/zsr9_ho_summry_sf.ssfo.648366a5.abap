@@ -1,0 +1,23 @@
+CLEAR GV_CNT.
+DESCRIBE TABLE GT_SR9_gM LINES GV_CNT.
+
+CLEAR GW_SR9_PRDVTY_TOT.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

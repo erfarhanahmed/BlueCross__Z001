@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_FUGR" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <AREAT>ZGET_PLANT</AREAT>
+   <INCLUDES>
+    <SOBJ_NAME>LZGET_PLANTTOP</SOBJ_NAME>
+    <SOBJ_NAME>SAPLZGET_PLANT</SOBJ_NAME>
+   </INCLUDES>
+   <FUNCTIONS>
+    <item>
+     <FUNCNAME>ZGET_PLANT</FUNCNAME>
+     <SHORT_TEXT>ZGET_PLANT</SHORT_TEXT>
+     <EXPORT>
+      <RSEXP>
+       <PARAMETER>EX_PLANT</PARAMETER>
+       <TYP>WERKS_D</TYP>
+      </RSEXP>
+      <RSEXP>
+       <PARAMETER>EX_NAME1</PARAMETER>
+       <TYP>MEPO1211-NAME1</TYP>
+      </RSEXP>
+     </EXPORT>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>EX_PLANT</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Plant</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>EX_NAME1</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Name 1</STEXT>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+   </FUNCTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

@@ -1,0 +1,25 @@
+
+CLEAR GV_CNT.
+DESCRIBE TABLE GT_FDATA_LP LINES GV_CNT.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

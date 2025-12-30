@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>ZPP</ARBGB>
+    <MASTERLANG>E</MASTERLANG>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>000</MSGNR>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>Changes not allowed for &amp;1 &amp;2</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>Component deletion can&apos;t be done for &amp;1 &amp;2</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>Operation can&apos;t be change &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>Operation deletion can&apos;t be done for &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>You are not authorized for changes, for changes connect to super user</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>006</MSGNR>
+     <TEXT>No authority to make change in process ord,for changes connect Super User</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>007</MSGNR>
+     <TEXT>Quantity should be greater than zero</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>008</MSGNR>
+     <TEXT>You are not authorised to make any changes to Requirement Quantity</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>009</MSGNR>
+     <TEXT>You are not authorized to change Unlimited Delivery,Connect with Sup.Usr.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>010</MSGNR>
+     <TEXT>Under Delivery Cannot be over 0.5%,Contact Sup.Usr.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>011</MSGNR>
+     <TEXT>Over Delivery Cannot be over 2.0%,Contact Sup.Usr.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>601</MSGNR>
+     <TEXT>RR &amp; UD are not allowed until the process order is confirmed</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>602</MSGNR>
+     <TEXT>Process order start date is blank</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>603</MSGNR>
+     <TEXT>Number range missing for &amp;1 &amp;2 &amp;3 &amp;4</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>604</MSGNR>
+     <TEXT>Prefix not assigned to material &amp;1 in &amp;2</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>605</MSGNR>
+     <TEXT>Maintain Number range for &amp;1 &amp;2 &amp;3 &amp;4</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>701</MSGNR>
+     <TEXT>Enter Gate entry App#</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>702</MSGNR>
+     <TEXT>Gate entry app# &amp;1 not linked to PO &amp;2</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>703</MSGNR>
+     <TEXT>Error in Gate Entry #/PO</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>704</MSGNR>
+     <TEXT>GRN already posted against the Gate Entry &amp;1 &amp;2</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPP</ARBGB>
+     <MSGNR>705</MSGNR>
+     <TEXT>This Vendor Batch is REJECTED. GRN not possible</TEXT>
+    </T100>
+   </T100>
+  </asx:values>
+ </asx:abap>
+</abapGit>

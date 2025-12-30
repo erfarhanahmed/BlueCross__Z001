@@ -1,0 +1,79 @@
+*&---------------------------------------------------------------------*
+*& Include          ZMM_ADTNAL_DATA_CHNG_TOP
+*&---------------------------------------------------------------------*
+TYPE-POOLS TRUXS.
+TYPE-POOLS SLIS.
+
+*****************  Types Declaration ****************
+TYPES:BEGIN OF TY_TAB,
+        MATERIAL       TYPE MARA-MATNR,  "Material code
+        UOM            TYPE MARA-KZWSM,  "Units of measure usage
+        CHAR_NAME      TYPE SMEINH_WS-ATNAM, "Characteristic Name
+        PLAN_VAL       TYPE SMEINH_WS-ATWRT, "Planned value for unit of meas.
+        BATCH_SPEC_UOM TYPE SMEINH_WS-WSMEI, "Batch-specific matl unit of measure
+        L_BATCH_UOM    TYPE SMEINH_WS-XFHDW, "Leading batch-specific unit of measure
+        VAL_UOM        TYPE SMEINH_WS-XBEWW, "Valuation based on the batch-specific unit of measure
+      END OF TY_TAB.
+
+*********** Data Declaration ******************
+DATA :
+  IT_UPLOAD TYPE STANDARD TABLE OF TY_TAB,
+  WA_UPLOAD LIKE LINE OF IT_UPLOAD,
+  IT_TYPE   TYPE TRUXS_T_TEXT_DATA.
+
+************  DECLARATION FOR FM TABLES *************
+DATA:
+  GT_MEINH         TYPE SMEINH OCCURS 0 WITH HEADER LINE,
+  GT_MEINH_WS      TYPE SMEINH_WS OCCURS 0 WITH HEADER LINE,
+  GT_MEINH_WS_UPD  TYPE SMEINH_WSUPD OCCURS 0 WITH HEADER LINE,
+  GT_MEINH_WS_UPDX TYPE SMEINH_WSUPDX OCCURS 0 WITH HEADER LINE,
+  GT_MESSAGE       TYPE MATMESS OCCURS 0 WITH HEADER LINE,
+  GT_RETURN        TYPE BAPIRETURN1 OCCURS 0 WITH HEADER LINE,
+  GT_RETURN1       TYPE BAPIRETURN1 OCCURS 0 WITH HEADER LINE.
+
+*    FREE:
+*      gt_meinh ,gt_meinh_ws, gt_meinh_ws_upd, gt_meinh_ws_updx,
+*      gt_message,  gt_return.
+
+
+
+DATA I_MATNR               TYPE MARA-MATNR.
+DATA I_KZWSM               TYPE MARA-KZWSM.
+DATA I_KZWSMX              TYPE BAPIUPDATE.
+*DATA I_TYPE_OF_BLOCK       TYPE TVGVI-SPERA.
+*DATA I_EXIT_BY_FIRST_ERROR TYPE AM07M-XSELK.
+*DATA I_LIST_ERRORS_ONLY    TYPE AM07M-XSELK.
+*DATA I_USER                TYPE SY-UNAME.
+*DATA I_BUFFER_REFRESH      TYPE MTCOM-KZRFB.
+*DATA I_UPDATE_BUFFER_ONLY  TYPE AM07M-XSELK.
+*DATA I_NO_UPDATE           TYPE AM07M-XSELK.
+*DATA I_RFC_SENDER          TYPE BDBAPIDEST.
+*DATA I_CALLING_METHOD      TYPE SWO_METHOD.
+DATA E_KZWSM               TYPE MARA-KZWSM.
+DATA E_KZWSM_OLD           TYPE MARA-KZWSM.
+*DATA I_MEINH_WS_UPD        TYPE STANDARD TABLE OF SMEINH_WSUPD.
+*DATA I_MEINH_WS_UPDX       TYPE STANDARD TABLE OF SMEINH_WSUPDX.
+DATA I_MEINH_WS_SFN        TYPE STANDARD TABLE OF SMEINH_WSSFN.
+DATA I_MEINH_WS_SFNX       TYPE STANDARD TABLE OF SMEINH_WSSFNX.
+*DATA E_MEINH_WS            TYPE STANDARD TABLE OF SMEINH_WS.
+*DATA E_MEINH               TYPE STANDARD TABLE OF SMEINH.
+DATA E_MEINH_OLD           TYPE STANDARD TABLE OF SMEINH.
+*DATA E_MESSAGE             TYPE STANDARD TABLE OF MATMESS.
+*DATA E_RETURN              TYPE STANDARD TABLE OF BAPIRETURN1.
+
+DATA : GV_NO TYPE I.
+
+* *>>>>>>>>>>>>>>>>>>>>>> Declaration for Message display  >>>>>>>>>>>
+TYPES : BEGIN OF TY_MSG,
+          SR_NO   TYPE I,
+          ID      TYPE C,
+          MESSAGE TYPE CHAR220,
+        END OF TY_MSG.
+
+DATA : GT_MSG TYPE STANDARD TABLE OF TY_MSG,
+       GS_MSG LIKE LINE OF GT_MSG.
+
+DATA : GT_FCAT TYPE  SLIS_T_FIELDCAT_ALV,
+       GS_FCAT LIKE LINE OF GT_FCAT.
+
+DATA: GS_LAYOUT TYPE SLIS_LAYOUT_ALV.

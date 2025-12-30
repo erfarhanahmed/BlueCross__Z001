@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-16"?>
+<abapGit version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <TDLINES>
+    <TLINE>
+     <TDFORMAT>/W</TDFORMAT>
+     <TDLINE>MAIN</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>DET12</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>PROTECT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P1</TDFORMAT>
+     <TDLINE>&amp;PRDNAME(23)&amp; U &amp;QTY1(9)&amp; &amp;QTY2(9)&amp; &amp;QTY3(9)&amp; &amp;QTY4(9)&amp; &amp;QTY5(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;QTY6(9)&amp; &amp;QTY7(9)&amp; &amp;QTY8(9)&amp; &amp;QTY9(9)&amp; &amp;QTY10(9)&amp; &amp;QTY11(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE> &amp;QTY12(9)&amp; &amp;QTYTOT(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P1</TDFORMAT>
+     <TDLINE>&amp;pack1(5)&amp; &amp;SPACE(17)&amp; V &amp;VAL1(9)&amp; &amp;VAL2(9)&amp; &amp;VAL3(9)&amp; &amp;VAL4(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;VAL5(9)&amp; &amp;VAL6(9)&amp; &amp;VAL7(9)&amp; &amp;VAL8(9)&amp; &amp;VAL9(9)&amp; &amp;VAL10(9)&amp; &amp;VAL11(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE> &amp;VAL12(9)&amp; &amp;VALTOT(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>&amp;ULINE(154)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>ENDPROTECT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>LINE1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P2</TDFORMAT>
+     <TDLINE>&amp;ULINE(155)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>GDET9</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P2</TDFORMAT>
+     <TDLINE>&amp;ULINE(154)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P3</TDFORMAT>
+     <TDLINE>&lt;C2&gt;&amp;GRPNAME(23)&amp;&lt;/&gt;&lt;C2&gt;   &amp;DQTY1(9)&amp; &amp;DQTY2(9)&amp; &amp;DQTY3(9)&amp; &amp;DQTY4(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;DQTY5(9)&amp; &amp;DQTY6(9)&amp; &amp;DQTY7(9)&amp; &amp;DQTY8(9)&amp; &amp;DQTY9(9)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P2</TDFORMAT>
+     <TDLINE>&amp;ULINE(154)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>GDET10</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P2</TDFORMAT>
+     <TDLINE>&amp;ULINE(154)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P3</TDFORMAT>
+     <TDLINE>&lt;C2&gt;&amp;GRPNAME(25)&amp;&lt;/&gt;&lt;C2&gt;       &amp;DQTY1(9)&amp; &amp;DQTY2(9)&amp; &amp;DQTY3(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;DQTY4(9)&amp; &amp;DQTY5(9)&amp; &amp;DQTY6(9)&amp; &amp;DQTY7(9)&amp; &amp;DQTY8(9)&amp; &amp;DQTY9(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;DQTY10(9)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P2</TDFORMAT>
+     <TDLINE>&amp;ULINE(154)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>GDET11</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P2</TDFORMAT>
+     <TDLINE>&amp;ULINE(154)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P3</TDFORMAT>
+     <TDLINE>&lt;C2&gt;&amp;GRPNAME(25)&amp;&lt;/&gt;&lt;C2&gt;  U    &amp;DQTY1(9)&amp; &amp;DQTY2(9)&amp; &amp;DQTY3(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;DQTY4(9)&amp; &amp;DQTY5(9)&amp; &amp;DQTY6(9)&amp; &amp;DQTY7(9)&amp; &amp;DQTY8(9)&amp; &amp;DQTY9(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;DQTY10(9)&amp; &amp;DQTY11(9)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P3</TDFORMAT>
+     <TDLINE>&lt;C2&gt;&amp;SPACE(25)&amp;&lt;/&gt;&lt;C2&gt;    V  &amp;DVAL1(9)&amp; &amp;DVAL2(9)&amp; &amp;DVAL3(9)&amp; &amp;DVAL4(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;DVAL5(9)&amp; &amp;DVAL6(9)&amp; &amp;DVAL7(9)&amp; &amp;DVAL8(9)&amp; &amp;DVAL9(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>&amp;DVAL10(9)&amp; &amp;DVAL11(9)&amp; &amp;DVAL12(9)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P2</TDFORMAT>
+     <TDLINE>&amp;ULINE(155)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>GDET12</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P2</TDFORMAT>
+     <TDLINE>&amp;ULINE(155)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P3</TDFORMAT>
+     <TDLINE>&lt;C2&gt;&amp;GRPNAME(23)&amp;&lt;/&gt;&lt;C2&gt;U  &amp;DQTY1(9)&amp; &amp;DQTY2(9)&amp; &amp;DQTY3(9)&amp; &amp;DQTY4(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;DQTY5(9)&amp; &amp;DQTY6(9)&amp; &amp;DQTY7(9)&amp; &amp;DQTY8(9)&amp; &amp;DQTY9(9)&amp; &amp;DQTY10(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;DQTY11(9)&amp; &amp;DQTY12(9)&amp; &amp;DQTYTOT(9)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P3</TDFORMAT>
+     <TDLINE>&lt;C2&gt;&amp;SPACE(23)&amp;&lt;/&gt;&lt;C2&gt;V  &amp;DVAL1(9)&amp; &amp;DVAL2(9)&amp; &amp;DVAL3(9)&amp; &amp;DVAL4(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;DVAL5(9)&amp; &amp;DVAL6(9)&amp; &amp;DVAL7(9)&amp; &amp;DVAL8(9)&amp; &amp;DVAL9(9)&amp; &amp;DVAL10(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;DVAL11(9)&amp; &amp;DVAL12(9)&amp; &amp;DVALTOT(9)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P2</TDFORMAT>
+     <TDLINE>&amp;ULINE(155)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P2</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>FDET10</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P3</TDFORMAT>
+     <TDLINE>&lt;C2&gt;&amp;GRPNAME(25)&amp;&lt;/&gt;&lt;C2&gt;       &amp;FQTY1(9)&amp; &amp;FQTY2(9)&amp; &amp;FQTY3(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;FQTY4(9)&amp; &amp;FQTY5(9)&amp; &amp;FQTY6(9)&amp; &amp;FQTY7(9)&amp; &amp;FQTY8(9)&amp; &amp;FQTY9(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;FQTY10(9)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P2</TDFORMAT>
+     <TDLINE>&amp;ULINE(154)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>FDET11</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P3</TDFORMAT>
+     <TDLINE>&lt;C2&gt;&amp;GRPNAME(25)&amp;&lt;/&gt;&lt;C2&gt;       &amp;FQTY1(9)&amp; &amp;FQTY2(9)&amp; &amp;FQTY3(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;FQTY4(9)&amp; &amp;FQTY5(9)&amp; &amp;FQTY6(9)&amp; &amp;FQTY7(9)&amp; &amp;FQTY8(9)&amp; &amp;FQTY9(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;FQTY10(9)&amp; &amp;FQTY11(9)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P2</TDFORMAT>
+     <TDLINE>&amp;ULINE(154)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>FDET12</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P3</TDFORMAT>
+     <TDLINE>&lt;C2&gt;&amp;GRPNAME(20)&amp;&lt;/&gt;&lt;C2&gt;   U  &amp;FQTY1(9)&amp; &amp;FQTY2(9)&amp; &amp;FQTY3(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;FQTY4(9)&amp; &amp;FQTY5(9)&amp; &amp;FQTY6(9)&amp; &amp;FQTY7(9)&amp; &amp;FQTY8(9)&amp; &amp;FQTY9(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;FQTY10(9)&amp; &amp;FQTY11(9)&amp; &amp;FQTY12(9)&amp; &amp;FQTYTOT(9)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P3</TDFORMAT>
+     <TDLINE>&lt;C2&gt;&amp;SPACE(20)&amp;&lt;/&gt;&lt;C2&gt;   V  &amp;FVAL1(9)&amp; &amp;FVAL2(9)&amp; &amp;FVAL3(9)&amp; &amp;FVAL4(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;FVAL5(9)&amp; &amp;FVAL6(9)&amp; &amp;FVAL7(9)&amp; &amp;FVAL8(9)&amp; &amp;FVAL9(9)&amp; &amp;FVAL10(9)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;FVAL11(9)&amp; &amp;FVAL12(9)&amp;  &amp;FVALTOT(9)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P2</TDFORMAT>
+     <TDLINE>&amp;ULINE(155)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>TITLE2</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P3</TDFORMAT>
+     <TDLINE>&lt;C4&gt;&amp;MTITLE1&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/W</TDFORMAT>
+     <TDLINE>WINDOW2</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;C2&gt;&lt;C3&gt;SR-8-A : MONTHLY ACTUAL UNITS/NET-VALUE  SOLD &amp;MTITLE&amp; ,,,,,,Rs.</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> in LAKHS&lt;/&gt;,,,,,,&lt;C1&gt;PAGE : &amp;PAGE&amp;,,&lt;/&gt;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P2</TDFORMAT>
+     <TDLINE>&lt;C3&gt;&lt;C1&gt;&amp;ULINE(155)&amp;&lt;/&gt;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;C2&gt;PRODUCT                      &amp;mMth1&amp;     &amp;mMth2&amp;    &amp;mMth3&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>   &amp;mMth4&amp;    &amp;mMth5&amp;    &amp;mMth6&amp;    &amp;mMth7&amp;    &amp;mMth8&amp;    &amp;mMTH9&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>  &amp;mMth10&amp;    &amp;mMTH11&amp;    &amp;mMTH12&amp;    CR.YR.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;C2&gt;PACK &amp;SPACE(142)&amp;   TOTAL&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;C1&gt;&amp;uline(155)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+   </TDLINES>
+  </asx:values>
+ </asx:abap>
+</abapGit>

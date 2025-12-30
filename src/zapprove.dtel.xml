@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_DTEL" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <DD04V>
+    <ROLLNAME>ZAPPROVE</ROLLNAME>
+    <DDLANGUAGE>E</DDLANGUAGE>
+    <DOMNAME>ZZAPPROVE</DOMNAME>
+    <HEADLEN>25</HEADLEN>
+    <SCRLEN1>08</SCRLEN1>
+    <SCRLEN2>18</SCRLEN2>
+    <SCRLEN3>25</SCRLEN3>
+    <DDTEXT>Approved Indicator in CSS</DDTEXT>
+    <REPTEXT>Approved Indicator in CSS</REPTEXT>
+    <SCRTEXT_S>Approved</SCRTEXT_S>
+    <SCRTEXT_M>Approved Indicator</SCRTEXT_M>
+    <SCRTEXT_L>Approved Indicator in CSS</SCRTEXT_L>
+    <DTELMASTER>E</DTELMASTER>
+    <REFKIND>D</REFKIND>
+   </DD04V>
+  </asx:values>
+ </asx:abap>
+</abapGit>

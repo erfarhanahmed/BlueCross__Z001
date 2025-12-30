@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_DSYS" serializer_version="v2.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <LONGTEXTS>
+    <item>
+     <DOKIL>
+      <ID>HY</ID>
+      <OBJECT>SIMGZDATA_EXTENSION_CK</OBJECT>
+      <LANGU>D</LANGU>
+      <TYP>E</TYP>
+      <VERSION>0004</VERSION>
+      <MASTERLANG>X</MASTERLANG>
+      <TXTLINES>00022</TXTLINES>
+      <DOKSTATE>A</DOKSTATE>
+     </DOKIL>
+     <HEAD>
+      <TDOBJECT>DSYS</TDOBJECT>
+      <TDNAME>SIMGZDATA_EXTENSION_CK</TDNAME>
+      <TDID>HY</TDID>
+      <TDSPRAS>D</TDSPRAS>
+      <TDFORM>S_DOCU_SHOW</TDFORM>
+      <TDSTYLE>S_DOCUS1</TDSTYLE>
+      <TDVERSION>00004</TDVERSION>
+      <TDLINESIZE>072</TDLINESIZE>
+     </HEAD>
+     <LINES>
+      <TLINE>
+       <TDFORMAT>UT</TDFORMAT>
+       <TDLINE>&amp;USE&amp;</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>AS</TDFORMAT>
+       <TDLINE>Mit diesem BAdI können über den Standard hinaus zusätzliche Daten durch</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>die Erzeugniskalkulation bis auf die Datenbank gebracht werden. Mit</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>diesen Zusatzdaten könnte auf den Ablauf der Erzeugniskalkulation, oder</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>auf nachgelagerte Geschäftsprozesse Einfluss genommen werden.</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>AS</TDFORMAT>
+       <TDLINE>Der BAdI steht nur für die Materialkalkulation mit Mengengerüst und für</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>die Kundenauftragskalkulation zur Verfügung. Für die Kalkulation ohne</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>Mengengerüst oder für die additive Kalkulation steht dieser BAdI dagegen</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>nicht zur Verfügung.</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>UT</TDFORMAT>
+       <TDLINE>&amp;ACTIVITY&amp;</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>N1</TDFORMAT>
+       <TDLINE>Die in den Datenbanken CKIS, KALM, KEKO und den für interne</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>Programmabläufe benötigten DDIC-Strukturen KISU, CKKALKTAB, CKI64A</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>vorhandenen Customizing-Includes müssen mit den gewünschten Zusatzdaten</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>gefüllt werden. Dabei ist zu beachten, dass die DDIC-Erweiterungen</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>aufeinander abgestimmt werden müssen.</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>N1</TDFORMAT>
+       <TDLINE>Legen Sie eine Implementierung zum BAdI DATA_EXTENSION_CK an. Es stehen</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>dabei verschiedene Methoden zur Verfügung, die zu unterschiedlichen</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>Zeitpunkten im Programmablauf gerufen werden.</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>N1</TDFORMAT>
+       <TDLINE>Aktivieren Sie den BAdI.</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>N1</TDFORMAT>
+       <TDLINE>Wenn Sie Zusatzdaten zum Kalkulationskopf (Tabelle KEKO) definiert haben</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>und zur Anzeige bringen möchten, dann implementieren und aktivieren Sie</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>auch den BAdI DYNPRO_EXTENSION_CK.</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>AS</TDFORMAT>
+      </TLINE>
+     </LINES>
+    </item>
+    <item>
+     <DOKIL>
+      <ID>HY</ID>
+      <OBJECT>SIMGZDATA_EXTENSION_CK</OBJECT>
+      <LANGU>E</LANGU>
+      <TYP>E</TYP>
+      <VERSION>0004</VERSION>
+      <TXTLINES>00017</TXTLINES>
+      <DOKSTATE>A</DOKSTATE>
+     </DOKIL>
+     <HEAD>
+      <TDOBJECT>DSYS</TDOBJECT>
+      <TDNAME>SIMGZDATA_EXTENSION_CK</TDNAME>
+      <TDID>HY</TDID>
+      <TDSPRAS>E</TDSPRAS>
+      <TDFORM>S_DOCU_SHOW</TDFORM>
+      <TDSTYLE>S_DOCUS1</TDSTYLE>
+      <TDVERSION>00004</TDVERSION>
+      <TDLINESIZE>072</TDLINESIZE>
+     </HEAD>
+     <LINES>
+      <TLINE>
+       <TDFORMAT>UT</TDFORMAT>
+       <TDLINE>&amp;USE&amp;</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>AS</TDFORMAT>
+       <TDLINE>This BAdI enables additional, nonstandard data to be moved to the</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>database with product costing. The additional data can be used to</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>influence the product costing process or downstream business processes.</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>AS</TDFORMAT>
+       <TDLINE>This BAdI can only be used for material cost estimates with quantity</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>structure and sales order cost estimates. It cannot be used for cost</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>estimates without quantity structure or for additive cost estimates.</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>UT</TDFORMAT>
+       <TDLINE>&amp;ACTIVITY&amp;</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>N1</TDFORMAT>
+       <TDLINE>The Customizing includes in the databases CKIS, KALM, KEKO, and in the</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>DDIC structures KISU, CKKALKTAB, and CKI64A required for internal</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>program runs must be filled with the desired additional data. It should</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>be noted that the DDIC enhancements must be harmonized to each other.</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>N1</TDFORMAT>
+       <TDLINE>Create an implementation for BAdI DATA_EXTENSION_CK. Various methods are</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>available for this purpose, which must be called at different times in</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>the program run.</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>N1</TDFORMAT>
+       <TDLINE>Activate the BAdI.</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>N1</TDFORMAT>
+       <TDLINE>If you have defined additional data for the cost estimate header (table</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>KEKO) and want to display it, you must also implement and activate the</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDLINE>BAdI DYNPRO_EXTENSION_CK.</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>AS</TDFORMAT>
+      </TLINE>
+     </LINES>
+    </item>
+   </LONGTEXTS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

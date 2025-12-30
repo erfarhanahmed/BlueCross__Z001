@@ -1,0 +1,1084 @@
+*&---------------------------------------------------------------------*
+*& Report  ZANNUAL_PROD_REVIEW_APR1
+*&
+*&---------------------------------------------------------------------*
+*&
+*&
+*&---------------------------------------------------------------------*
+REPORT YZANNUAL_PROD_REVIEW_APR3.
+TABLES : QALS,MARA,QAMV,JEST,QAVE.
+
+TYPE-POOLS:  SLIS.
+
+DATA: G_REPID     LIKE SY-REPID,
+      FIELDCAT    TYPE SLIS_T_FIELDCAT_ALV,
+      WA_FIELDCAT LIKE LINE OF FIELDCAT,
+      SORT        TYPE SLIS_T_SORTINFO_ALV,
+      WA_SORT     LIKE LINE OF SORT,
+      LAYOUT      TYPE SLIS_LAYOUT_ALV.
+
+DATA : IT_QALS TYPE TABLE OF QALS,
+       WA_QALS TYPE QALS,
+       IT_QAVE TYPE TABLE OF QAVE,
+       WA_QAVE TYPE QAVE,
+       IT_QAMV TYPE TABLE OF QAMV,
+       WA_QAMV TYPE QAMV,
+       IT_QAMR TYPE TABLE OF QAMR,
+       WA_QAMR TYPE QAMR,
+       IT_QASE TYPE TABLE OF QASE,
+       WA_QASE TYPE QASE.
+TYPES: BEGIN OF MAT1,
+         PRUEFLOS TYPE QALS-PRUEFLOS,
+         MERKNR   TYPE QAMR-MERKNR,
+         LT(10)   TYPE C,
+         UL(10)   TYPE C,
+       END OF MAT1.
+DATA: IT_MAT1 TYPE TABLE OF MAT1,
+      WA_MAT1 TYPE MAT1.
+TYPES : BEGIN OF ITAB1,
+          PRUEFLOS  TYPE QALS-PRUEFLOS,
+          MERKNR    TYPE QAMR-MERKNR,
+          VAL1(10)  TYPE C,
+          DETAILERG TYPE QASE-DETAILERG,
+        END OF ITAB1.
+
+TYPES : BEGIN OF ITAB2,
+          PRUEFLOS TYPE QALS-PRUEFLOS,
+          MERKNR   TYPE QAMR-MERKNR,
+          VAL1(10) TYPE C,
+          VAL2(10) TYPE C,
+          VAL3(10) TYPE C,
+        END OF ITAB2.
+TYPES : BEGIN OF LMT1,
+          PRUEFLOS TYPE QALS-PRUEFLOS,
+          MERKNR   TYPE QAMR-MERKNR,
+          LT(10)   TYPE C,
+          UL(10)   TYPE C,
+        END OF LMT1.
+TYPES : BEGIN OF ITAB3,
+          PRUEFLOS   TYPE QALS-PRUEFLOS,
+          MERKNR     TYPE QAMR-MERKNR,
+          KURZTEXT   TYPE QAMV-KURZTEXT,
+          MASSEINHSW TYPE QAMV-MASSEINHSW,
+          CHARG      TYPE QALS-CHARG,
+          MATNR      TYPE QALS-MATNR,
+          VCODE      TYPE  QAVE-VCODE,
+*          VDATUM     TYPE QAVE-VDATUM,
+          VDATUM(10) TYPE C,
+          VAL1(10)   TYPE C,
+          VAL2(10)   TYPE C,
+          VAL3(10)   TYPE C,
+          LT(10)     TYPE C,
+          UL(10)     TYPE C,
+        END OF ITAB3.
+DATA: IT_TAB1  TYPE TABLE OF ITAB1,
+      WA_TAB1  TYPE ITAB1,
+      IT_TAB2  TYPE TABLE OF ITAB2,
+      WA_TAB2  TYPE ITAB2,
+      IT_TAB3  TYPE TABLE OF ITAB3,
+      WA_TAB3  TYPE ITAB3,
+      IT_TAB33 TYPE TABLE OF ITAB3,
+      WA_TAB33 TYPE ITAB3.
+DATA: IT_LMT1 TYPE TABLE OF LMT1,
+      WA_LMT1 TYPE LMT1.
+data: date1(10) TYPE c.
+DATA: CHARG TYPE QALS-CHARG,
+      MATNR TYPE QALS-MATNR.
+DATA: MASSEINHSW TYPE QAMV-MASSEINHSW.
+**********lower limit********
+DATA : DATA1     TYPE STRING,
+       DATA2(3)  TYPE C,
+       DATA3(10) TYPE C,
+       DATA4     TYPE P DECIMALS 4.
+DATA : VAL1    TYPE P DECIMALS 1,
+       VAL2    TYPE P DECIMALS 2,
+       VAL3    TYPE P DECIMALS 3,
+       VAL4    TYPE P DECIMALS 4,
+       VAL5    TYPE P,
+       VAL(10) TYPE C.
+***************upper limit***********
+DATA: DDATA1     TYPE STRING,
+      DDATA2(3)  TYPE C,
+      DDATA3(10) TYPE C,
+      DDATA4     TYPE P DECIMALS 4,
+      VVAL1      TYPE P DECIMALS 1,
+      VVAL2      TYPE P DECIMALS 2,
+      VVAL3      TYPE P DECIMALS 3,
+      VVAL4      TYPE P DECIMALS 4,
+      VVAL5      TYPE P,
+      VVAL(10)   TYPE C.
+*********************************************************************************
+FIELD-SYMBOLS: <FS>,
+               <FS_TAB3> TYPE ITAB3,
+               <FS1> ,
+               <FS2>.
+DATA:
+*      g_repid      like sy-repid value sy-repid,
+  IT_FLDCAT    TYPE LVC_T_FCAT,
+  WA_IT_FLDCAT TYPE LVC_S_FCAT.
+DATA: LW_NEWTABLE TYPE REF TO DATA,
+      LW_NEWLINE  TYPE REF TO DATA.
+FIELD-SYMBOLS: <FS_MAT1> TYPE MAT1.
+FIELD-SYMBOLS: <DYN_TABLE>  TYPE STANDARD TABLE,
+               <DYN_TABLE1> TYPE STANDARD TABLE,
+               <DYN_TOTAL>  TYPE STANDARD TABLE,
+               <DYN_WA>,
+               <DYN_WA1>,
+               <L_FIELD>    TYPE ANY,
+               <L_FIELD1>   TYPE ANY,
+               <L_FIELD2>   TYPE ANY,
+               <L_FIELD3>   TYPE ANY,
+               <FS_TAB2>    TYPE ITAB2.
+DATA: LMT(10)  TYPE C,
+      UMT(10)  TYPE C,
+      UOM(10)  TYPE C,
+      VSTR(10) TYPE C.
+***************************************************************************************
+
+SELECTION-SCREEN BEGIN OF BLOCK MERKMALE1 WITH FRAME TITLE TEXT-001.
+*PARAMETERS : MATERIAL LIKE MCHA-MATNR OBLIGATORY.
+SELECT-OPTIONS  : MATERIAL FOR MARA-MATNR .
+SELECT-OPTIONS : BATCH FOR QALS-CHARG,
+                 SDATE FOR SY-DATUM OBLIGATORY,
+                 PLANT FOR QALS-WERK OBLIGATORY,
+                 ART   FOR  QALS-ART OBLIGATORY.
+*                 CHAR FOR QAMV-VERWMERKM.
+SELECTION-SCREEN END OF BLOCK MERKMALE1.
+
+SELECTION-SCREEN BEGIN OF BLOCK MERKMALE2 WITH FRAME TITLE TEXT-001.
+PARAMETERS : R1 RADIOBUTTON GROUP R1,
+             R2 RADIOBUTTON GROUP R1.
+SELECTION-SCREEN END OF BLOCK MERKMALE2.
+
+INITIALIZATION.
+  G_REPID = SY-REPID.
+
+START-OF-SELECTION.
+
+  SELECT * FROM QALS INTO TABLE IT_QALS WHERE WERK IN PLANT AND ART IN ART AND MATNR IN MATERIAL AND CHARG IN BATCH AND ENSTEHDAT IN SDATE.
+  IF SY-SUBRC EQ 0.
+    SELECT * FROM QAMR INTO TABLE IT_QAMR FOR ALL ENTRIES IN IT_QALS WHERE PRUEFLOS EQ IT_QALS-PRUEFLOS .
+    SELECT * FROM QASE INTO TABLE IT_QASE FOR ALL ENTRIES IN IT_QALS WHERE PRUEFLOS EQ IT_QALS-PRUEFLOS AND ORIGINAL_INPUT NE SPACE .
+    SELECT * FROM QAMV INTO TABLE IT_QAMV FOR ALL ENTRIES IN IT_QALS WHERE PRUEFLOS EQ IT_QALS-PRUEFLOS .
+*      AND VDATUM IN SDATE.
+    IF SY-SUBRC NE 0.
+      MESSAGE ' NO DATA' TYPE 'E'.
+      EXIT.
+    ENDIF.
+  ENDIF.
+
+  LOOP AT IT_QALS INTO WA_QALS.
+    SELECT SINGLE * FROM JEST WHERE OBJNR EQ WA_QALS-OBJNR AND STAT EQ 'I0224'.
+    IF SY-SUBRC EQ 0.
+      DELETE IT_QALS WHERE PRUEFLOS EQ WA_QALS-PRUEFLOS.
+    ENDIF.
+  ENDLOOP.
+
+  LOOP AT IT_QALS INTO WA_QALS.
+    LOOP AT IT_QASE INTO WA_QASE WHERE PRUEFLOS = WA_QALS-PRUEFLOS AND ORIGINAL_INPUT NE SPACE.
+      WA_TAB1-PRUEFLOS = WA_QALS-PRUEFLOS.
+      WA_TAB1-MERKNR = WA_QASE-MERKNR.
+      WA_TAB1-DETAILERG = WA_QASE-DETAILERG.
+      CONDENSE WA_QASE-ORIGINAL_INPUT.
+      WA_TAB1-VAL1 = WA_QASE-ORIGINAL_INPUT.
+      CONDENSE WA_TAB1-VAL1.
+      COLLECT WA_TAB1 INTO IT_TAB1.
+      CLEAR WA_TAB1.
+    ENDLOOP.
+  ENDLOOP.
+
+  LOOP AT IT_QALS INTO WA_QALS.
+    LOOP AT IT_QAMR INTO WA_QAMR WHERE PRUEFLOS = WA_QALS-PRUEFLOS AND ORIGINAL_INPUT NE SPACE.
+      WA_TAB1-PRUEFLOS = WA_QALS-PRUEFLOS.
+      WA_TAB1-MERKNR = WA_QAMR-MERKNR.
+      CONDENSE WA_QAMR-ORIGINAL_INPUT.
+      WA_TAB1-VAL1 = WA_QAMR-ORIGINAL_INPUT.
+      CONDENSE WA_TAB1-VAL1.
+      COLLECT WA_TAB1 INTO IT_TAB1.
+      CLEAR WA_TAB1.
+    ENDLOOP.
+  ENDLOOP.
+
+  SORT IT_TAB1 BY PRUEFLOS MERKNR DETAILERG.
+
+*  LOOP AT IT_TAB1 INTO WA_TAB1.
+*    WRITE : / WA_TAB1-PRUEFLOS,WA_TAB1-MERKNR,WA_TAB1-DETAILERG,WA_TAB1-VAL1.
+*  ENDLOOP.
+
+  LOOP AT IT_QAMR INTO WA_QAMR.
+    READ TABLE IT_TAB1 INTO WA_TAB1 WITH KEY PRUEFLOS = WA_QAMR-PRUEFLOS MERKNR = WA_QAMR-MERKNR.
+    IF SY-SUBRC EQ 0.
+      WA_TAB2-PRUEFLOS  = WA_TAB1-PRUEFLOS.
+      WA_TAB2-MERKNR  = WA_TAB1-MERKNR.
+      READ TABLE IT_TAB1 INTO WA_TAB1 WITH KEY PRUEFLOS = WA_QAMR-PRUEFLOS MERKNR = WA_QAMR-MERKNR DETAILERG = '00000001'.
+      IF SY-SUBRC EQ 0.
+        WA_TAB2-VAL1 = WA_TAB1-VAL1.
+      ENDIF.
+      READ TABLE IT_TAB1 INTO WA_TAB1 WITH KEY PRUEFLOS = WA_QAMR-PRUEFLOS MERKNR = WA_QAMR-MERKNR DETAILERG = '00000002'.
+      IF SY-SUBRC EQ 0.
+        WA_TAB2-VAL2 = WA_TAB1-VAL1.
+      ENDIF.
+      READ TABLE IT_TAB1 INTO WA_TAB1 WITH KEY PRUEFLOS = WA_QAMR-PRUEFLOS MERKNR = WA_QAMR-MERKNR DETAILERG = '00000003'.
+      IF SY-SUBRC EQ 0.
+        WA_TAB2-VAL3 = WA_TAB1-VAL1.
+      ENDIF.
+      READ TABLE IT_TAB1 INTO WA_TAB1 WITH KEY PRUEFLOS = WA_QAMR-PRUEFLOS MERKNR = WA_QAMR-MERKNR DETAILERG = '00000000'.
+      IF SY-SUBRC EQ 0.
+        WA_TAB2-VAL1 = WA_TAB1-VAL1.
+      ENDIF.
+      COLLECT WA_TAB2 INTO IT_TAB2.
+      CLEAR WA_TAB2.
+    ENDIF.
+  ENDLOOP.
+
+
+
+*  LOOP AT IT_TAB2 INTO WA_TAB2.
+*    WRITE : / WA_TAB2-PRUEFLOS,WA_TAB2-MERKNR,WA_TAB2-MERKNR,WA_TAB2-VAL1,WA_TAB2-VAL2,WA_TAB2-VAL3.
+*  ENDLOOP.
+
+  PERFORM LIMIT.
+*  ULINE.
+  LOOP AT IT_TAB2 INTO WA_TAB2.
+    WA_TAB3-PRUEFLOS = WA_TAB2-PRUEFLOS.
+    WA_TAB3-MERKNR = WA_TAB2-MERKNR.
+    READ TABLE IT_QAMV INTO WA_QAMV WITH KEY PRUEFLOS = WA_TAB2-PRUEFLOS MERKNR = WA_TAB2-MERKNR.
+    IF SY-SUBRC EQ 0.
+      WA_TAB3-KURZTEXT = WA_QAMV-KURZTEXT.
+      WA_TAB3-MASSEINHSW = WA_QAMV-MASSEINHSW.
+    ENDIF.
+    WA_TAB3-VAL1 = WA_TAB2-VAL1.
+    WA_TAB3-VAL2 = WA_TAB2-VAL2.
+    WA_TAB3-VAL3 = WA_TAB2-VAL3.
+    READ TABLE IT_LMT1 INTO WA_LMT1 WITH KEY PRUEFLOS = WA_TAB2-PRUEFLOS MERKNR = WA_TAB2-MERKNR.
+    IF SY-SUBRC EQ 0.
+      WA_TAB3-LT = WA_LMT1-LT.
+      WA_TAB3-UL = WA_LMT1-UL.
+    ENDIF.
+    READ TABLE IT_QALS   INTO WA_QALS WITH KEY PRUEFLOS = WA_TAB2-PRUEFLOS.
+    IF SY-SUBRC EQ 0.
+      WA_TAB3-CHARG = WA_QALS-CHARG.
+      WA_TAB3-MATNR = WA_QALS-MATNR.
+    ENDIF.
+    SELECT SINGLE * FROM QAVE WHERE PRUEFLOS = WA_TAB2-PRUEFLOS.
+    IF SY-SUBRC EQ 0.
+      WA_TAB3-VCODE = QAVE-VCODE.
+      WA_TAB3-VDATUM = QAVE-VDATUM.
+    ENDIF.
+    COLLECT WA_TAB3 INTO IT_TAB3.
+    CLEAR WA_TAB3.
+  ENDLOOP.
+  SORT IT_TAB3 BY PRUEFLOS.
+*  LOOP AT IT_TAB3 INTO WA_TAB3.
+*    WRITE : / 'A',WA_TAB3-PRUEFLOS,WA_TAB3-MERKNR,WA_TAB3-KURZTEXT,WA_TAB3-MASSEINHSW,WA_TAB3-VAL1,WA_TAB3-VAL2,WA_TAB3-VAL3,WA_TAB3-LT,WA_TAB3-UL.
+*  ENDLOOP.
+  IF R1 EQ 'X'.
+    PERFORM ALVDISP.
+  ELSEIF R2 EQ 'X'.
+    PERFORM DYNALV.
+  ENDIF.
+*&---------------------------------------------------------------------*
+*&      Form  LIMIT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM LIMIT .
+*  LOOP AT IT_TAB2 INTO WA_TAB2.
+*    WRITE : / WA_TAB2-PRUEFLOS,WA_TAB2-MERKNR,WA_TAB2-MERKNR,WA_TAB2-VAL1,WA_TAB2-VAL2,WA_TAB2-VAL3.
+*  ENDLOOP.
+*  ULINE.
+  LOOP AT IT_TAB2 INTO WA_TAB2.
+    CLEAR : DATA1,DATA2,DATA3,DATA4, VAL,VAL1,VAL2,VAL3,VAL4,VAL5.
+    CLEAR : DDATA1,DDATA2,DDATA3,DDATA4,VVAL,VVAL1,VVAL2,VVAL3,VVAL4,VVAL5.
+*    WRITE : / WA_TAB2-PRUEFLOS,WA_TAB2-MERKNR,WA_TAB2-VAL1,WA_TAB2-VAL2,WA_TAB2-VAL3.
+    READ TABLE IT_QAMV INTO WA_QAMV WITH KEY PRUEFLOS = WA_TAB2-PRUEFLOS MERKNR = WA_TAB2-MERKNR.
+    IF SY-SUBRC EQ 0.
+*      WRITE : WA_QAMV-KURZTEXT.
+      IF WA_QAMV-TOLUNNI EQ 'X'.
+*        WRITE : 'LT', WA_QAMV-TOLERANZUN.
+        DATA1 = WA_QAMV-TOLERANZUN.
+        DATA2 = DATA1+19(3).
+        DATA3 = DATA1.
+        DATA4 = DATA3.
+        PERFORM VAL1.
+*        WRITE : 'LT',VAL.
+      ENDIF.
+      IF WA_QAMV-TOLOBNI EQ 'X'.
+*        WRITE : 'UT', WA_QAMV-TOLERANZOB.
+        DDATA1 = WA_QAMV-TOLERANZOB.
+        DDATA2 = DDATA1+19(3).
+        DDATA3 = DDATA1.
+        DDATA4 = DDATA3.
+        PERFORM VAL2.
+*        WRITE : 'UL',VVAL.
+      ENDIF.
+    ENDIF.
+    WA_LMT1-PRUEFLOS = WA_TAB2-PRUEFLOS.
+    WA_LMT1-MERKNR = WA_TAB2-MERKNR.
+    WA_LMT1-LT = VAL.
+    WA_LMT1-UL = VVAL.
+    COLLECT WA_LMT1 INTO IT_LMT1.
+    CLEAR WA_LMT1.
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  VAL1
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM VAL1 .
+  CLEAR : VAL,VAL1,VAL2,VAL3,VAL4,VAL5.
+  IF DATA2 EQ '-01'.
+    IF WA_QAMV-STELLEN EQ 1.
+      VAL1 = DATA4 / 10.
+      VAL = VAL1.
+    ELSEIF WA_QAMV-STELLEN EQ 2.
+      VAL2 = DATA4 / 10.
+      VAL = VAL2.
+    ELSEIF WA_QAMV-STELLEN EQ 3.
+      VAL3 = DATA4 / 10.
+      VAL =  VAL3.
+    ELSEIF WA_QAMV-STELLEN EQ 4.
+      VAL4 = DATA4 / 10.
+      VAL = VAL4.
+    ELSE.
+      VAL5 = DATA4 / 10.
+      VAL = VAL5.
+    ENDIF.
+  ELSEIF DATA2 EQ '+01'.
+    IF WA_QAMV-STELLEN EQ 1.
+      VAL1 = DATA4 * 10.
+      VAL =  VAL1.
+    ELSEIF WA_QAMV-STELLEN EQ 2.
+      VAL2 = DATA4 * 10.
+      VAL = VAL2.
+    ELSEIF WA_QAMV-STELLEN EQ 3.
+      VAL3 = DATA4 * 10.
+      VAL = VAL3.
+    ELSEIF WA_QAMV-STELLEN EQ 4.
+      VAL4 = DATA4 * 10.
+      VAL = VAL4.
+    ELSE.
+      VAL5 = DATA4 * 10.
+      VAL = VAL5.
+    ENDIF.
+  ELSEIF DATA2 EQ '+02'.
+    IF WA_QAMV-STELLEN EQ 1.
+      VAL1 = DATA4 * 100.
+      VAL = VAL1.
+    ELSEIF WA_QAMV-STELLEN EQ 2.
+      VAL2 = DATA4 * 100.
+      VAL = VAL2.
+    ELSEIF WA_QAMV-STELLEN EQ 3.
+      VAL3 = DATA4 * 100.
+      VAL = VAL3.
+    ELSEIF WA_QAMV-STELLEN EQ 4.
+      VAL4 = DATA4 * 100.
+      VAL = VAL4.
+    ELSE.
+      VAL5 = DATA4 * 100.
+      VAL = VAL5.
+    ENDIF.
+
+  ELSEIF DATA2 EQ '+03'.
+    IF WA_QAMV-STELLEN EQ 1.
+      VAL1 = DATA4 * 1000.
+      VAL = VAL1.
+    ELSEIF WA_QAMV-STELLEN EQ 2.
+      VAL2 = DATA4 * 1000.
+      VAL = VAL2.
+    ELSEIF WA_QAMV-STELLEN EQ 3.
+      VAL3 = DATA4 * 1000.
+      VAL = VAL3.
+    ELSEIF WA_QAMV-STELLEN EQ 4.
+      VAL4 = DATA4 * 1000.
+      VAL = VAL4.
+    ELSE.
+      VAL5 = DATA4 * 1000.
+      VAL = VAL5.
+    ENDIF.
+
+  ELSE.
+    IF WA_QAMV-STELLEN EQ 1.
+      VAL1 = DATA4 .
+      VAL = VAL1.
+    ELSEIF WA_QAMV-STELLEN EQ 2.
+      VAL2 = DATA4 .
+      VAL = VAL2.
+    ELSEIF WA_QAMV-STELLEN EQ 3.
+      VAL3 = DATA4 .
+      VAL = VAL3.
+    ELSEIF WA_QAMV-STELLEN EQ 4.
+      VAL4 = DATA4 .
+      VAL = VAL4.
+    ELSE.
+      VAL5 = DATA4 .
+      VAL = VAL5.
+    ENDIF.
+  ENDIF.
+  CONDENSE VAL.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  VAL2
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM VAL2 .
+  CLEAR : VVAL,VVAL1,VVAL2,VVAL3,VVAL4,VVAL5.
+  IF DDATA2 EQ '-01'.
+    IF WA_QAMV-STELLEN EQ 1.
+      VVAL1 = DDATA4 / 10.
+      VVAL = VVAL1.
+    ELSEIF WA_QAMV-STELLEN EQ 2.
+      VVAL2 = DDATA4 / 10.
+      VVAL = VVAL2.
+    ELSEIF WA_QAMV-STELLEN EQ 3.
+      VVAL3 = DDATA4 / 10.
+      VVAL =  VVAL3.
+    ELSEIF WA_QAMV-STELLEN EQ 4.
+      VVAL4 = DDATA4 / 10.
+      VVAL = VVAL4.
+    ELSE.
+      VVAL5 = DDATA4 / 10.
+      VVAL = VVAL5.
+    ENDIF.
+  ELSEIF DDATA2 EQ '+01'.
+    IF WA_QAMV-STELLEN EQ 1.
+      VVAL1 = DDATA4 * 10.
+      VVAL =  VVAL1.
+    ELSEIF WA_QAMV-STELLEN EQ 2.
+      VVAL2 = DDATA4 * 10.
+      VVAL = VVAL2.
+    ELSEIF WA_QAMV-STELLEN EQ 3.
+      VVAL3 = DDATA4 * 10.
+      VVAL = VVAL3.
+    ELSEIF WA_QAMV-STELLEN EQ 4.
+      VVAL4 = DDATA4 * 10.
+      VVAL = VVAL4.
+    ELSE.
+      VVAL5 = DDATA4 * 10.
+      VVAL = VVAL5.
+    ENDIF.
+  ELSEIF DDATA2 EQ '+02'.
+    IF WA_QAMV-STELLEN EQ 1.
+      VVAL1 = DDATA4 * 100.
+      VVAL = VVAL1.
+    ELSEIF WA_QAMV-STELLEN EQ 2.
+      VVAL2 = DDATA4 * 100.
+      VVAL = VVAL2.
+    ELSEIF WA_QAMV-STELLEN EQ 3.
+      VVAL3 = DDATA4 * 100.
+      VVAL = VVAL3.
+    ELSEIF WA_QAMV-STELLEN EQ 4.
+      VVAL4 = DDATA4 * 100.
+      VVAL = VVAL4.
+    ELSE.
+      VVAL5 = DDATA4 * 100.
+      VVAL = VVAL5.
+    ENDIF.
+
+  ELSEIF DDATA2 EQ '+03'.
+    IF WA_QAMV-STELLEN EQ 1.
+      VVAL1 = DDATA4 * 1000.
+      VVAL = VVAL1.
+    ELSEIF WA_QAMV-STELLEN EQ 2.
+      VVAL2 = DDATA4 * 1000.
+      VVAL = VVAL2.
+    ELSEIF WA_QAMV-STELLEN EQ 3.
+      VVAL3 = DDATA4 * 1000.
+      VVAL = VVAL3.
+    ELSEIF WA_QAMV-STELLEN EQ 4.
+      VVAL4 = DDATA4 * 1000.
+      VVAL = VVAL4.
+    ELSE.
+      VVAL5 = DDATA4 * 1000.
+      VVAL = VVAL5.
+    ENDIF.
+
+
+  ELSE.
+    IF WA_QAMV-STELLEN EQ 1.
+      VVAL1 = DDATA4.
+      VVAL = VVAL1.
+    ELSEIF WA_QAMV-STELLEN EQ 2.
+      VVAL2 = DDATA4.
+      VVAL = VVAL2.
+    ELSEIF WA_QAMV-STELLEN EQ 3.
+      VVAL3 = DDATA4 .
+      VVAL = VVAL3.
+    ELSEIF WA_QAMV-STELLEN EQ 4.
+      VVAL4 = DDATA4 .
+      VVAL = VVAL4.
+    ELSE.
+      VVAL5 = DDATA4 .
+      VVAL = VVAL5.
+    ENDIF.
+  ENDIF.
+  CONDENSE VVAL.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  DYNALV
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM DYNALV .
+  LOOP AT IT_TAB3 INTO WA_TAB3.
+    WA_MAT1-PRUEFLOS = WA_TAB3-PRUEFLOS.
+    WA_MAT1-MERKNR = WA_TAB3-MERKNR.
+    WA_MAT1-LT = WA_TAB3-LT.
+    WA_MAT1-UL = WA_TAB3-UL.
+    COLLECT WA_MAT1 INTO IT_MAT1.
+    CLEAR WA_MAT1.
+  ENDLOOP.
+  SORT IT_MAT1 BY MERKNR.
+  DELETE ADJACENT DUPLICATES FROM IT_MAT1 COMPARING MERKNR.
+
+  PERFORM DYN.
+  PERFORM FILL.
+  PERFORM ALV.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  DYN
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM DYN .
+  DATA: NEW_TABLE  TYPE REF TO DATA,
+        NEW_TABLE1 TYPE REF TO DATA,
+        NEW_LINE   TYPE REF TO DATA.
+
+*
+
+  CLEAR WA_IT_FLDCAT.
+  WA_IT_FLDCAT-FIELDNAME = 'PRUEFLOS'.
+  WA_IT_FLDCAT-SELTEXT = 'INSPECTION LOT NO.'.
+  WA_IT_FLDCAT-DATATYPE = 'CHAR'.
+  WA_IT_FLDCAT-INTLEN = 12.
+  WA_IT_FLDCAT-KEY = 'X'.
+*  WA_IT_FLDCAT-NO_OUT = 'O'.
+  APPEND WA_IT_FLDCAT TO IT_FLDCAT.
+  CLEAR WA_IT_FLDCAT.
+
+  CLEAR WA_IT_FLDCAT.
+  WA_IT_FLDCAT-FIELDNAME = 'MATNR'.
+  WA_IT_FLDCAT-SELTEXT = 'MATERIAL CODE'.
+  WA_IT_FLDCAT-DATATYPE = 'CHAR'.
+  WA_IT_FLDCAT-INTLEN = 18.
+  WA_IT_FLDCAT-KEY = 'X'.
+*  WA_IT_FLDCAT-NO_OUT = 'O'.
+  APPEND WA_IT_FLDCAT TO IT_FLDCAT.
+  CLEAR WA_IT_FLDCAT.
+
+  CLEAR WA_IT_FLDCAT.
+  WA_IT_FLDCAT-FIELDNAME = 'CHARG'.
+  WA_IT_FLDCAT-SELTEXT = 'BATCH'.
+  WA_IT_FLDCAT-DATATYPE = 'CHAR'.
+  WA_IT_FLDCAT-INTLEN = 10.
+  WA_IT_FLDCAT-KEY = 'X'.
+*  WA_IT_FLDCAT-NO_OUT = 'O'.
+  APPEND WA_IT_FLDCAT TO IT_FLDCAT.
+  CLEAR WA_IT_FLDCAT.
+
+  WA_IT_FLDCAT-FIELDNAME = 'VCODE'.
+  WA_IT_FLDCAT-SELTEXT = 'UD STATUS'.
+  WA_IT_FLDCAT-DATATYPE = 'CHAR'.
+  WA_IT_FLDCAT-INTLEN = 1.
+  WA_IT_FLDCAT-KEY = 'X'.
+*  WA_IT_FLDCAT-NO_OUT = 'O'.
+  APPEND WA_IT_FLDCAT TO IT_FLDCAT.
+  CLEAR WA_IT_FLDCAT.
+
+  WA_IT_FLDCAT-FIELDNAME = 'VDATUM'.
+  WA_IT_FLDCAT-SELTEXT = 'UD DATE'.
+  WA_IT_FLDCAT-DATATYPE = 'CHAR'.
+  WA_IT_FLDCAT-INTLEN = 10.
+  WA_IT_FLDCAT-KEY = 'X'.
+*  WA_IT_FLDCAT-NO_OUT = 'O'.
+  APPEND WA_IT_FLDCAT TO IT_FLDCAT.
+  CLEAR WA_IT_FLDCAT.
+
+*  WA_IT_FLDCAT-FIELDNAME = 'MASSEINHSW'.
+*  WA_IT_FLDCAT-SELTEXT = 'UOM'.
+*  WA_IT_FLDCAT-DATATYPE = 'CHAR'.
+*  WA_IT_FLDCAT-INTLEN = 3.
+**  wa_it_fldcat-key = 'X'.
+**  WA_IT_FLDCAT-NO_OUT = 'O'.
+*  APPEND WA_IT_FLDCAT TO IT_FLDCAT.
+*  CLEAR WA_IT_FLDCAT.
+
+
+  LOOP AT IT_MAT1 ASSIGNING <FS_MAT1> .
+    CLEAR WA_IT_FLDCAT.
+    CLEAR VSTR.
+    CONCATENATE <FS_MAT1>-MERKNR 'VAL1' INTO VSTR.
+    WA_IT_FLDCAT-FIELDNAME = VSTR."<FS_MAT1>-MERKNR.
+    READ TABLE IT_TAB3 INTO WA_TAB3 WITH KEY PRUEFLOS = <FS_MAT1>-PRUEFLOS MERKNR = <FS_MAT1>-MERKNR.
+    IF SY-SUBRC EQ 0.
+      WA_IT_FLDCAT-SELTEXT = WA_TAB3-KURZTEXT.
+    ENDIF.
+    WA_IT_FLDCAT-DATATYPE = 'DEC'.
+    WA_IT_FLDCAT-INTLEN = 13.
+    WA_IT_FLDCAT-DECIMALS = 4.
+    COLLECT WA_IT_FLDCAT INTO IT_FLDCAT.
+****   added for val2 and val3
+    CLEAR VSTR.
+    CONCATENATE <FS_MAT1>-MERKNR 'VAL2' INTO VSTR.
+    WA_IT_FLDCAT-FIELDNAME = VSTR."<FS_MAT1>-MERKNR.
+    APPEND WA_IT_FLDCAT TO IT_FLDCAT.
+    CLEAR VSTR.
+    CONCATENATE <FS_MAT1>-MERKNR 'VAL3' INTO VSTR.
+    WA_IT_FLDCAT-FIELDNAME = VSTR."<FS_MAT1>-MERKNR.
+    APPEND WA_IT_FLDCAT TO IT_FLDCAT.
+    CLEAR WA_IT_FLDCAT .
+*************************************
+
+
+    CLEAR : LMT,UMT,UOM.
+    CONCATENATE <FS_MAT1>-MERKNR 'LMT' INTO LMT.
+    CLEAR WA_IT_FLDCAT.
+    WA_IT_FLDCAT-FIELDNAME = LMT.
+    WA_IT_FLDCAT-SELTEXT = 'LMT'.
+    WA_IT_FLDCAT-DATATYPE = 'DEC'.
+    WA_IT_FLDCAT-INTLEN = 13.
+    WA_IT_FLDCAT-DECIMALS = 4.
+    COLLECT WA_IT_FLDCAT INTO IT_FLDCAT.
+    CLEAR WA_IT_FLDCAT .
+
+    CONCATENATE <FS_MAT1>-MERKNR 'UMT' INTO UMT.
+    CLEAR WA_IT_FLDCAT.
+    WA_IT_FLDCAT-FIELDNAME = UMT.
+    WA_IT_FLDCAT-SELTEXT = 'UMT'.
+    WA_IT_FLDCAT-DATATYPE = 'DEC'.
+    WA_IT_FLDCAT-INTLEN = 13.
+    WA_IT_FLDCAT-DECIMALS = 4.
+    COLLECT WA_IT_FLDCAT INTO IT_FLDCAT.
+    CLEAR WA_IT_FLDCAT .
+
+*    CONCATENATE <FS_MAT1>-MERKNR 'UOM' INTO UOM.
+*    CLEAR WA_IT_FLDCAT.
+*    WA_IT_FLDCAT-FIELDNAME = UOM.
+*    WA_IT_FLDCAT-SELTEXT = 'UOM'.
+*    WA_IT_FLDCAT-DATATYPE = 'CHAR'.
+*    WA_IT_FLDCAT-INTLEN = 3.
+**    WA_IT_FLDCAT-DECIMALS = 2.
+*    COLLECT WA_IT_FLDCAT INTO IT_FLDCAT.
+*    CLEAR WA_IT_FLDCAT .
+
+  ENDLOOP.
+*
+*  break-point.
+
+
+  CALL METHOD CL_ALV_TABLE_CREATE=>CREATE_DYNAMIC_TABLE
+    EXPORTING
+      IT_FIELDCATALOG           = IT_FLDCAT
+    IMPORTING
+      EP_TABLE                  = NEW_TABLE
+    EXCEPTIONS
+      GENERATE_SUBPOOL_DIR_FULL = 1
+      OTHERS                    = 2.
+  IF SY-SUBRC <> 0.
+    MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+               WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+  ENDIF.
+
+  ASSIGN NEW_TABLE->* TO <DYN_TABLE>.
+
+*  CREATE DATA NEW_TABLE1 LIKE <DYN_TABLE>.
+*  ASSIGN NEW_TABLE1->* TO <DYN_TOTAL>.
+
+  CREATE DATA NEW_LINE LIKE LINE OF <DYN_TABLE>.
+  ASSIGN NEW_LINE->* TO <DYN_WA>.
+
+  CREATE DATA LW_NEWTABLE LIKE <DYN_TABLE>.
+  ASSIGN LW_NEWTABLE->* TO <DYN_TABLE1>.
+
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  FILL
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM FILL .
+  DATA: LV_MERKNR TYPE CHAR4.
+  DATA: LV_MERKNR1(10) TYPE C.
+  DATA: LV_MERKNR2(10) TYPE C.
+  DATA: LV_MERKNR3(10) TYPE C,
+        LV_VSTR(10)    TYPE C.
+
+
+  LOOP AT IT_TAB3 ASSIGNING <FS_TAB3>.
+    CLEAR : CHARG.
+*************************************************************************************************************
+    READ TABLE IT_QALS INTO WA_QALS WITH KEY PRUEFLOS = <FS_TAB3>-PRUEFLOS.
+    IF SY-SUBRC EQ 0.
+      CHARG = WA_QALS-CHARG.
+      MATNR = WA_QALS-MATNR.
+    ENDIF.
+    ASSIGN COMPONENT 'CHARG' OF STRUCTURE <DYN_WA> TO <FS>.
+    IF SY-SUBRC = 0.
+      <FS> = CHARG.
+    ENDIF.
+
+    ASSIGN COMPONENT 'MATNR' OF STRUCTURE <DYN_WA> TO <FS>.
+    IF SY-SUBRC = 0.
+      <FS> = MATNR.
+    ENDIF.
+
+    ASSIGN COMPONENT 'VCODE' OF STRUCTURE <DYN_WA> TO <FS>.
+    IF SY-SUBRC = 0.
+      <FS> = <FS_TAB3>-VCODE.
+    ENDIF.
+    CLEAR : DATE1.
+    ASSIGN COMPONENT 'VDATUM' OF STRUCTURE <DYN_WA> TO <FS>.
+    IF SY-SUBRC = 0.
+      CONCATENATE <FS_TAB3>-VDATUM+6(2) '.' <FS_TAB3>-VDATUM+4(2) '.' <FS_TAB3>-VDATUM+0(4) INTO DATE1.
+*      <FS> = <FS_TAB3>-VDATUM.
+      <FS> = DATE1.
+    ENDIF.
+
+
+
+    ASSIGN COMPONENT 'PRUEFLOS' OF STRUCTURE <DYN_WA> TO <FS>.
+    IF SY-SUBRC = 0.
+      <FS> = <FS_TAB3>-PRUEFLOS.
+    ENDIF.
+
+
+
+
+
+    LV_MERKNR = <FS_TAB3>-MERKNR.
+    CLEAR LV_VSTR.
+    replace '<' WITH space INTO <FS_TAB3>-VAL1.
+    CONDENSE <FS_TAB3>-VAL1.
+
+    CONCATENATE LV_MERKNR 'VAL1' INTO LV_VSTR.
+*****    ASSIGN COMPONENT LV_MERKNR OF STRUCTURE <DYN_WA> TO <FS>.
+    ASSIGN COMPONENT LV_VSTR OF STRUCTURE <DYN_WA> TO <FS>.
+    IF SY-SUBRC = 0.
+      <FS> = <FS_TAB3>-VAL1.
+    ENDIF.
+
+    LV_MERKNR = <FS_TAB3>-MERKNR.
+    CLEAR LV_VSTR.
+    CONCATENATE LV_MERKNR 'VAL2' INTO LV_VSTR.
+****    ASSIGN COMPONENT LV_MERKNR OF STRUCTURE <DYN_WA> TO <FS1>.
+    ASSIGN COMPONENT LV_VSTR OF STRUCTURE <DYN_WA> TO <FS1>.
+    IF SY-SUBRC = 0.
+      <FS1> = <FS_TAB3>-VAL2.
+    ENDIF.
+
+    LV_MERKNR = <FS_TAB3>-MERKNR.
+    CLEAR LV_VSTR.
+    CONCATENATE LV_MERKNR 'VAL3' INTO LV_VSTR.
+*****    ASSIGN COMPONENT LV_MERKNR OF STRUCTURE <DYN_WA> TO <FS2>.
+    ASSIGN COMPONENT LV_VSTR OF STRUCTURE <DYN_WA> TO <FS2>.
+    IF SY-SUBRC = 0.
+      <FS2> = <FS_TAB3>-VAL3.
+    ENDIF.
+
+*    ASSIGN COMPONENT <FS_TAB3>-VAL1 OF STRUCTURE <DYN_WA> TO <FS>.
+
+*     concatenate <fs_mat1>-merknr 'LMT' into lmt.
+    CONCATENATE <FS_TAB3>-MERKNR 'LMT' INTO LV_MERKNR1.
+    ASSIGN COMPONENT LV_MERKNR1 OF STRUCTURE <DYN_WA> TO <FS>.
+    IF SY-SUBRC = 0.
+      <FS> = <FS_TAB3>-LT.
+    ENDIF.
+
+    CONCATENATE <FS_TAB3>-MERKNR 'UMT' INTO LV_MERKNR2.
+    ASSIGN COMPONENT LV_MERKNR2 OF STRUCTURE <DYN_WA> TO <FS>.
+    IF SY-SUBRC = 0.
+      <FS> = <FS_TAB3>-UL.
+    ENDIF.
+
+
+****    CONCATENATE <FS_TAB3>-MERKNR 'UOM' INTO LV_MERKNR3.
+****    ASSIGN COMPONENT LV_MERKNR3 OF STRUCTURE <DYN_WA> TO <FS>.
+****    IF SY-SUBRC = 0.
+****      <FS> = <FS_TAB3>-MASSEINHSW.
+****    ENDIF.
+
+    COLLECT <DYN_WA> INTO <DYN_TABLE>.
+    CLEAR: <DYN_WA>.
+
+  ENDLOOP.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  ALV
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM ALV .
+  TYPE-POOLS: SLIS.
+
+  DATA: ALV_FLDCAT       TYPE SLIS_T_FIELDCAT_ALV,
+        WA_FLD           LIKE LINE OF ALV_FLDCAT,
+        ALV_LAYOUT       TYPE  SLIS_LAYOUT_ALV,
+        WA_IT_LISTHEADER TYPE SLIS_LISTHEADER,
+        IT_LISTHEADER    TYPE SLIS_T_LISTHEADER,
+        WA_EVENTS        TYPE SLIS_ALV_EVENT,
+        IT_EVENTS        TYPE SLIS_T_EVENT.
+
+  LOOP AT IT_FLDCAT INTO WA_IT_FLDCAT.
+    WA_FLD-FIELDNAME = WA_IT_FLDCAT-FIELDNAME.
+    WA_FLD-SELTEXT_L = WA_IT_FLDCAT-SELTEXT.
+    WA_FLD-INTLEN = WA_IT_FLDCAT-INTLEN.
+    WA_FLD-INTLEN = WA_IT_FLDCAT-DATATYPE.
+    WA_FLD-INTLEN = WA_IT_FLDCAT-DECIMALS.
+    WA_FLD-KEY = WA_IT_FLDCAT-KEY.
+*    wa_fld-no_zero = 'X'.  "14.8.22
+    WA_FLD-NO_OUT = WA_IT_FLDCAT-NO_OUT.
+    APPEND WA_FLD TO ALV_FLDCAT.
+  ENDLOOP.
+
+  ALV_LAYOUT-WINDOW_TITLEBAR = 'ANNUAL PRODUCT REVIEW'.
+  ALV_LAYOUT-COLWIDTH_OPTIMIZE = 'X'.
+  ALV_LAYOUT-ZEBRA = 'X'.
+
+  WA_EVENTS-NAME = SLIS_EV_END_OF_LIST.
+  WA_EVENTS-FORM = 'END_OF_LIST'.
+  APPEND WA_EVENTS  TO IT_EVENTS.
+  CLEAR WA_EVENTS .
+
+  APPEND LINES OF <DYN_TABLE1> TO <DYN_TABLE>.
+
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+      I_CALLBACK_PROGRAM = G_REPID
+*     I_CALLBACK_PF_STATUS_SET          = ' '
+*     I_CALLBACK_USER_COMMAND           = 'USER_COMMAND'
+*     I_CALLBACK_TOP_OF_PAGE            = 'TOP_OF_LIST'
+      IS_LAYOUT          = ALV_LAYOUT
+      IT_FIELDCAT        = ALV_FLDCAT
+      I_DEFAULT          = 'X'
+      I_SAVE             = 'A'
+*     IT_EVENTS          = IT_EVENTS
+    TABLES
+      T_OUTTAB           = <DYN_TABLE>
+    EXCEPTIONS
+      PROGRAM_ERROR      = 1
+      OTHERS             = 2.
+  IF SY-SUBRC <> 0.
+    MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+            WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  ALVDISP
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM ALVDISP .
+  WA_FIELDCAT-FIELDNAME = 'PRUEFLOS'.
+  WA_FIELDCAT-SELTEXT_L = 'INSP LOT NO'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+  CLEAR : WA_FIELDCAT.
+
+  WA_FIELDCAT-FIELDNAME = 'MATNR'.
+  WA_FIELDCAT-SELTEXT_L = 'PRODUCT CODE'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+  CLEAR : WA_FIELDCAT.
+
+
+  WA_FIELDCAT-FIELDNAME = 'CHARG'.
+  WA_FIELDCAT-SELTEXT_L = 'BATCH'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+  CLEAR : WA_FIELDCAT.
+
+  WA_FIELDCAT-FIELDNAME = 'MERKNR'.
+  WA_FIELDCAT-SELTEXT_L = 'TEST NO.'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+  CLEAR : WA_FIELDCAT.
+
+  WA_FIELDCAT-FIELDNAME = 'KURZTEXT'.
+  WA_FIELDCAT-SELTEXT_L = 'TEST NAME'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+  CLEAR : WA_FIELDCAT.
+
+  WA_FIELDCAT-FIELDNAME = 'MASSEINHSW'.
+  WA_FIELDCAT-SELTEXT_L = 'UOM'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+  CLEAR : WA_FIELDCAT.
+
+  WA_FIELDCAT-FIELDNAME = 'VAL1'.
+  WA_FIELDCAT-SELTEXT_L = 'VAL1'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+  CLEAR : WA_FIELDCAT.
+
+  WA_FIELDCAT-FIELDNAME = 'VAL2'.
+  WA_FIELDCAT-SELTEXT_L = 'VAL2'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+  CLEAR : WA_FIELDCAT.
+
+  WA_FIELDCAT-FIELDNAME = 'VAL3'.
+  WA_FIELDCAT-SELTEXT_L = 'VAL3'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+  CLEAR : WA_FIELDCAT.
+
+  WA_FIELDCAT-FIELDNAME = 'LT'.
+  WA_FIELDCAT-SELTEXT_L = 'LOWER LIMIT'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+  CLEAR : WA_FIELDCAT.
+
+  WA_FIELDCAT-FIELDNAME = 'UL'.
+  WA_FIELDCAT-SELTEXT_L = 'UPPER LIMIT'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+  CLEAR : WA_FIELDCAT.
+
+  WA_FIELDCAT-FIELDNAME = 'VCODE'.
+  WA_FIELDCAT-SELTEXT_L = 'UD STATUS'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+  CLEAR : WA_FIELDCAT.
+
+  WA_FIELDCAT-FIELDNAME = 'VDATUM'.
+  WA_FIELDCAT-SELTEXT_L = 'UD DATE'.
+  APPEND WA_FIELDCAT TO FIELDCAT.
+  CLEAR : WA_FIELDCAT.
+
+
+
+
+  LAYOUT-ZEBRA = 'X'.
+  LAYOUT-COLWIDTH_OPTIMIZE = 'X'.
+  LAYOUT-WINDOW_TITLEBAR  = 'INSPECTION LOT DATA'.
+
+
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+*     I_INTERFACE_CHECK       = ' '
+*     I_BYPASSING_BUFFER      = ' '
+*     I_BUFFER_ACTIVE         = ' '
+      I_CALLBACK_PROGRAM      = G_REPID
+*     I_CALLBACK_PF_STATUS_SET          = ' '
+      I_CALLBACK_USER_COMMAND = 'USER_COMM'
+      I_CALLBACK_TOP_OF_PAGE  = 'TOP'
+*     I_CALLBACK_HTML_TOP_OF_PAGE       = ' '
+*     I_CALLBACK_HTML_END_OF_LIST       = ' '
+*     I_STRUCTURE_NAME        =
+*     I_BACKGROUND_ID         = ' '
+*     I_GRID_TITLE            =
+*     I_GRID_SETTINGS         =
+      IS_LAYOUT               = LAYOUT
+      IT_FIELDCAT             = FIELDCAT
+*     IT_EXCLUDING            =
+*     IT_SPECIAL_GROUPS       =
+*     IT_SORT                 =
+*     IT_FILTER               =
+*     IS_SEL_HIDE             =
+*     I_DEFAULT               = 'X'
+      I_SAVE                  = 'A'
+*     IS_VARIANT              =
+*     IT_EVENTS               =
+*     IT_EVENT_EXIT           =
+*     IS_PRINT                =
+*     IS_REPREP_ID            =
+*     I_SCREEN_START_COLUMN   = 0
+*     I_SCREEN_START_LINE     = 0
+*     I_SCREEN_END_COLUMN     = 0
+*     I_SCREEN_END_LINE       = 0
+*     I_HTML_HEIGHT_TOP       = 0
+*     I_HTML_HEIGHT_END       = 0
+*     IT_ALV_GRAPHICS         =
+*     IT_HYPERLINK            =
+*     IT_ADD_FIELDCAT         =
+*     IT_EXCEPT_QINFO         =
+*     IR_SALV_FULLSCREEN_ADAPTER        =
+* IMPORTING
+*     E_EXIT_CAUSED_BY_CALLER =
+*     ES_EXIT_CAUSED_BY_USER  =
+    TABLES
+      T_OUTTAB                = IT_TAB3
+    EXCEPTIONS
+      PROGRAM_ERROR           = 1
+      OTHERS                  = 2.
+  IF SY-SUBRC <> 0.
+* MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*         WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+  ENDIF.
+
+ENDFORM.                    "SUMMARY
+
+*&---------------------------------------------------------------------*
+*&      Form  TOP
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM TOP.
+
+  DATA: COMMENT    TYPE SLIS_T_LISTHEADER,
+        WA_COMMENT LIKE LINE OF COMMENT.
+
+  WA_COMMENT-TYP = 'A'.
+  WA_COMMENT-INFO = 'INSPECTION LOT DETAILS'.
+*  WA_COMMENT-INFO = P_FRMDT.
+  APPEND WA_COMMENT TO COMMENT.
+
+  CALL FUNCTION 'REUSE_ALV_COMMENTARY_WRITE'
+    EXPORTING
+      IT_LIST_COMMENTARY = COMMENT
+*     I_LOGO             = 'ENJOYSAP_LOGO'
+*     I_END_OF_LIST_GRID =
+*     I_ALV_FORM         =
+    .
+
+  CLEAR COMMENT.
+
+ENDFORM.                    "TOP
+
+
+
+*&---------------------------------------------------------------------*
+*&      Form  USER_COMM
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->UCOMM      text
+*      -->SELFIELD   text
+*----------------------------------------------------------------------*
+FORM USER_COMM USING UCOMM LIKE SY-UCOMM
+                     SELFIELD TYPE SLIS_SELFIELD.
+
+
+
+  CASE SELFIELD-FIELDNAME.
+    WHEN 'VBELN'.
+      SET PARAMETER ID 'VF' FIELD SELFIELD-VALUE.
+      CALL TRANSACTION 'VF03' AND SKIP FIRST SCREEN.
+    WHEN 'VBELN1'.
+      SET PARAMETER ID 'BV' FIELD SELFIELD-VALUE.
+      CALL TRANSACTION 'VL03N' AND SKIP FIRST SCREEN.
+    WHEN OTHERS.
+  ENDCASE.
+ENDFORM.                    "USER_COMM
+
+
+
+*ENDFORM.

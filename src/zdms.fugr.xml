@@ -1,0 +1,324 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_FUGR" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <AREAT>DMS</AREAT>
+   <INCLUDES>
+    <SOBJ_NAME>LZDMSTOP</SOBJ_NAME>
+    <SOBJ_NAME>SAPLZDMS</SOBJ_NAME>
+   </INCLUDES>
+   <FUNCTIONS>
+    <item>
+     <FUNCNAME>ZHR_EMP_DMS_DOWNLOAD</FUNCNAME>
+     <SHORT_TEXT>Download File from DMS</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>I_DOC_NUMBER</PARAMETER>
+       <REFERENCE>X</REFERENCE>
+       <TYP>DOKNR</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>I_DOC_TYPE</PARAMETER>
+       <DEFAULT>&apos;ZHR&apos;</DEFAULT>
+       <REFERENCE>X</REFERENCE>
+       <TYP>DOKAR</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>I_DOC_VERSION</PARAMETER>
+       <DEFAULT>&apos;00&apos;</DEFAULT>
+       <REFERENCE>X</REFERENCE>
+       <TYP>DOKVR</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>I_DOC_PART</PARAMETER>
+       <DEFAULT>&apos;000&apos;</DEFAULT>
+       <REFERENCE>X</REFERENCE>
+       <TYP>DOKTL_D</TYP>
+      </RSIMP>
+     </IMPORT>
+     <EXPORT>
+      <RSEXP>
+       <PARAMETER>E_FILE_CONTENT</PARAMETER>
+       <REFERENCE>X</REFERENCE>
+       <TYP>XSTRING</TYP>
+      </RSEXP>
+      <RSEXP>
+       <PARAMETER>E_ACCESS_INFO</PARAMETER>
+       <REFERENCE>X</REFERENCE>
+       <TYP>SDOKFILACI</TYP>
+      </RSEXP>
+     </EXPORT>
+     <EXCEPTION>
+      <RSEXC>
+       <EXCEPTION>FILE_NOT_FOUND</EXCEPTION>
+      </RSEXC>
+      <RSEXC>
+       <EXCEPTION>FILE_PHYSICAL_LOC_ERROR</EXCEPTION>
+      </RSEXC>
+      <RSEXC>
+       <EXCEPTION>FILE_CONVERSION_ERROR</EXCEPTION>
+      </RSEXC>
+     </EXCEPTION>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>I_DOC_NUMBER</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Document number</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>I_DOC_TYPE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Document Type</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>I_DOC_VERSION</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Document Version</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>I_DOC_PART</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Document Part</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>E_FILE_CONTENT</PARAMETER>
+       <KIND>P</KIND>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>E_ACCESS_INFO</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>SDOK: Entries for document contents in internal tables</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>FILE_NOT_FOUND</PARAMETER>
+       <KIND>X</KIND>
+       <STEXT>File with Document Number not found</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>FILE_PHYSICAL_LOC_ERROR</PARAMETER>
+       <KIND>X</KIND>
+       <STEXT>Error at File Physical Location</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>FILE_CONVERSION_ERROR</PARAMETER>
+       <KIND>X</KIND>
+       <STEXT>Conversion from binary to xstring</STEXT>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+    <item>
+     <FUNCNAME>Z_SRV_CREATE_DOC_IN_DMS</FUNCNAME>
+     <UPDATE_TASK>1</UPDATE_TASK>
+     <SHORT_TEXT>Create Document in DMS</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>GV_FILE</PARAMETER>
+       <OPTIONAL>X</OPTIONAL>
+       <TYP>IBIPPARMS-PATH</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>VBELN</PARAMETER>
+       <OPTIONAL>X</OPTIONAL>
+       <TYP>CHAR20</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>POSNR</PARAMETER>
+       <OPTIONAL>X</OPTIONAL>
+       <TYP>POSNR</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>IS_OBJECT</PARAMETER>
+       <OPTIONAL>X</OPTIONAL>
+       <TYP>SIBFLPORB</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>DOC_TYPE</PARAMETER>
+       <OPTIONAL>X</OPTIONAL>
+       <TYP>DOKAR</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>LV_TCODE</PARAMETER>
+       <OPTIONAL>X</OPTIONAL>
+       <TYP>STRING</TYP>
+      </RSIMP>
+     </IMPORT>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>GV_FILE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Local file for upload/download</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>VBELN</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Char 20</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>POSNR</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Item number of the SD document</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>IS_OBJECT</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Local Persistent Object Reference - BOR Compatible</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>DOC_TYPE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Document Type</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>LV_TCODE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Current Transaction</STEXT>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+    <item>
+     <FUNCNAME>Z_SRV_DMS_UPLOAD</FUNCNAME>
+     <SHORT_TEXT>Upload employee documents to DMS</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>FILE_NAME</PARAMETER>
+       <REFERENCE>X</REFERENCE>
+       <TYP>STRING</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>FILE_CONTENT</PARAMETER>
+       <REFERENCE>X</REFERENCE>
+       <TYP>XSTRING</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>DOC_TYPE</PARAMETER>
+       <DEFAULT>&apos;ZCS&apos;</DEFAULT>
+       <REFERENCE>X</REFERENCE>
+       <TYP>DOKAR</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>DOC_VERSION</PARAMETER>
+       <DEFAULT>&apos;00&apos;</DEFAULT>
+       <OPTIONAL>X</OPTIONAL>
+       <REFERENCE>X</REFERENCE>
+       <TYP>DOKVR</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>DOC_PART</PARAMETER>
+       <DEFAULT>&apos;000&apos;</DEFAULT>
+       <OPTIONAL>X</OPTIONAL>
+       <REFERENCE>X</REFERENCE>
+       <TYP>DOKTL_D</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>STORAGE_CAT</PARAMETER>
+       <DEFAULT>&apos;ZDMS_BC &apos;</DEFAULT>
+       <REFERENCE>X</REFERENCE>
+       <TYP>CV_STORAGE_CAT</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>VBELN</PARAMETER>
+       <REFERENCE>X</REFERENCE>
+       <TYP>CHAR20</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>POSNR</PARAMETER>
+       <REFERENCE>X</REFERENCE>
+       <TYP>POSNR</TYP>
+      </RSIMP>
+     </IMPORT>
+     <EXPORT>
+      <RSEXP>
+       <PARAMETER>E_DOC_NUMBER</PARAMETER>
+       <REFERENCE>X</REFERENCE>
+       <TYP>DOKNR</TYP>
+      </RSEXP>
+      <RSEXP>
+       <PARAMETER>E_FILE_NAME</PARAMETER>
+       <REFERENCE>X</REFERENCE>
+       <TYP>ZFILE_NAME</TYP>
+      </RSEXP>
+      <RSEXP>
+       <PARAMETER>E_FILE_TYPE</PARAMETER>
+       <REFERENCE>X</REFERENCE>
+       <TYP>CHAR03</TYP>
+      </RSEXP>
+     </EXPORT>
+     <EXCEPTION>
+      <RSEXC>
+       <EXCEPTION>DOCUMENT_NO_NOT_CREATE</EXCEPTION>
+      </RSEXC>
+      <RSEXC>
+       <EXCEPTION>DOCUMENT_NOT_UPLOADED</EXCEPTION>
+      </RSEXC>
+     </EXCEPTION>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>FILE_NAME</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>P2E: Long Description</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>FILE_CONTENT</PARAMETER>
+       <KIND>P</KIND>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>DOC_TYPE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Document Type</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>DOC_VERSION</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Document Version</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>DOC_PART</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Document Part</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>STORAGE_CAT</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Storage category for original files</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>VBELN</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>DBM Order Number</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>POSNR</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Item number of the SD document</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>E_DOC_NUMBER</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Document number</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>E_FILE_NAME</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>File Name</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>E_FILE_TYPE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Three-digit character field for IDocs</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>DOCUMENT_NO_NOT_CREATE</PARAMETER>
+       <KIND>X</KIND>
+       <STEXT>Document Number was not created</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>DOCUMENT_NOT_UPLOADED</PARAMETER>
+       <KIND>X</KIND>
+       <STEXT>Document was not uploaded into DMS</STEXT>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+   </FUNCTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_GET_EINVOICE_DETAILS</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Get Einvoice Details</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_DATA</CMPNAME>
+     <SCONAME>E_J_1IG_INVREFNUM</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>GST India: Link IRN details to Document</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_DATA</CMPNAME>
+     <SCONAME>I_BUKRS</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Company Code</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_DATA</CMPNAME>
+     <SCONAME>I_DOCNO</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Document Number</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_DATA</CMPNAME>
+     <SCONAME>I_DOC_YEAR</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Document Fiscal Year</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_DATA_ADOBE</CMPNAME>
+     <SCONAME>E_EDOINEINV</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>eDocument India: eInvoice Details</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_DATA_ADOBE</CMPNAME>
+     <SCONAME>IM_INV_NUM</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>eDocument Source Key</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_DATA_B2C</CMPNAME>
+     <SCONAME>I_BUKRS</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Company Code</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_DATA_B2C</CMPNAME>
+     <SCONAME>I_NETWR</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Net Value in Document Currency</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_DATA_B2C</CMPNAME>
+     <SCONAME>LV_KUNNR</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Customer Number</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_DATA_EWAY</CMPNAME>
+     <SCONAME>E_EDOINEWB</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>eDocument India: eWay Bill Details</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_DATA_EWAY</CMPNAME>
+     <SCONAME>IM_INV_NUM</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>eDocument Source Key</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_DATA_SMARTFORM</CMPNAME>
+     <SCONAME>E_EDOINEINV</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>eDocument India: eInvoice Details</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_DATA_SMARTFORM</CMPNAME>
+     <SCONAME>IM_INV_NUM</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>eDocument Source Key</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_DATA_SMARTFORM</CMPNAME>
+     <SCONAME>LV_EWB</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>eDocument India: eWayBill Number</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_DATA_SMARTFORM</CMPNAME>
+     <SCONAME>LV_EWB_CREATE_DATE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>eDocument India: eWay Bill Creation Date</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_DATA_SMARTFORM</CMPNAME>
+     <SCONAME>LV_EWB_DATE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>eDocument India: eWay Bill - Valid To</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
+  </asx:values>
+ </asx:abap>
+</abapGit>

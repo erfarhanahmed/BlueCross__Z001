@@ -1,0 +1,66 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'CDS FOR GETTING DATA FROM MCHA AND MCH1'
+@Metadata.ignorePropagatedAnnotations: true
+@ObjectModel.usageType:{
+    serviceQuality: #X,
+    sizeCategory: #S,
+    dataClass: #MIXED
+}
+define view entity ZMCHA as select from mcha as A inner join mch1 as B on( A.matnr = B.matnr and A.charg = B.charg ) 
+{
+ 
+   key A.matnr as Matnr,
+   key A.werks as Werks,
+   key A.charg as Charg,
+   A.lvorm as Lvorm,
+   A.ersda as Ersda,
+   A.ernam as Ernam,
+   A.aenam as Aenam,
+   A.laeda as Laeda,
+   A.verab as Verab,
+   A.zusch as Zusch,
+   A.zustd as Zustd,
+   A.zaedt as Zaedt,  
+   A.licha as Licha,
+   A.vlcha as Vlcha,
+   A.vlwrk as Vlwrk,
+   A.vlmat as Vlmat,
+   A.batch_id as BatchId,
+   A.xpcbt as Xpcbt,
+   A.bwtar as Bwtar,
+   A.chame as Chame,
+   A.lwedt as Lwedt,
+   A.fvdt1 as Fvdt1,
+   A.fvdt2 as Fvdt2,
+   A.fvdt3 as Fvdt3,
+   A.fvdt4 as Fvdt4,
+   A.fvdt5 as Fvdt5,
+   A.fvdt6 as Fvdt6,
+   A.herkl as Herkl,
+   A.herkr as Herkr,
+   A.mtver as Mtver,
+   A.cuobj_bm as CuobjBm,
+   A.deact_bm as DeactBm,
+   A.batch_type as BatchType,
+   A.sgt_scat as SgtScat,
+   A.ersda_tmstp as ErsdaTmstp,
+   A.ersda_tz_sys as ErsdaTzSys,
+   A.ersda_tz_usr as ErsdaTzUsr,
+   A.zfdat as Zfdat,
+   A.creation_datetime as CreationDatetime,
+   A.lastchange_datetime as LastchangeDatetime,
+   A.version as Version,
+   A./sttpec/sertype,
+   A./sttpec/plant,
+   A./sttpec/synctime,
+   A./sttpec/syncact,
+   A.fsh_season_year as FshSeasonYear,
+   A.fsh_season as FshSeason,
+   A.fsh_collection as FshCollection,
+   A.fsh_theme as FshTheme,
+   B.vfdat as Vfdat,
+   B.hsdat as Hsdat,
+   B.lifnr as Lifnr,
+   B.qndat as Qndat
+}

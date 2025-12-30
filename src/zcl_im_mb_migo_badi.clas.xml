@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_IM_MB_MIGO_BADI</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Imp. class for BAdI imp. ZMB_MIGO_BADI</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>C_BC</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Header, Item Screens Create Mode</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>C_BD</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Header, Item Screens Display Mode</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>C_BE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Header, Item Screens Change Mode</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>C_HC</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Header Screen Create Mode</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>C_HD</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Header Screen Display Mode</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>C_HE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Header Screen Change Mode</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>C_IC</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Item Screen Create Mode</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>C_ID</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Item Screen Display Mode</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>C_IE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Item Screen Change Mode</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GS_GODYNPRO</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>MMIM Enjoy: Input Fields on Screen</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GT_ALLAUSP</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Table Structure for Characteristics</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GT_GOITEM</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>MB: Table Type GOITEM for MIGO</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>Z_ACTION</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Executable Action in Transaction MIGO</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>Z_CLASS_ID</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Class ID for MIGO Components (External Detail Screen)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>Z_DISPLAY</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Checkbox</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>Z_REFDOC</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Reference Document for MIGO Transaction</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-16"?>
+<abapGit version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <TDLINES>
+    <TLINE>
+     <TDFORMAT>/W</TDFORMAT>
+     <TDLINE>MAIN</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>E1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;C3&gt; &amp;&lt;FS_REPORT&gt;-SRLNO(4)&amp;  &amp;&lt;FS_REPORT&gt;-PERNR(Z5R)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE> &amp;&lt;FS_REPORT&gt;-ENAME(25)&amp;  &amp;&lt;FS_REPORT&gt;-zz_hqdesc(10)&amp; &amp;MMYYYY(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE> &amp;&lt;FS_REPORT&gt;-DIV(3)&amp; &amp;&lt;FS_REPORT&gt;-AVGSALES(T10)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;&lt;FS_REPORT&gt;-AVGTARGET(T10)&amp;   &amp;&lt;FS_REPORT&gt;-PERTGT(4.0)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;&lt;FS_REPORT&gt;-GRTH(4)&amp; &amp;&lt;FS_REPORT&gt;-SAMPLE(6)&amp; &amp;&lt;FS_REPORT&gt;-SPR(6)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>E2</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&amp;ULINE(90)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/W</TDFORMAT>
+     <TDLINE>WINDOW2</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;C2&gt;&amp;P_HEAD2&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;C2&gt;&amp;P_HEAD3&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>                                                                 PAGE :</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>&amp;PAGE&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&amp;uline(76)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;C3&gt;RANK    CODE  NAME                       H.Q        DOJ     DIV</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>  AVG.SALE   AVG.TGT    %TGT Grth   SAMP    SPR &lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&amp;uline(76)&amp;</TDLINE>
+    </TLINE>
+   </TDLINES>
+  </asx:values>
+ </asx:abap>
+</abapGit>

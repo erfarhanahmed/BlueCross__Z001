@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_FUGR" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <AREAT>QM02</AREAT>
+   <INCLUDES>
+    <SOBJ_NAME>LZQM02TOP</SOBJ_NAME>
+    <SOBJ_NAME>SAPLZQM02</SOBJ_NAME>
+   </INCLUDES>
+   <FUNCTIONS>
+    <item>
+     <FUNCNAME>ZQST01_FT_RELEASE_INIT_SAMPLE</FUNCNAME>
+     <REMOTE_CALL>R</REMOTE_CALL>
+     <SHORT_TEXT>QM02</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>I_VIQMEL</PARAMETER>
+       <TYP>VIQMEL</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>I_CUSTOMIZING</PARAMETER>
+       <TYP>V_TQ85</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>I_MANUM</PARAMETER>
+       <DBFIELD>QMSM-MANUM</DBFIELD>
+       <OPTIONAL>X</OPTIONAL>
+      </RSIMP>
+     </IMPORT>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>I_VIQMEL</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Generated Table for View</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>I_CUSTOMIZING</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Generated Table for View</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>I_MANUM</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Sequential Task Number</STEXT>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+   </FUNCTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-16"?>
+<abapGit version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <TDLINES>
+    <TLINE>
+     <TDFORMAT>/W</TDFORMAT>
+     <TDLINE>MAIN</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>PDET</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P1</TDFORMAT>
+     <TDLINE>&amp;PRDNAME(15)&amp; &amp;TAG&amp; &amp;space(5)&amp; &amp;AVGQTY(8)&amp; &amp;QTY1(8)&amp; &amp;QTY2(8)&amp; &amp;QTY3(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;QTY4(8)&amp; &amp;QTY5(8)&amp; &amp;QTY6(8)&amp; &amp;QTY7(8)&amp; &amp;QTY8(8)&amp; &amp;QTY9(8)&amp; &amp;QTY10(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;QTY11(8)&amp; &amp;QTY12(8)&amp; &amp;ASOFQTY(8)&amp; &amp;QTYSUM(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>CDET</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P1</TDFORMAT>
+     <TDLINE>&amp;SPACE(15)&amp; &amp;TAG&amp; &amp;space(5)&amp; &amp;AVGQTY(8)&amp; &amp;QTY1(8)&amp; &amp;QTY2(8)&amp; &amp;QTY3(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;QTY4(8)&amp; &amp;QTY5(8)&amp; &amp;QTY6(8)&amp; &amp;QTY7(8)&amp; &amp;QTY8(8)&amp; &amp;QTY9(8)&amp; &amp;QTY10(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;QTY11(8)&amp; &amp;QTY12(8)&amp; &amp;QTYSUM(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>GRTHDET</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P1</TDFORMAT>
+     <TDLINE>&amp;SPACE(15)&amp; &amp;TAG&amp;&amp;space(5)&amp; &amp;AVGQTY(8)&amp; &amp;QTY1(8)&amp; &amp;QTY2(8)&amp; &amp;QTY3(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;QTY4(8)&amp; &amp;QTY5(8)&amp; &amp;QTY6(8)&amp; &amp;QTY7(8)&amp; &amp;QTY8(8)&amp; &amp;QTY9(8)&amp; &amp;QTY10(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;QTY11(8)&amp; &amp;QTY12(8)&amp; &amp;QTYSUM(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>CDET1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P1</TDFORMAT>
+     <TDLINE>&amp;SPACE(15)&amp; &amp;TAG&amp; &amp;space(5)&amp; &amp;AVGQTY(8)&amp; &amp;QTY1(8)&amp; &amp;QTY2(8)&amp; &amp;QTY3(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;QTY4(8)&amp; &amp;QTY5(8)&amp; &amp;QTY6(8)&amp; &amp;QTY7(8)&amp; &amp;QTY8(8)&amp; &amp;QTY9(8)&amp; &amp;QTY10(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;QTY11(8)&amp; &amp;QTY12(8)&amp; &amp;QTYSUM(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>GDET1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>GROUP_TOTAL</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P2</TDFORMAT>
+     <TDLINE>&amp;ULINE(165)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>PDET_ST</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P1</TDFORMAT>
+     <TDLINE>&amp;PRDNAME(15)&amp; &amp;TAG&amp;        &amp;AVGQTY(8)&amp; &amp;PQTY1(8)&amp; &amp;PQTY2(8)&amp; &amp;PQTY3(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;PQTY4(8)&amp; &amp;PQTY5(8)&amp; &amp;PQTY6(8)&amp; &amp;PQTY7(8)&amp; &amp;PQTY8(8)&amp; &amp;PQTY9(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;PQTY10(8)&amp; &amp;PQTY11(8)&amp; &amp;PQTY12(8)&amp; &amp;PQTYASON(8)&amp; &amp;PQTYSUM(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>CDET_ST</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P1</TDFORMAT>
+     <TDLINE>&amp;SPACE(15)&amp; &amp;TAG&amp;        &amp;AVGQTY(8)&amp; &amp;DQTY1(8)&amp; &amp;DQTY2(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>&amp;DQTY3(8)&amp;  &amp;DQTY4(8)&amp; &amp;DQTY5(8)&amp; &amp;DQTY6(8)&amp; &amp;DQTY7(8)&amp; &amp;DQTY8(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;DQTY9(8)&amp; &amp;DQTY10(8)&amp; &amp;DQTY11(8)&amp; &amp;DQTY12(8)&amp; &amp;DQTYSUM(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>PDET_TOT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P1</TDFORMAT>
+     <TDLINE>&amp;PRDNAME(15)&amp; &amp;TAG&amp;        &amp;AVGQTY(8)&amp; &amp;FPQTY1(8)&amp; &amp;FPQTY2(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;FPQTY3(8)&amp; &amp;FPQTY4(8)&amp; &amp;FPQTY5(8)&amp; &amp;FPQTY6(8)&amp; &amp;FPQTY7(8)&amp; &amp;FPQTY8(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;FPQTY9(8)&amp; &amp;FPQTY10(8)&amp; &amp;FPQTY11(8)&amp; &amp;FPQTY12(8)&amp; &amp;FPQTYASON(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;FPQTYSUM(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>CDET_TOT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P1</TDFORMAT>
+     <TDLINE>&amp;SPACE(15)&amp; &amp;TAG&amp;        &amp;AVGQTY(8)&amp; &amp;FDQTY1(8)&amp; &amp;FDQTY2(8)&amp; &amp;FDQTY3(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;FDQTY4(8)&amp; &amp;FDQTY5(8)&amp; &amp;FDQTY6(8)&amp; &amp;FDQTY7(8)&amp; &amp;FDQTY8(8)&amp; &amp;FDQTY9(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;FDQTY10(8)&amp; &amp;FDQTY11(8)&amp; &amp;FDQTY12(8)&amp; &amp;FDQTYSUM(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>GRTHDET_T</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P1</TDFORMAT>
+     <TDLINE>&amp;SPACE(15)&amp; &amp;TAG&amp;  &amp;space(14)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>&amp;QTY1(8)&amp; &amp;QTY2(8)&amp; &amp;QTY3(8)&amp; &amp;QTY4(8)&amp; &amp;QTY5(8)&amp; &amp;QTY6(8)&amp; &amp;QTY7(8)&amp; &amp;QTY8(8)&amp; &amp;QTY9(8)&amp; &amp;QTY10(8)&amp; &amp;QTY11(8)&amp; &amp;QTY12(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;QTYSUM(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>NDET</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P2</TDFORMAT>
+     <TDLINE>&amp;PRDNAME(36)&amp;  &amp;QTY1(8)&amp; &amp;QTY2(8)&amp; &amp;QTY3(8)&amp; &amp;QTY4(8)&amp; &amp;QTY5(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;QTY6(8)&amp; &amp;QTY7(8)&amp; &amp;QTY8(8)&amp; &amp;QTY9(8)&amp; &amp;QTY10(8)&amp; &amp;QTY11(8)&amp; &amp;QTY12(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>  &amp;QTYSUM(8)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>BLANK</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P2</TDFORMAT>
+     <TDLINE>&amp;PRDNAME(36)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/W</TDFORMAT>
+     <TDLINE>WINDOW2</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;C3&gt;&amp;MTITLE&amp;&amp;MTITLE1&amp;&amp;MTITLE2&amp;&lt;/&gt;,,,,,,&lt;C1&gt;PAGE : &amp;PAGE&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>P2</TDFORMAT>
+     <TDLINE>&lt;C1&gt;&amp;ULINE(165)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;C2&gt;PRD GROUP  ,,,,TAG   &amp;space(5)&amp;     AV.PM.          APR         MAY</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>         JUN        JUL        AUG         SEP         OCT        NOV</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>      DEC          JAN         FEB        MAR     CUM.TOTAL  YRLY TOTAL</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;C1&gt;&amp;uline(165)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+   </TDLINES>
+  </asx:values>
+ </asx:abap>
+</abapGit>

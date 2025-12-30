@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-16"?>
+<abapGit version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <TDLINES>
+    <TLINE>
+     <TDFORMAT>/W</TDFORMAT>
+     <TDLINE>MAIN</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>DET1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>PROTECT.</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F3&gt;&amp;PRDNAME+0(15)&amp; &amp;QTY1+0(15)&amp; &amp;QTY2+0(10)&amp; &amp;QTY3+0(15)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;QTY4+0(15)&amp; &amp;QTY5+0(11)&amp; &amp;QTY6+0(11)&amp; &amp;QTY7+0(15)&amp; &amp;QTY8+0(15)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_TABTOT-QTY_GRTH+0(5)&amp; &amp;WA_TABTOT-VAL_GRTH+0(5)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>FDET1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>&amp;ULINE(161)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F3&gt;&amp;PRDNAME+(25)&amp; &amp;SPACE(16)&amp; &amp;Fqty1+0(15)&amp;    &amp;fqty2+0(12)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;SPACE(23)&amp; &amp;FQTY3+0(15)&amp; &amp;FQTY4+0(15)&amp; &amp;SPACE(5)&amp; &amp;tot_gr2+0(5)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>&amp;ULINE(161)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>ENDPROTECT.</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/W</TDFORMAT>
+     <TDLINE>WINDOW1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;B2&gt;SR-2-B : EXPORT SALES PRODUCT GROUPWISE SUMMARY &amp;MTITLE+0(6)&amp; &amp; CUM.</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>&amp;ULINE(161)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F3&gt;GROUP NAME &amp;SPACE(9)&amp; UNIT SALE &amp;SPACE(1)&amp; UNIT-BUD &amp;SAPCE(5)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>VALUE-SALE &amp;SAPCE(5)&amp; VALUE-BUD &amp;SAPCE(1)&amp; UNIT-SALE &amp;SPACE(2)&amp; UNIT-BUD</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>&amp;SAPCE(5)&amp; VALUE-SALE &amp;SAPCE(5)&amp; VALUE-BUD UNT.GR</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>&amp;SAPCE(1)&amp;VL.GR&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F3&gt;&amp;SAPCE(21)&amp; THIS-MTH &amp;sapce(1)&amp; THIS-MTH &amp;SPACE(6)&amp; THIS-MTH</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>&amp;SAPCE(7)&amp; THIS-MTH &amp;SAPCE(2)&amp; THIS-YTD &amp;SAPCE(2)&amp; THIS-YTD &amp;sapce(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> THIS-YTD &amp;sapce(5)&amp;  THIS-YTD TH.YTD&amp;sapce(1)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>TH.YD&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F3&gt;&amp;SPACE(52)&amp; (RS) &amp;SPACE(10)&amp; (RS) &amp;SPACE(34)&amp; (RS) &amp;SPACE(10)&amp; (RS)</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>&amp;uline(161)&amp;</TDLINE>
+    </TLINE>
+   </TDLINES>
+  </asx:values>
+ </asx:abap>
+</abapGit>

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_W3MI" serializer_version="v2.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <NAME>ZSAP_LOGO</NAME>
+   <TEXT>EASY Access Screen LOGO</TEXT>
+   <PARAMS>
+    <WWWPARAMS>
+     <NAME>fileextension</NAME>
+     <VALUE>.jpg</VALUE>
+    </WWWPARAMS>
+    <WWWPARAMS>
+     <NAME>filename</NAME>
+     <VALUE>287592565_101638362604836_8143895869277677027_n.jpg</VALUE>
+    </WWWPARAMS>
+    <WWWPARAMS>
+     <NAME>mimetype</NAME>
+     <VALUE>image/gif EXTENSION</VALUE>
+    </WWWPARAMS>
+   </PARAMS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

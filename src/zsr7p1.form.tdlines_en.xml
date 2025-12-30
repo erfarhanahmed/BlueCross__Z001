@@ -1,0 +1,541 @@
+﻿<?xml version="1.0" encoding="utf-16"?>
+<abapGit version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <TDLINES>
+    <TLINE>
+     <TDFORMAT>/W</TDFORMAT>
+     <TDLINE>MAIN</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>RM1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>&amp;ULINE(130)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F3&gt;&amp;RM_NAME+0(20)&amp;&lt;/&gt;&lt;F3&gt; &amp;rm_zone+0(12)&amp; &amp;RM_SHORT+0(3)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>DET1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;wa_tab8-MAKTX+0(20)&amp;&lt;/&gt;&lt;F1&gt; &amp;wa_tab8-bezei+0(7)&amp; PY(U)&amp;SPACE(2)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-laprqty+0(6)&amp; &amp;wa_tab8-lmayqty+0(6)&amp; &amp;wa_tab8-ljunqty+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-ljulqty+0(6)&amp; &amp;wa_tab8-laugqty+0(6)&amp; &amp;wa_tab8-lsepqty+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-loctqty+0(6)&amp; &amp;wa_tab8-lnovqty+0(6)&amp; &amp;wa_tab8-lDECqty+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-lJANqty+0(6)&amp; &amp;WA_tab8-lFEBqty+0(6)&amp; &amp;WA_TAB8-LMARQTY+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;LCUM_TOT+0(6)&amp; &amp;ltot+0(6)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;space(28)&amp;&lt;/&gt;&lt;F1&gt; PY(V)&amp;SAPCE(2)&amp; &amp;wa_tab8-laprpts+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-LmayPTS+0(6)&amp; &amp;wa_tab8-ljunPTS+0(6)&amp; &amp;wa_tab8-ljulPTS+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-laugPTS+0(6)&amp; &amp;wa_tab8-lsepPTS+0(6)&amp; &amp;wa_tab8-loctPTS+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-lnovPTS+0(6)&amp; &amp;wa_tab8-ldecPTS+0(6)&amp; &amp;wa_tab8-ljanPTS+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-lfebPTS+0(6)&amp; &amp;wa_tab8-lmarPTS+0(6)&amp; &amp;LCUMVTOT+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;VLTOT+0(6)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;space(28)&amp;&lt;/&gt;&lt;F1&gt; CY(U)&amp;SAPCE(2)&amp; &amp;wa_tab8-caprqty+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-cmayqty+0(6)&amp; &amp;wa_tab8-cjunqty+0(6)&amp; &amp;wa_tab8-cjulqty+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-caugqty+0(6)&amp; &amp;wa_tab8-csepqty+0(6)&amp; &amp;wa_tab8-coctqty+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-cnovqty+0(6)&amp; &amp;wa_tab8-cdecqty+0(6)&amp; &amp;wa_tab8-cjanqty+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-cfebqty+0(6)&amp; &amp;wa_tab8-cmarqty+0(6)&amp; &amp;CUM_TOT+0(6)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;space(28)&amp;&lt;/&gt;&lt;F1&gt; CY(V)&amp;SAPCE(2)&amp; &amp;wa_tab8-caprpts+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-cmayPTS+0(6)&amp; &amp;wa_tab8-cjunPTS+0(6)&amp; &amp;wa_tab8-cjulPTS+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-caugPTS+0(6)&amp; &amp;wa_tab8-csepPTS+0(6)&amp; &amp;wa_tab8-coctPTS+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-cnovPTS+0(6)&amp; &amp;wa_tab8-cdecPTS+0(6)&amp; &amp;wa_tab8-cjanPTS+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-cfebPTS+0(6)&amp; &amp;wa_tab8-cmarPTS+0(6)&amp; &amp;CUMVTOT+0(6)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;SAPCE(28)&amp;&lt;/&gt;&lt;F1&gt; CU.GR(U)&amp;WA_TAB8-APRGR+0(6)&amp; &amp;WA_TAB8-MAYGR+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_TAB8-JUNGR+0(6)&amp; &amp;WA_TAB8-JULGR+0(6)&amp; &amp;WA_TAB8-AUGGR+0(6)&amp; &amp;WA_TAB8-SEPGR+0(6)&amp; &amp;WA_TAB8-OCTGR+0(6)&amp; &amp;WA_TAB8-NOVGR+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;WA_TAB8-DECGR+0(6)&amp; &amp;WA_TAB8-JANGR+0(6)&amp; &amp;WA_TAB8-FEBGR+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;WA_TAB8-MARGR+0(6)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;SAPCE(28)&amp; CU.GR(V)&amp;WA_TAB8-VAPRGR+0(6)&amp; &amp;WA_TAB8-VMAYGR+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_TAB8-VJUNGR+0(6)&amp; &amp;WA_TAB8-VJULGR+0(6)&amp; &amp;WA_TAB8-VAUGGR+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_TAB8-VSEPGR+0(6)&amp; &amp;WA_TAB8-VOCTGR+0(6)&amp; &amp;WA_TAB8-VNOVGR+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_TAB8-VDECGR+0(6)&amp; &amp;WA_TAB8-VJANGR+0(6)&amp; &amp;WA_TAB8-VFEBGR+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;WA_TAB8-VMARGR+0(6)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>DET2</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;space(28)&amp;&lt;/&gt;&lt;F1&gt; SMP &amp;SAPCE(3)&amp; &amp;wa_tab8-SMPAPrqty+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-SMPmayqty+0(6)&amp; &amp;wa_tab8-SMPjunqty+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-SMPjulqty+0(6)&amp; &amp;wa_tab8-SMPaugqty+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-SMPsepqty+0(6)&amp; &amp;wa_tab8-SMPoctqty+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-SMPnovqty+0(6)&amp; &amp;wa_tab8-SMPDECqty+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-SMPJANqty+0(6)&amp; &amp;wa_tab8-SMPFEBQty+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-SMPmarqty+0(6)&amp; &amp;smpcum_tot+0(6)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;space(28)&amp;&lt;/&gt;&lt;F1&gt; RATIO &amp;SAPCE(1)&amp; &amp;wa_tab8-RAPR+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-Rmay+0(6)&amp; &amp;wa_tab8-Rjun+0(6)&amp; &amp;wa_tab8-Rjul+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-Raug+0(6)&amp; &amp;wa_tab8-Rsep+0(6)&amp; &amp;wa_tab8-Roct+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-Rnov+0(6)&amp; &amp;wa_tab8-RDEC+0(6)&amp; &amp;wa_tab8-RJAN+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-RFEB+0(6)&amp; &amp;wa_tab8-Rmar+0(6)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>DET21</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;wa_tab8-MAKTX+0(20)&amp;&lt;/&gt;&lt;F1&gt; &amp;wa_tab8-bezei+0(7)&amp; SMP &amp;SPACE(3)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-SMPAPrqty+0(6)&amp; &amp;wa_tab8-SMPmayqty+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-SMPjunqty+0(6)&amp; &amp;wa_tab8-SMPjulqty+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-SMPaugqty+0(6)&amp; &amp;wa_tab8-SMPsepqty+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-SMPoctqty+0(6)&amp; &amp;wa_tab8-SMPnovqty+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-SMPDECqty+0(6)&amp; &amp;wa_tab8-SMPJANqty+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-SMPFEBQty+0(6)&amp; &amp;wa_tab8-SMPmarqty+0(6)&amp; &amp;smpcum_tot+0(6)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;space(28)&amp;&lt;/&gt;&lt;F1&gt; RATIO &amp;SAPCE(1)&amp; &amp;wa_tab8-RAPR+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-Rmay+0(6)&amp; &amp;wa_tab8-Rjun+0(6)&amp; &amp;wa_tab8-Rjul+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-Raug+0(6)&amp; &amp;wa_tab8-Rsep+0(6)&amp; &amp;wa_tab8-Roct+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-Rnov+0(6)&amp; &amp;wa_tab8-RDEC+0(6)&amp; &amp;wa_tab8-RJAN+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;wa_tab8-RFEB+0(6)&amp; &amp;wa_tab8-Rmar+0(6)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>DET22</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>IF &amp;P_SALE&amp; = &apos;X&apos;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;SAPCE(28)&amp;&lt;/&gt;&lt;F1&gt; SLS.PL. &lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;SAPCE(28)&amp;&lt;/&gt;&lt;F1&gt; SEC.SLS.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>ENDIF</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>DET3</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>&amp;ULINE(130)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>DET4</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>&amp;ULINE(130)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>GRP1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>PROTECT.</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>&amp;ULINE(130)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;GRPNM+0(11)&amp;&lt;/&gt;&lt;F1&gt; : &amp;SAPCE(14)&amp; PY &amp;SAPCE(5)&amp;&amp;LAPRGRP+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;LMAYGRP+0(6)&amp; &amp;LJUNGRP+0(6)&amp; &amp;LJULGRP+0(6)&amp; &amp;LAUGGRP+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;LSEPGRP+0(6)&amp; &amp;LOCTGRP+0(6)&amp; &amp;LNOVGRP+0(6)&amp; &amp;LDECGRP+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;LJANGRP+0(6)&amp; &amp;LFEBGRP+0(6)&amp; &amp;LMARGRP+0(6)&amp; &amp;GRPLCUM_TOT+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;GRPLTOT+0(6)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;SAPCE(28)&amp;&lt;/&gt;&lt;F1&gt; CY &amp;SAPCE(5)&amp;&amp;CAPRGRP+0(6)&amp; &amp;CMAYGRP+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;CJUNGRP+0(6)&amp; &amp;CJULGRP+0(6)&amp; &amp;CAUGGRP+0(6)&amp; &amp;CSEPGRP+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;COCTGRP+0(6)&amp; &amp;CNOVGRP+0(6)&amp; &amp;CDECGRP+0(6)&amp; &amp;CJANGRP+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;CFEBGRP+0(6)&amp; &amp;CMARGRP+0(6)&amp; &amp;GRPCUM_TOT+0(6)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;SAPCE(28)&amp;&lt;/&gt;&lt;F1&gt; CU.GR.% &amp;GCUMAPRGR+0(6)&amp; &amp;GCUMMAYGR+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;GCUMJUNGR+0(6)&amp; &amp;GCUMJULGR+0(6)&amp; &amp;GCUMAUGGR+0(6)&amp; &amp;GCUMSEPGR+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;GCUMOCTGR+0(6)&amp; &amp;GCUMNOVGR+0(6)&amp; &amp;GCUMDECGR+0(6)&amp; &amp;GCUMJANGR+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;GCUMFEBGR+0(6)&amp; &amp;GCUMMARGR+0(6)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;SAPCE(28)&amp;&lt;/&gt;&lt;F1&gt; SMP&amp;SPACE(5)&amp;&amp;SMPAPRGRP+0(6)&amp; &amp;SMPMAYGRP+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;SMPJUNGRP+0(6)&amp; &amp;SMPJULGRP+0(6)&amp; &amp;SMPAUGGRP+0(6)&amp; &amp;SMPSEPGRP+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;SMPOCTGRP+0(6)&amp; &amp;SMPNOVGRP+0(6)&amp; &amp;SMPDECGRP+0(6)&amp; &amp;SMPJANGRP+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;SMPFEBGRP+0(6)&amp; &amp;SMPMARGRP+0(6)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;SAPCE(28)&amp;&lt;/&gt;&lt;F1&gt; RATIO&amp;SPACE(3)&amp;&amp;RATIOAPRGRP+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;RATIOMAYGRP+0(6)&amp; &amp;RATIOJUNGRP+0(6)&amp; &amp;RATIOJULGRP+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;RATIOAUGGRP+0(6)&amp; &amp;RATIOSEPGRP+0(6)&amp; &amp;RATIOOCTGRP+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;RATIONOVGRP+0(6)&amp; &amp;RATIODECGRP+0(6)&amp; &amp;RATIOJANGRP+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;RATIOFEBGRP+0(6)&amp; &amp;RATIOMARGRP+0(6)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>IF &amp;P_SALE&amp; = &apos;X&apos;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;SAPCE(28)&amp;&lt;/&gt;&lt;F1&gt; SLS.PL. &lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;SAPCE(28)&amp;&lt;/&gt;&lt;F1&gt; SEC.SLS. &lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>ENDIF</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>&amp;ULINE(130)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>ENDPROTECT.</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>L1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>&amp;ULINE(130)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>H3</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>&amp;ULINE(130)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>PROTECT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;TERRITORY TOTAL : &amp;SAPCE(10)&amp; PY &amp;SAPCE(4)&amp; &amp;TLAPRQTY+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;TLMAYQTY+0(6)&amp; &amp;TLJUNQTY+0(6)&amp; &amp;TLJULQTY+0(6)&amp; &amp;TLAUGQTY+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;TLSEPQTY+0(6)&amp; &amp;TLOCTQTY+0(6)&amp; &amp;TLNOVQTY+0(6)&amp; &amp;TLDECQTY+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;TLJANQTY+0(6)&amp; &amp;TLFEBQTY+0(6)&amp; &amp;TLMARQTY+0(6)&amp; &amp;TCUMTOT+0(7)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;TYRTOT+0(7)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;SPACE(28)&amp;&lt;/&gt;&lt;F1&gt; CY &amp;SAPCE(4)&amp; &amp;TCAPRQTY+0(6)&amp; &amp;TCMAYQTY+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;TCJUNQTY+0(6)&amp; &amp;TCJULQTY+0(6)&amp; &amp;TCAUGQTY+0(6)&amp; &amp;TCSEPQTY+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;TCOCTQTY+0(6)&amp; &amp;TCNOVQTY+0(6)&amp; &amp;TCDECQTY+0(6)&amp; &amp;TCJANQTY+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;TCFEBQTY+0(6)&amp; &amp;TCMARQTY+0(6)&amp; &amp;TCYCUM+0(7)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;SPACE(28)&amp;&lt;/&gt;&lt;F1&gt; CU.GR.% &amp;TCUMAPR+0(6)&amp; &amp;TCUMMAY+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;TCUMJUN+0(6)&amp; &amp;TCUMJUL+0(6)&amp; &amp;TCUMAUG+0(6)&amp; &amp;TCUMSEP+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;TCUMOCT+0(6)&amp; &amp;TCUMNOV+0(6)&amp; &amp;TCUMDEC+0(6)&amp; &amp;TCUMJAN+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;TCUMFEB+0(6)&amp; &amp;TCUMMAR+0(6)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;SPACE(28)&amp;&lt;/&gt;&lt;F1&gt; SMP &amp;SAPCE(3)&amp; &amp;T1SMPAPRQTY+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;T1SMPMAYQTY+0(6)&amp; &amp;T1SMPJUNQTY+0(6)&amp; &amp;T1SMPJULQTY+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;T1SMPAUGQTY+0(6)&amp; &amp;T1SMPSEPQTY+0(6)&amp; &amp;T1SMPOCTQTY+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;T1SMPNOVQTY+0(6)&amp; &amp;T1SMPDECQTY+0(6)&amp; &amp;T1SMPJANQTY+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;T1SMPFEBQTY+0(6)&amp; &amp;T1SMPMARQTY+0(6)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;SPACE(28)&amp;&lt;/&gt;&lt;F1&gt; RATIO &amp;SAPCE(1)&amp; &amp;TRAPR+0(6)&amp; &amp;TRMAY+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;TRJUN+0(6)&amp; &amp;TRJUL+0(6)&amp; &amp;TRAUG+0(6)&amp; &amp;TRSEP+0(6)&amp; &amp;TROCT+0(6)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>&amp;TRNOV+0(6)&amp; &amp;TRDEC+0(6)&amp; &amp;TRJAN+0(6)&amp; &amp;TRFEB+0(6)&amp; &amp;TRMAR+0(6)&amp;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>IF &amp;P_SALE&amp; = &apos;X&apos;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;SAPCE(28)&amp;&lt;/&gt;&lt;F1&gt; SLS.PL. &lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F1&gt;&amp;SAPCE(28)&amp;&lt;/&gt;&lt;F1&gt; SEC.SLS. &lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>ENDIF</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>&amp;ULINE(130)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>ENDPROTECT</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/:</TDFORMAT>
+     <TDLINE>NEW-PAGE</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/*</TDFORMAT>
+     <TDLINE>****************** NEW PSO***************</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/W</TDFORMAT>
+     <TDLINE>WINDOW1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/E</TDFORMAT>
+     <TDLINE>H1</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;B2&gt;SR-7-P : MONTHLY ACTUAL UNITS SOLD (EXCLUDING BONUS) APR&apos;&amp;CYEAR&amp; -</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;MNAME(CIZ)&amp;&apos;&amp;XYEAR&amp; - &amp;pso_name(CIZ)&amp;,  &amp;PSO_HQ(CIZ)&amp; &lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L2</TDFORMAT>
+     <TDLINE>&amp;space(19)&amp; &amp;uline(42)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&amp;SAPCE(100)&amp; PAGE &amp;PAGE&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>&amp;ULINE(130)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>&lt;F2&gt;PRODUCT &amp;SAPCE(12)&amp; PACK &amp;SAPCE(11)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> APR &amp;SPACE(3)&amp; MAY &amp;SAPCE(2)&amp; JUN &amp;SAPCE(2)&amp; JUL</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;SPACE(2)&amp; AUG &amp;SAPCE(2)&amp; SEP &amp;SAPCE(2)&amp; OCT &amp;SAPCE(2)&amp; NOV</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> &amp;SAPCE(2)&amp; DEC &amp;SAPCE(2)&amp; JAN &amp;SAPCE(2)&amp; FEB &amp;SAPCE(2)&amp; MAR</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE> C.TOTAL YR.TOTAL&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>L1</TDFORMAT>
+     <TDLINE>&amp;ULINE(130)&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+    </TLINE>
+   </TDLINES>
+  </asx:values>
+ </asx:abap>
+</abapGit>
